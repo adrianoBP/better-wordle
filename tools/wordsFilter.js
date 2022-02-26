@@ -1,9 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 import readline from 'readline';
+import { URL } from 'url';
 
-const IN_FOLDER_PATH = path.join(path.resolve(), './words/raw');
-const OUT_FOLDER_PATH = path.join(path.resolve(), './words/filtered');
+const IN_FOLDER_PATH = new URL('../dictionaries/raw', import.meta.url).pathname;
+const OUT_FOLDER_PATH = new URL('../dictionaries/filtered', import.meta.url).pathname;
 
 fs.readdirSync(IN_FOLDER_PATH).forEach((fileName) => {
   const inFilePath = path.join(IN_FOLDER_PATH, fileName);

@@ -1,11 +1,58 @@
 <h2>better-wordle</h2>
 
-<button onclick="getTodayWord()">TEST</button>
+<h2>Guess:</h2>
+<div id="guess"></div>
+
+<h2>Result:</h2>
+<p id="result"></p>
+
+<h2>Log:</h2>
+<div id="log"></div>
 
 <script>
-    async function getTodayWord(){
-        const url = 'http://localhost:5001/api/words/today';
-        const response = await (await fetch(url)).json();;
-        console.log(response);
+  // Should use query instead!
+  const guessElement = document.getElementById("guess");
+  const resultElement = document.getElementById("result");
+  const logElement = document.getElementById("log");
+
+  document.addEventListener("keydown", async (e) => {
+    if (/^[a-z]{1,1}$/.test(e.key)) {
+      if (guessElement.textContent.length < 5)
+        guessElement.textContent += e.key;
+      else logElement.textContent = "Limit reached!";
+    } else if (e.key === "Backspace") {
+      guessElement.textContent = guessElement.textContent.slice(0, -1);
+      logElement.textContent = "";
+    } else if (e.key === "Enter") {
+      if (guessElement.textContent.length < 5) {
+        logElement.textContent = "Guess too short";
+        return;
+      }
+      const result = await validateGuess();
+      resultElement.innerHTML += `${result.result
+        .map((el) => {
+          if (el === 1) return "🟩";
+          if (el === 0) return "🟨";
+          return "🟪";
+        })
+        .join(", ")}<br />`;
     }
+  });
+
+  async function validateGuess() {
+    const guess = guessElement.textContent;
+    const url = "http://localhost:5001/api/game/validate-guess";
+    const response = await (
+      await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          guess: guess,
+        }),
+      })
+    ).json();
+    return response;
+  }
 </script>
