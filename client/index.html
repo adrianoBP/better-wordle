@@ -1,0 +1,11 @@
+<h2>better-wordle</h2>
+
+<button onclick="getTodayWord()">TEST</button>
+
+<script>
+    async function getTodayWord(){
+        const url = 'http://localhost:5001/api/words/today';
+        const response = await (await fetch(url)).json();;
+        console.log(response);
+    }
+</script>
