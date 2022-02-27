@@ -1,19 +1,17 @@
 import { URL } from 'url';
-import path from 'path';
 import fs from 'fs';
-
-// ! Use fetch() instead?
 
 const DICT_FOLDER = new URL('../dictionaries/filtered', import.meta.url)
   .pathname;
 
-function getWordDictionary(lang, wordLength) {
+function getWordDictionary(dictionaryOptions) {
+  const { lang, wordLength } = dictionaryOptions;
   // Use defaults
-  const selectedLang = `${lang ?? 'en_en'}.txt`;
+  const langFile = `${lang ?? 'en_en'}.txt`;
   const selectedWordLength = wordLength ?? 5;
 
   // Load file content
-  const filePath = path.join(DICT_FOLDER, selectedLang);
+  const filePath = `${DICT_FOLDER}/${langFile}`;
   const content = getFileContent(filePath);
 
   // Return only words of the selected length
@@ -22,10 +20,10 @@ function getWordDictionary(lang, wordLength) {
     .filter((word) => word.length === selectedWordLength);
 }
 
-function getTodayWord() {
+function getTodayWord(dictionaryOptions) {
   // TODO: implement language and selection of word length - #3
 
-  const availableWords = getWordDictionary();
+  const availableWords = getWordDictionary(dictionaryOptions);
 
   // Base word selection on the current date
   // This should always be the server date, hence, it would reset at the same time for all users
@@ -40,9 +38,7 @@ function getFileContent(filePath) {
   return fs.readFileSync(filePath, 'utf8');
 }
 
-const service = {
+export default {
   getWordDictionary,
   getTodayWord,
 };
-
-export default service;

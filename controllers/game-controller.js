@@ -11,8 +11,9 @@ const validateGuess = (req, res) => {
     return;
   }
 
-  const guess = req.body.guess;
+  const { dictionaryOptions, guess } = req.body;
 
+  // TODO: validate all parameters
   if (!guess) {
     res.status(400).json({
       error: 'Invalid request. Please send a guess in the request body.',
@@ -21,7 +22,7 @@ const validateGuess = (req, res) => {
   }
 
   res.json({
-    result: gameService.validateGuess(guess),
+    result: gameService.validateGuess(guess, dictionaryOptions),
   });
 };
 
