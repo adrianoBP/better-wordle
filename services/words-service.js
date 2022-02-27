@@ -2,6 +2,8 @@ import { URL } from 'url';
 import path from 'path';
 import fs from 'fs';
 
+// ! Use fetch() instead?
+
 const DICT_FOLDER = new URL('../dictionaries/filtered', import.meta.url)
   .pathname;
 
@@ -21,7 +23,7 @@ function getWordDictionary(lang, wordLength) {
 }
 
 function getTodayWord() {
-  // TODO: implement language and selection of word length
+  // TODO: implement language and selection of word length - #3
 
   const availableWords = getWordDictionary();
 

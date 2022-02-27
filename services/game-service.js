@@ -14,6 +14,9 @@ function validateGuess(guess) {
     } else if (winningWord.includes(char)) {
       // Letter matches in the winning word, but incorrect position
 
+      // ! If the user inserts a letter which is in the correct position
+      // ! but later in the word, the letter will be marked as possible match.
+
       // If the character has already been checked, don't check it again
       if (guess.slice(0, i).includes(char)) { result[i] = -1; } else { result[i] = 0; }
     } else {

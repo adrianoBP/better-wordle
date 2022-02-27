@@ -24,6 +24,12 @@ fs.readdirSync(IN_FOLDER_PATH).forEach((fileName) => {
   });
 
   lineReader.on('close', () => {
+    // Shuffle the elements in the array
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+
     fs.writeFileSync(outFilePath, result.join('\n'));
   });
 });
