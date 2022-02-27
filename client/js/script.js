@@ -5,7 +5,7 @@ import logService from './services/log.service.js';
 // Only once the DOM tree has been built, load
 window.addEventListener('DOMContentLoaded', onInit);
 
-const SERVICE_URL = 'http://localhost:5001/api';
+const SERVICE_URL = 'http://localhost:8080/api';
 
 let guessElement;
 let resultElement;

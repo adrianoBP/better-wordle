@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import fs from 'fs';
 
-const DICT_FOLDER = new URL('../dictionaries/filtered', import.meta.url)
+const DICT_FOLDER = new URL('../misc/dictionaries/filtered', import.meta.url)
   .pathname;
 
 function getWordDictionary(dictionaryOptions) {
