@@ -6,7 +6,10 @@ const router = new Router();
 // ! Do we need this to be an API reachable from the frontend?
 const getTodayWord = (req, res) => {
   res.json({
-    word: wordsService.getTodayWord(),
+    word: wordsService.getTodayWord({
+      lang: 'en_en',
+      wordLength: 5,
+    }),
   });
 };
 
