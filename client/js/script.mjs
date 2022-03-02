@@ -1,6 +1,6 @@
 'use strict';
-import apiService from './services/api.service.js';
-import logService from './services/log.service.js';
+import apiService from './services/api.service.mjs';
+import logService from './services/log.service.mjs';
 
 // Only once the DOM tree has been built, load
 window.addEventListener('DOMContentLoaded', onInit);

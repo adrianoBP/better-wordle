@@ -1,7 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import router from './controllers/index.js';
 import { URL } from 'url';
+
+import router from './controllers/index.mjs';
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ const PORT = process.env.PORT || 8080;
 const CLIENT_FOLDER = new URL('client', import.meta.url)
   .pathname;
 
-// Host client from server
+// Host static files
 app.get('/', (_, res) => {
   res.sendFile(`${CLIENT_FOLDER}/index.html`);
 });
