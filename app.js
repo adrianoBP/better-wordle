@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { URL } from 'url';
 
-import router from './controllers/index.mjs';
+import router from './controllers/index.js';
 
 dotenv.config();
 
@@ -15,9 +15,6 @@ const CLIENT_FOLDER = new URL('client', import.meta.url)
   .pathname;
 
 // Host static files
-app.get('/', (_, res) => {
-  res.sendFile(`${CLIENT_FOLDER}/index.html`);
-});
 app.use(express.static(CLIENT_FOLDER));
 
 app.listen(PORT, () => {

@@ -27,6 +27,7 @@ function getTodayWord(dictionaryOptions) {
 
   // Base word selection on the current date
   // This should always be the server date, hence, it would reset at the same time for all users
+  // Note: words are already shuffled
   const totalMillisecs = new Date().getTime();
   const totalDays = Math.floor(totalMillisecs / (1000 * 60 * 60 * 24));
   const todayIndex = totalDays % availableWords.length;

@@ -14,3 +14,7 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 > Regex: `/^[a-z]{4,8}$/`  
 > Words source: [http://www.gwicks.net/dictionaries.htm](http://www.gwicks.net/dictionaries.htm)
+
+## Considerations
+
+- Dictionaries are saved as normal txt files as we will only read from them and never write

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import gameService from '../services/game-service.mjs';
+import gameService from '../services/game-service.js';
 
 const router = new Router();
 
@@ -25,6 +25,8 @@ const validateGuess = (req, res) => {
     result: gameService.validateGuess(guess, dictionaryOptions),
   });
 };
+
+// TODO: Add async wrappers in all controllers to handle errors (only when async is being used)
 
 router.post('/validate-guess', validateGuess);
 

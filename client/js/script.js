@@ -1,9 +1,6 @@
 'use strict';
-import apiService from './services/api.service.mjs';
-import logService from './services/log.service.mjs';
-
-// Only once the DOM tree has been built, load
-window.addEventListener('DOMContentLoaded', onInit);
+import apiService from './services/api.service.js';
+import logService from './services/log.service.js';
 
 const SERVICE_URL = 'http://localhost:8080/api';
 
@@ -15,16 +12,6 @@ const dictionaryOptions = {
   lang: 'en_en',
   wordLength: 5,
 };
-
-function onInit() {
-  // Assign all variables as we are now sure that the DOM tree has been built
-  guessElement = document.querySelector('#guess');
-  resultElement = document.querySelector('#result');
-  logElement = document.querySelector('#log');
-
-  // Add all necessary event listeners
-  document.addEventListener('keydown', keyDown);
-}
 
 async function keyDown(event) {
   const pressedKey = event.key.toLocaleLowerCase();
@@ -69,3 +56,21 @@ async function keyDown(event) {
     return response;
   }
 }
+
+function prepareElements() {
+  guessElement = document.querySelector('#guess');
+  resultElement = document.querySelector('#result');
+  logElement = document.querySelector('#log');
+}
+
+function addEventListeners() {
+  document.addEventListener('keydown', keyDown);
+}
+
+function onInit() {
+  prepareElements();
+  addEventListeners();
+}
+
+// Only once the DOM tree has been built, load
+window.addEventListener('DOMContentLoaded', onInit);

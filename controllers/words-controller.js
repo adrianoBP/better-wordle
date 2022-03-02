@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import wordsService from '../services/words-service.mjs';
+import wordsService from '../services/words-service.js';
 
 const router = new Router();
 
