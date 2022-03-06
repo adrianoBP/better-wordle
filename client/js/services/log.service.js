@@ -1,3 +1,5 @@
+// ! Do not console.log in the client - Only console.error when required
+
 function success(message) {
   // TODO: implement
   console.log('SUCCESS:', message);

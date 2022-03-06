@@ -18,3 +18,5 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 ## Considerations
 
 - Dictionaries are saved as normal txt files as we will only read from them and never write
+
+## Additional

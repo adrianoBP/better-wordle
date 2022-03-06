@@ -4,44 +4,61 @@ import logService from './services/log.service.js';
 
 const SERVICE_URL = 'http://localhost:8080/api';
 
-let guessElement;
-let resultElement;
-let logElement;
+let boardElement;
+const boardElements = [];
 
 const dictionaryOptions = {
   lang: 'en_en',
   wordLength: 5,
 };
 
+let currentWordIndex = 0;
+let currentCharIndex = 0;
+let wordGuessed = false;
+
 async function keyDown(event) {
+  // TODO: CTRL + Backspace deletes the whole word
+
+  if (wordGuessed) return;
+
   const pressedKey = event.key.toLocaleLowerCase();
+
   if (/^[a-z]{1,1}$/.test(pressedKey)) {
-    if (guessElement.textContent.length < 5) { guessElement.textContent += pressedKey; } else logElement.textContent = 'Limit reached!';
-  } else if (pressedKey === 'backspace') {
-    guessElement.textContent = guessElement.textContent.slice(0, -1);
-    logElement.textContent = '';
+    if (currentCharIndex < dictionaryOptions.wordLength) {
+      boardElements[currentWordIndex][currentCharIndex].textContent =
+        pressedKey;
+      currentCharIndex++;
+    } else {
+      logService.error('Word is already complete');
+    }
+  } else if (pressedKey === 'backspace' && currentCharIndex > 0) {
+    currentCharIndex--;
+    boardElements[currentWordIndex][currentCharIndex].textContent = '';
   } else if (pressedKey === 'enter') {
-    if (guessElement.textContent.length < 5) {
-      logElement.textContent = 'Guess too short';
+    if (currentCharIndex < 5) {
+      logService.error('Word is not complete');
       return;
     }
     const result = await validateGuess();
 
     if (result) {
-      resultElement.innerHTML += `${result.result
-        .map((el) => {
-          if (el === 1) return '🟩';
-          if (el === 0) return '🟨';
-          return '🟪';
-        })
-        .join(', ')}<br />`;
+      result.result.forEach((result, index) => {
+        if (result === 1) { boardElements[currentWordIndex][index].classList.add('success'); } else if (result === 0) { boardElements[currentWordIndex][index].classList.add('warn'); }
+      });
+
+      currentWordIndex++;
+      currentCharIndex = 0;
+
+      wordGuessed = result.result.every(result => result === 1);
     }
   }
 
   async function validateGuess() {
-    const guess = guessElement.textContent;
+    const guess = boardElements[currentWordIndex].map((el) => el.textContent);
 
-    const response = await apiService.makeRequest(`${SERVICE_URL}/game/validate-guess`, 'POST',
+    const response = await apiService.makeRequest(
+      `${SERVICE_URL}/game/validate-guess`,
+      'POST',
       {
         guess,
         dictionaryOptions,
@@ -58,9 +75,20 @@ async function keyDown(event) {
 }
 
 function prepareElements() {
-  guessElement = document.querySelector('#guess');
-  resultElement = document.querySelector('#result');
-  logElement = document.querySelector('#log');
+  boardElement = document.querySelector('#board');
+
+  for (let i = 0; i < 6; i++) {
+    const rowElement = document.createElement('div');
+    rowElement.classList.add('word');
+    boardElements.push([]);
+
+    for (let j = 0; j < dictionaryOptions.wordLength; j++) {
+      const charElement = document.createElement('div');
+      rowElement.appendChild(charElement);
+      boardElements[i].push(charElement);
+    }
+    boardElement.appendChild(rowElement);
+  }
 }
 
 function addEventListeners() {

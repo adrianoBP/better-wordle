@@ -1,4 +1,109 @@
+:root {
+  --header-bg: #000;
+  --body-bg: #fff;
+  --text-colour: #fff;
+  --letter-bg: #1D1421
+  --letter-border: #180023;
+
+  --word-length: 5;
+  --letter-success: #328B13;
+  --letter-warn: #C7971B;
+}
+
 * {
   margin: 0;
   padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.dark {
+  --header-bg: #1d1421;
+  --body-bg: #35263d;
+  --text-colour: #e5e5e5;
+  --letter-bg: #1D1421;
+  --letter-border: #180023;
+
+  --letter-success: #328B13;
+  --letter-warn: #C7971B;
+}
+
+.light {
+  // TODO: implement
+}
+
+body {
+  background: var(--body-bg);
+  color: var(--text-colour);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-flow: column;
+}
+
+nav {
+  text-align: center;
+  background-color: var(--header-bg);
+  flex: 0 1 auto;
+}
+
+nav a {
+  display: inline-block;
+  padding: 1rem 0;
+  text-decoration: none;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+main {
+  width: 100vw;
+  flex: 1 1 auto;
+  display: flex;
+}
+
+#board {
+  margin: 2rem auto;
+}
+
+.word {
+  display: grid; 
+  grid-template-columns: repeat(var(--word-length), 1fr);
+}
+
+.word > div {
+  background-color: var(--letter-bg);
+  border: 3px solid var(--letter-border);
+  border-radius: 35%;
+  font-size: 2.5rem;
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 5rem;
+  height: 5rem;
+  margin: 0.25rem;
+}
+
+.word > div.success {
+  background-color: var(--letter-success);
+}
+
+.word > div.warn {
+  background-color: var(--letter-warn);
+}
+
+@media only screen and (max-device-width : 480px) {
+
+  #board {
+    width: 100vw;
+    margin: 5rem 5rem;
+  }
+
+  .word > div {
+    font-size: 3rem;
+    width: calc(70vw / var(--word-length));
+    height: calc(70vw / var(--word-length));
+    margin: 0.5rem;
+  }
 }
