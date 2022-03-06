@@ -16,6 +16,26 @@ let currentWordIndex = 0;
 let currentCharIndex = 0;
 let wordGuessed = false;
 
+async function validateGuess() {
+  const guess = boardElements[currentWordIndex].map((el) => el.textContent);
+
+  const response = await apiService.makeRequest(
+    `${SERVICE_URL}/game/validate-guess`,
+    'POST',
+    {
+      guess,
+      dictionaryOptions,
+    },
+  );
+
+  if (response.error) {
+    logService.error(response.error);
+    return;
+  }
+
+  return response;
+}
+
 async function keyDown(event) {
   // TODO: CTRL + Backspace deletes the whole word
 
@@ -24,6 +44,7 @@ async function keyDown(event) {
   const pressedKey = event.key.toLocaleLowerCase();
 
   if (/^[a-z]{1,1}$/.test(pressedKey)) {
+    // Letter pressed
     if (currentCharIndex < dictionaryOptions.wordLength) {
       boardElements[currentWordIndex][currentCharIndex].textContent =
         pressedKey;
@@ -32,9 +53,11 @@ async function keyDown(event) {
       logService.error('Word is already complete');
     }
   } else if (pressedKey === 'backspace' && currentCharIndex > 0) {
+    // Backspace pressed
     currentCharIndex--;
     boardElements[currentWordIndex][currentCharIndex].textContent = '';
   } else if (pressedKey === 'enter') {
+    // Enter pressed
     if (currentCharIndex < 5) {
       logService.error('Word is not complete');
       return;
@@ -51,26 +74,6 @@ async function keyDown(event) {
 
       wordGuessed = result.result.every(result => result === 1);
     }
-  }
-
-  async function validateGuess() {
-    const guess = boardElements[currentWordIndex].map((el) => el.textContent);
-
-    const response = await apiService.makeRequest(
-      `${SERVICE_URL}/game/validate-guess`,
-      'POST',
-      {
-        guess,
-        dictionaryOptions,
-      },
-    );
-
-    if (response.error) {
-      logService.error(response.error);
-      return;
-    }
-
-    return response;
   }
 }
 
