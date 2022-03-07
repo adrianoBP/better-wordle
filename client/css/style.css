@@ -79,6 +79,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  place-self: center;
 
   width: 5rem;
   height: 5rem;
@@ -97,13 +98,11 @@ main {
 
   #board {
     width: 100vw;
-    margin: 5rem 5rem;
   }
 
   .word > div {
-    font-size: 3rem;
+    font-size: 1.5rem;
     width: calc(70vw / var(--word-length));
     height: calc(70vw / var(--word-length));
-    margin: 0.5rem;
   }
 }
