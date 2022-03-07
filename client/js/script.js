@@ -10,7 +10,7 @@ let boardElements = [];
 
 const dictionaryOptions = {
   lang: 'en_en',
-  wordLength: 5,
+  wordLength: 8,
 };
 
 let currentWordIndex = 0;
@@ -71,6 +71,8 @@ async function keyDown(event) {
           boardElements[currentWordIndex][index].classList.add('success');
         } else if (result === 0) {
           boardElements[currentWordIndex][index].classList.add('warn');
+        } else {
+          boardElements[currentWordIndex][index].classList.add('fail');
         }
       });
 
