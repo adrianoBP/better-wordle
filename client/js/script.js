@@ -10,7 +10,7 @@ let boardElements = [];
 
 const dictionaryOptions = {
   lang: 'en_en',
-  wordLength: 8,
+  wordLength: 5,
 };
 
 let currentWordIndex = 0;
@@ -47,7 +47,8 @@ async function keyDown(event) {
   if (/^[a-z]{1,1}$/.test(pressedKey)) {
     // Letter pressed
     if (currentCharIndex < dictionaryOptions.wordLength) {
-      boardElements[currentWordIndex][currentCharIndex].textContent = pressedKey;
+      boardElements[currentWordIndex][currentCharIndex].textContent =
+        pressedKey;
       currentCharIndex++;
     } else {
       logService.error('Word is already complete');
@@ -76,7 +77,7 @@ async function keyDown(event) {
       currentWordIndex++;
       currentCharIndex = 0;
 
-      wordGuessed = result.result.every(result => result === 1);
+      wordGuessed = result.result.every((result) => result === 1);
     }
   }
 }
@@ -86,17 +87,13 @@ function buildBoard() {
 
   // Create rows of words
   for (let i = 0; i < 6; i++) {
-    const rowElement = document.createElement('div');
-    rowElement.classList.add('word');
     boardElements.push([]);
-
     // Create characters for each word
     for (let j = 0; j < dictionaryOptions.wordLength; j++) {
       const charElement = document.createElement('div');
-      rowElement.appendChild(charElement);
       boardElements[i].push(charElement);
+      boardElement.appendChild(charElement);
     }
-    boardElement.appendChild(rowElement);
   }
 }
 

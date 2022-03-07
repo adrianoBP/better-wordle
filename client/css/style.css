@@ -8,6 +8,47 @@
   --word-length: 5;
   --letter-success: #328B13;
   --letter-warn: #C7971B;
+
+  --main-col-def: 1fr;
+  --main-template-area: "board";
+  --board-font-size: 1.5em;
+}
+
+/* tablets */
+@media only screen and (min-width : 480px) {
+
+  main {
+    --main-col-def: 1fr 3fr 1fr;
+    --main-template-area: ". board .";
+  }
+
+  #board > div {
+    --board-font-size: 1.5em;
+  }
+}
+
+/* laptops */
+@media only screen and (min-width : 1024px) {
+
+  
+  main {
+    --main-col-def: 1fr 2fr 1fr;
+  }
+
+  #board > div{
+    --board-font-size: 2em;
+  }
+}
+
+/* desktops */
+@media only screen and (min-width : 1600px) {
+  main {
+    --main-col-def: 1fr 1fr 1fr;
+  }
+
+  #board > div{
+    --board-font-size: 2.5em;
+  }
 }
 
 * {
@@ -55,54 +96,46 @@ nav a {
 }
 
 main {
-  width: 100vw;
   flex: 1 1 auto;
-  display: flex;
+  display: grid;
+  grid-template-areas: var(--main-template-area);
+  grid-template-columns: var(--main-col-def);
+  width: 100vw;
 }
 
-#board {
-  margin: 2rem auto;
+#board{
+  margin: 1em;
+
+  grid-area: board;
+
+  display: grid;
+  grid-template-columns: repeat(var(--word-length), minmax(2em, 5em));
+  align-content: start; 
+  row-gap: .5rem;
+  column-gap: .5rem;
+  
+  justify-content: center; 
 }
 
-.word {
-  display: grid; 
-  grid-template-columns: repeat(var(--word-length), 1fr);
-}
+#board > div {
 
-.word > div {
   background-color: var(--letter-bg);
   border: 3px solid var(--letter-border);
   border-radius: 35%;
-  font-size: 2.5rem;
+  font-size: var(--board-font-size);
   font-weight: bold;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  place-self: center;
 
-  width: 5rem;
-  height: 5rem;
-  margin: 0.25rem;
+  aspect-ratio: 1;
 }
 
-.word > div.success {
+#board > div.success {
   background-color: var(--letter-success);
 }
 
-.word > div.warn {
+#board > div.warn {
   background-color: var(--letter-warn);
-}
-
-@media only screen and (max-device-width : 480px) {
-
-  #board {
-    width: 100vw;
-  }
-
-  .word > div {
-    font-size: 1.5rem;
-    width: calc(70vw / var(--word-length));
-    height: calc(70vw / var(--word-length));
-  }
 }
