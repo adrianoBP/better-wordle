@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import gameService from '../services/game-service.js';
+import wordsService from '../services/words-service.js';
 
 const router = new Router();
 
@@ -17,6 +18,13 @@ const validateGuess = (req, res) => {
   if (!guess) {
     res.status(400).json({
       error: 'Invalid request. Please send a guess in the request body.',
+    });
+    return;
+  }
+
+  if (!wordsService.wordExists(guess.join(''), dictionaryOptions)) {
+    res.status(400).json({
+      error: 'Invalid guess. Please send a valid guess.',
     });
     return;
   }

@@ -81,7 +81,7 @@ async function checkInput(inputValue) {
                 inputValue;
       currentCharIndex++;
     } else {
-      logService.error('Word is already complete');
+      logService.warn('Word is already complete');
     }
   } else if (
     ['backspace', 'del'].includes(inputValue) &&

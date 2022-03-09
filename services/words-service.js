@@ -35,6 +35,11 @@ function getTodayWord(dictionaryOptions) {
   return availableWords[todayIndex];
 }
 
+function wordExists(word, dictionaryOptions) {
+  const availableWords = getWordDictionary(dictionaryOptions);
+  return availableWords.includes(word);
+}
+
 function getFileContent(filePath) {
   return fs.readFileSync(filePath, 'utf8');
 }
@@ -42,4 +47,5 @@ function getFileContent(filePath) {
 export default {
   getWordDictionary,
   getTodayWord,
+  wordExists,
 };
