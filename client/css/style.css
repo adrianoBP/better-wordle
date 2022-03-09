@@ -11,6 +11,7 @@
   --letter-fail: #2b252e;
   
   --keyboard-bg: #a786b5;
+  --keyboard-max-width: 1.75em;
 
   --word-length: 5;
 
@@ -33,6 +34,10 @@
 
   #board > div {
     --board-font-size: 1.5em;
+  }
+
+  #keyboard > .row > div {
+    --keyboard-max-width: 3em;
   }
 }
 
@@ -78,7 +83,7 @@
 }
 
 .light {
-  // TODO: implement
+  /* TODO: implement */
 }
 
 body {
@@ -112,6 +117,7 @@ main {
   width: 100vw;
 }
 
+/* BOARD */
 #board{
   margin: 1em;
 
@@ -157,8 +163,12 @@ main {
   grid-area: keyboard;
   align-items: flex-end;
   padding: 0 .5em;
+
+  display: flex;
+  flex-direction: column;
 }
 
+/* KEYBOARD */
 #keyboard > .row {
   display: flex;
   width: 100%;
@@ -169,20 +179,57 @@ main {
   margin-bottom: .25em;
 }
 
+#keyboard > .row:first-child {
+  margin-top: auto;
+}
+
 #keyboard > .row > div {
   background-color: var(--keyboard-bg);
   border: 3px solid var(--letter-border);
   color: var(--text-colour-opp);
   border-radius: 15%;
   font-weight: bold;
+  cursor: default;
 
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 3em;
+  max-width: var(--keyboard-max-width);
   height: 3.5em;
   margin: .1em;
+}
+
+#keyboard > .row > div:not(.selected):hover{
+  opacity: .5;
+  cursor: pointer;
+}
+
+/* Colours should be defined from lowest priority to highest in case they overlap */
+
+#keyboard > .row > div.fail{
+  background-color: var(--letter-fail);
+  border: 3px solid var(--letter-border);
+  color: var(--text-colour);
+}
+
+
+#keyboard > .row > div.warn{
+  background-color: var(--letter-warn);
+  border: 3px solid var(--letter-border);
+  color: var(--text-colour-opp);
+}
+
+#keyboard > .row > div.success{
+  background-color: var(--letter-success);
+  border: 3px solid var(--letter-border);
+  color: var(--text-colour-opp);
+}
+
+#keyboard > .row > div.selected{
+  background-color: var(--letter-border);
+  border: 3px solid var(--keyboard-bg);
+  color: var(--text-colour);
 }
 
 #keyboard > .row > div.large {
