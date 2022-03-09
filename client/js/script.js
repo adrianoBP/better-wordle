@@ -24,16 +24,17 @@ const charGuesses = {
   fail: [],
 };
 
-const getCurrentGuess = () => { return boardElements[currentWordIndex].map((el) => el.textContent); };
+const getCurrentGuess = () => {
+  return boardElements[currentWordIndex].map((el) => el.textContent);
+};
 
 async function validateGuess(guess) {
   const response = await apiService.makeRequest(
-    `${SERVICE_URL}/game/validate-guess`,
-    'POST',
-    {
-      guess,
-      dictionaryOptions,
-    },
+        `${SERVICE_URL}/game/validate-guess`,
+        'POST', {
+          guess,
+          dictionaryOptions,
+        },
   );
 
   if (response.error) {
@@ -77,12 +78,15 @@ async function checkInput(inputValue) {
     // Letter pressed
     if (currentCharIndex < dictionaryOptions.wordLength) {
       boardElements[currentWordIndex][currentCharIndex].textContent =
-        inputValue;
+                inputValue;
       currentCharIndex++;
     } else {
       logService.error('Word is already complete');
     }
-  } else if (['backspace', 'del'].includes(inputValue) && currentCharIndex > 0) {
+  } else if (
+    ['backspace', 'del'].includes(inputValue) &&
+        currentCharIndex > 0
+  ) {
     // Backspace pressed
     currentCharIndex--;
     boardElements[currentWordIndex][currentCharIndex].textContent = '';
@@ -112,7 +116,9 @@ async function checkInput(inputValue) {
           }
         } else {
           boardElements[currentWordIndex][index].classList.add('fail');
-          if (!charGuesses.success.includes(guess[index]) && !charGuesses.warn.includes(guess[index])) {
+          if (!charGuesses.success.includes(guess[index]) &&
+                        !charGuesses.warn.includes(guess[index])
+          ) {
             charGuesses.fail.push(guess[index]);
           }
         }
@@ -147,21 +153,26 @@ function prepareElements() {
   // Assign DOM elements
   boardElement = document.querySelector('#board');
   rootElement = document.querySelector(':root');
-  keyboardLetters = [...document.querySelectorAll('#keyboard > .row > div')]
-    .reduce((acc, el) => {
-      acc[el.textContent.toLowerCase()] = el;
-      return acc;
-    }, {});
+  keyboardLetters = [
+    ...document.querySelectorAll('#keyboard > .row > div'),
+  ].reduce((acc, el) => {
+    acc[el.textContent.toLowerCase()] = el;
+    return acc;
+  }, {});
 
   // Init game options
   rootElement.style.setProperty('--word-length', dictionaryOptions.wordLength);
 }
 
 function addEventListeners() {
-  document.addEventListener('keydown', (e) => { checkInput(e.key); });
+  document.addEventListener('keydown', (e) => {
+    checkInput(e.key);
+  });
 
   document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
-    el.addEventListener('click', (e) => { checkInput(e.target.textContent); });
+    el.addEventListener('click', (e) => {
+      checkInput(e.target.textContent);
+    });
   });
 }
 

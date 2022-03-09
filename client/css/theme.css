@@ -1,0 +1,29 @@
+:root {
+    --nav-bg: #000;
+    --body-bg: #fff;
+    --text-colour: #fff;
+    --text-colour-opp: #000;
+    --cell-bg: #000;
+    --cell-border: #000;
+    --cell-success: #ddd;
+    --cell-warn: #999;
+    --cell-fail: #555;
+    --keyboard-bg: #fff;
+}
+
+.dark {
+    --nav-bg: #1d1421;
+    --body-bg: #35263d;
+    --text-colour: #e5e5e5;
+    --text-colour-opp: #000;
+    --cell-bg: #1d1421;
+    --cell-border: #180023;
+    --cell-success: #328b13;
+    --cell-warn: #c7971b;
+    --cell-fail: #2b252e;
+    --keyboard-bg: #a786b5;
+}
+
+.light {
+    /* TODO: implement */
+}
