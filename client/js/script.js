@@ -187,7 +187,7 @@ function prepareElements() {
   }, {});
 
   // Init game options
-  rootElement.style.setProperty('--word-length', dictionaryOptions.wordLength);
+  rootElement.style.setProperty('--cells-per-row', dictionaryOptions.wordLength);
 }
 
 function addEventListeners() {

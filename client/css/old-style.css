@@ -1,0 +1,201 @@
+:root {
+    --keyboard-max-width: 1.75em;
+    --word-length: 5;
+    --main-col-def: 1fr;
+    --main-template-area:
+        "board"
+        "keyboard";
+    --board-font-size: 1.5em;
+}
+
+/* tablets */
+
+@media only screen and (min-width: 480px) {
+    main {
+        --main-col-def: 1fr 3fr 1fr;
+        --main-template-area:
+            ". board ."
+            ". keyboard .";
+    }
+
+    #board>div {
+        --board-font-size: 1.5em;
+    }
+
+    #keyboard>.row>div {
+        --keyboard-max-width: 3em;
+    }
+}
+
+/* laptops */
+
+@media only screen and (min-width: 1024px) {
+    main {
+        --main-col-def: 1fr 2fr 1fr;
+    }
+
+    #board>div {
+        --board-font-size: 2em;
+    }
+}
+
+/* desktops */
+
+@media only screen and (min-width: 1600px) {
+    main {
+        --main-col-def: 1fr 1fr 1fr;
+    }
+
+    #board>div {
+        --board-font-size: 2.5em;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+}
+
+body {
+    background: var(--body-bg);
+    color: var(--text-colour);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-flow: column;
+}
+
+nav {
+    text-align: center;
+    background-color: var(--nav-bg);
+    flex: 0 1 auto;
+}
+
+nav a {
+    display: inline-block;
+    padding: 1rem 0;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+main {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-areas: var(--main-template-area);
+    grid-template-columns: var(--main-col-def);
+    width: 100vw;
+}
+
+/* GAME BOARD */
+
+#board {
+    margin: 1em;
+    grid-area: board;
+    display: grid;
+    grid-template-columns: repeat(var(--word-length), minmax(2em, 5em));
+    align-content: start;
+    row-gap: 0.5rem;
+    column-gap: 0.5rem;
+    justify-content: center;
+}
+
+#board>div {
+    background-color: var(--cell-bg);
+    border: 3px solid var(--cell-border);
+    border-radius: 35%;
+    font-size: var(--board-font-size);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1;
+}
+
+#board>div.success {
+    background-color: var(--cell-success);
+}
+
+#board>div.warn {
+    background-color: var(--cell-warn);
+}
+
+#board>div.fail {
+    background-color: var(--cell-fail);
+}
+
+#keyboard {
+    grid-area: keyboard;
+    align-items: flex-end;
+    padding: 0 0.5em;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* KEYBOARD */
+
+#keyboard>.row {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 0.25em;
+}
+
+#keyboard>.row:first-child {
+    margin-top: auto;
+}
+
+#keyboard>.row>div {
+    background-color: var(--keyboard-bg);
+    border: 3px solid var(--cell-border);
+    color: var(--text-colour-opp);
+    border-radius: 15%;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: var(--keyboard-max-width);
+    height: 3.5em;
+    margin: 0.1em;
+}
+
+#keyboard>.row>div:not(.selected):hover {
+    opacity: 0.5;
+}
+
+/* Colours should be defined from lowest priority to highest in case they overlap */
+
+#keyboard>.row>div.fail {
+    background-color: var(--cell-fail);
+    border: 3px solid var(--cell-border);
+    color: var(--text-colour);
+}
+
+#keyboard>.row>div.warn {
+    background-color: var(--cell-warn);
+    border: 3px solid var(--cell-border);
+    color: var(--text-colour-opp);
+}
+
+#keyboard>.row>div.success {
+    background-color: var(--cell-success);
+    border: 3px solid var(--cell-border);
+    color: var(--text-colour-opp);
+}
+
+#keyboard>.row>div.selected {
+    background-color: var(--cell-border);
+    border: 3px solid var(--keyboard-bg);
+    color: var(--text-colour);
+}
+
+#keyboard>.row>div.large {
+    min-width: 2.5em;
+    max-width: 5em;
+}
