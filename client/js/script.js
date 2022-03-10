@@ -2,7 +2,8 @@
 import apiService from './services/api.service.js';
 import logService from './services/log.service.js';
 
-const SERVICE_URL = 'http://localhost:8080/api';
+// Since we are serving the client, we don't need to specify the full path (and will prevent issues with CORS)
+const SERVICE_URL = '/api';
 
 let rootElement;
 let boardElement;
@@ -27,6 +28,23 @@ const charGuesses = {
 const getCurrentGuess = () => {
   return boardElements[currentWordIndex].map((el) => el.textContent);
 };
+
+async function validateWord(guess) {
+  const response = await apiService.makeRequest(
+        `${SERVICE_URL}/words/validate`,
+        'POST', {
+          word: guess,
+          dictionaryOptions,
+        },
+  );
+
+  if (response.error) {
+    logService.error(response.error);
+    return;
+  }
+
+  return response;
+}
 
 async function validateGuess(guess) {
   const response = await apiService.makeRequest(
@@ -98,6 +116,14 @@ async function checkInput(inputValue) {
     }
 
     const guess = getCurrentGuess();
+
+    const wordValidationResult = await validateWord(guess.join(''));
+    // TODO: validate response for errors
+    if (!wordValidationResult.isValid) {
+      logService.error('Word is not valid');
+      return;
+    }
+
     const result = await validateGuess(guess);
 
     if (result) {

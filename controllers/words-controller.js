@@ -13,6 +13,14 @@ const getTodayWord = (req, res) => {
   });
 };
 
+const validateWord = (req, res) => {
+  // TODO: validate requeqsts
+  res.json({
+    isValid: wordsService.wordExists(req.body.word, req.body.dictionaryOptions),
+  });
+};
+
 router.get('/today', getTodayWord);
+router.post('/validate', validateWord);
 
 export default router;
