@@ -1,15 +1,15 @@
 {
   "type": "module",
-  "devDependencies": {
-    "eslint": "^8.10.0",
-    "eslint-config-portsoc": "^1.0.0",
-    "nodemon": "^2.0.15"
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js --dev"
   },
   "dependencies": {
     "express": "^4.17.3"
   },
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "eslint-config-portsoc": "^1.0.0",
+    "nodemon": "^2.0.15"
   }
 }

@@ -1,6 +1,7 @@
 'use strict';
 import apiService from './services/api.service.js';
 import logService from './services/log.service.js';
+import animationService from './services/animation.service.js';
 
 // Since we are serving the client, we don't need to specify the full path (and will prevent issues with CORS)
 const SERVICE_URL = '/api';
@@ -120,6 +121,10 @@ async function checkInput(inputValue) {
     const wordValidationResult = await validateWord(guess.join(''));
     // TODO: validate response for errors
     if (!wordValidationResult.isValid) {
+      // Wiggle the word so that the user is aware that the word is invalid
+      boardElements[currentWordIndex].forEach((el) => {
+        animationService.shake(el);
+      });
       logService.error('Word is not valid');
       return;
     }
@@ -128,26 +133,30 @@ async function checkInput(inputValue) {
 
     if (result) {
       result.result.forEach((result, index) => {
+        let classResult = '';
+
         if (result === 1) {
-          boardElements[currentWordIndex][index].classList.add('success');
+          classResult = 'success';
           charGuesses.success.push(guess[index]);
 
           if (charGuesses.warn.includes(guess[index])) {
             charGuesses.warn.splice(charGuesses.warn.indexOf(guess[index]), 1);
           }
         } else if (result === 0) {
-          boardElements[currentWordIndex][index].classList.add('warn');
+          classResult = 'warn';
           if (!charGuesses.success.includes(guess[index])) {
             charGuesses.warn.push(guess[index]);
           }
         } else {
-          boardElements[currentWordIndex][index].classList.add('fail');
+          classResult = 'fail';
           if (!charGuesses.success.includes(guess[index]) &&
                         !charGuesses.warn.includes(guess[index])
           ) {
             charGuesses.fail.push(guess[index]);
           }
         }
+
+        animationService.flip(boardElements[currentWordIndex][index], classResult, index * 500);
       });
 
       currentWordIndex++;

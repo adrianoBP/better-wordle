@@ -14,7 +14,7 @@ const getTodayWord = (req, res) => {
 };
 
 const validateWord = (req, res) => {
-  // TODO: validate requeqsts
+  // TODO: validate requests
   res.json({
     isValid: wordsService.wordExists(req.body.word, req.body.dictionaryOptions),
   });

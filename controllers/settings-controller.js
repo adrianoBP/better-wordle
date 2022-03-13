@@ -8,6 +8,6 @@ const getAvailableLanguages = (req, res) => {
   res.json(settingsService.getAvailableLanguages());
 };
 
-router.get('/available-languages', getAvailableLanguages);
+router.get('/languages', getAvailableLanguages);
 
 export default router;
