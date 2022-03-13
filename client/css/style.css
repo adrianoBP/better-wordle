@@ -78,7 +78,7 @@ main {
   border-radius: 35%;
   font-weight: bold;
   font-size: calc(var(--cell-size) * 0.5);
-
+  user-select: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -127,6 +127,7 @@ main {
   margin: .5vmin;
   width: 100%;
   cursor: pointer;
+  user-select: none;
 }
 
 #keyboard>.row:first-child {

@@ -5,7 +5,9 @@ const router = new Router();
 
 // ! Do we need this to be an API reachable from the frontend?
 const getAvailableLanguages = (req, res) => {
-  res.json(settingsService.getAvailableLanguages());
+  res.json({
+    result: settingsService.getAvailableLanguages(),
+  });
 };
 
 router.get('/languages', getAvailableLanguages);

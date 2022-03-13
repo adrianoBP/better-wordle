@@ -1,3 +1,4 @@
+'use strict';
 // ! Do not console.log in the client - Only console.error when required
 
 function success(message) {
@@ -15,7 +16,7 @@ function error(message) {
   console.error('ERROR:', message);
 }
 
-export default {
+export {
   success,
   warn,
   error,

@@ -1,3 +1,5 @@
+import { sleep } from './common.service.js';
+
 function shake(element) {
   element.animate([
     { transform: 'translateX(-.1em)' },
@@ -10,33 +12,30 @@ function shake(element) {
   });
 }
 
-function flip(element, colorClass, delay = 0) {
-  setTimeout(() => {
-    element.animate([
-      { transform: 'rotateX(-90deg)' },
-    ],
-    {
-      duration: 500,
-      direction: 'alternate',
-      fill: 'forwards',
-    });
+async function flip(element, colorClass) {
+  element.animate([
+    { transform: 'rotateX(-90deg)' },
+  ],
+  {
+    duration: 500,
+    direction: 'alternate',
+    fill: 'forwards',
+  });
 
-    setTimeout(() => {
-      element.classList.add(colorClass);
-      console.log('flip');
-      element.animate([
-        { transform: 'rotateX(0deg)' },
-      ],
-      {
-        duration: 500,
-        direction: 'alternate',
-        fill: 'forwards',
-      });
-    }, 500);
-  }, delay);
+  await sleep(500);
+
+  element.classList.add(colorClass);
+  element.animate([
+    { transform: 'rotateX(0deg)' },
+  ],
+  {
+    duration: 500,
+    direction: 'alternate',
+    fill: 'forwards',
+  });
 }
 
-export default {
+export {
   shake,
   flip,
 };
