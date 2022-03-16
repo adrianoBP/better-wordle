@@ -4,26 +4,26 @@ function validateGuess(guess, dictionaryOptions) {
   const winningWord = wordsService.getTodayWord(dictionaryOptions);
 
   const result = [];
+  const correctLetters = winningWord.split('').filter((letter) => guess.includes(letter));
 
-  for (let i = 0; i < guess.length; i++) {
-    const char = guess[i];
-
-    if (winningWord[i] === char) {
+  guess.forEach((letter, index) => {
+    if (letter === winningWord[index]) {
       // Letter matches
-      result[i] = 1;
-    } else if (winningWord.includes(char)) {
+      result.push(1);
+    } else if (winningWord.includes(letter)) {
       // Letter matches in the winning word, but incorrect position
 
-      // ! FIX: If the user inserts a letter which is in the correct position
-      // ! but later in the word, the letter will be marked as possible match.
-
-      // If the character has already been checked, don't check it again
-      if (guess.slice(0, i).includes(char)) { result[i] = -1; } else { result[i] = 0; }
+      // If the letter is already in the correct position or it has already been checked, don't show a warning
+      if (!correctLetters.includes(letter) || winningWord.slice(0, index).includes(letter)) {
+        result.push(-1);
+      } else {
+        result.push(0);
+      }
     } else {
       // Letter does not match and not in winning word
-      result[i] = -1;
+      result.push(-1);
     }
-  }
+  });
 
   return result;
 }

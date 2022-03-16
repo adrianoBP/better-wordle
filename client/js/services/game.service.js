@@ -68,7 +68,7 @@ async function checkInput(input) {
       logService.warn('Word is already complete');
     }
   } else if (
-    ['backspace', 'del'].includes(input) &&
+    ['backspace', '←'].includes(input) &&
         currentLetterIndex > 0
   ) {
     // Backspace pressed
@@ -81,7 +81,7 @@ async function checkInput(input) {
       unselectKey(currentLetterElement.textContent);
     }
     gameBoard[currentWordIndex][currentLetterIndex].textContent = '';
-  } else if (['enter', 'ok'].includes(input)) {
+  } else if (['enter', '↵'].includes(input)) {
     // Enter pressed
     if (currentLetterIndex < 5) {
       logService.error('Word is not complete');
@@ -123,14 +123,14 @@ async function checkInput(input) {
           }
         } else {
           classResult = 'fail';
-          if (!guessedLetters.success.includes(guess[i]) &&
-                        !guessedLetters.warn.includes(guess[i])
+          if (!guessedLetters.success.includes(guess[i]) && !guessedLetters.warn.includes(guess[i])
           ) {
             guessedLetters.fail.push(guess[i]);
           }
         }
+
         animationService.flip(gameBoard[currentWordIndex][i], classResult);
-        await sleep(500);
+        await sleep(350);
       }
 
       updateKeyboard();

@@ -138,7 +138,7 @@ main {
   opacity: 0.5;
 }
 
-/* Colours should be defined from lowest priority to highest in case they overlap */
+/* Colours should be defined from lowest to highest in case they overlap */
 
 #keyboard>.row>div.fail {
   background-color: var(--cell-fail);

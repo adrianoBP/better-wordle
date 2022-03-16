@@ -13,26 +13,10 @@ function shake(element) {
 }
 
 async function flip(element, colorClass) {
-  element.animate([
-    { transform: 'rotateX(-90deg)' },
-  ],
-  {
-    duration: 500,
-    direction: 'alternate',
-    fill: 'forwards',
-  });
-
-  await sleep(500);
-
-  element.classList.add(colorClass);
-  element.animate([
-    { transform: 'rotateX(0deg)' },
-  ],
-  {
-    duration: 500,
-    direction: 'alternate',
-    fill: 'forwards',
-  });
+  element.classList.add('flip');
+  // Animations lasts .5s, half way through the animation, change the color
+  await sleep(250);
+  if (colorClass) { element.classList.add(colorClass); }
 }
 
 export {
