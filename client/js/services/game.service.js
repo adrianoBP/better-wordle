@@ -42,7 +42,7 @@ const getCurrentGuess = () => {
 const checkInput = async (input) => {
   // TODO: CTRL + Backspace deletes the whole word
 
-  // Don't accept any inputs if the word is already guessed
+  // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
   if (wordGuessed || currentWordIndex === dictionaryOptions.allowedGuessesCount) return;
 
   input = input.toLowerCase();
@@ -140,7 +140,12 @@ function saveGame() {
   gameBoard.forEach((row) => {
     const rowResults = [];
     row.forEach((el) => {
-      if (el.textContent) { rowResults.push({ letter: el.textContent, classResult: getClassResult(el) }); }
+      if (el.textContent) {
+        rowResults.push({
+          letter: el.textContent,
+          classResult: getClassResult(el),
+        });
+      }
     });
 
     if (rowResults.length > 0) boardResults.push(rowResults);
@@ -154,12 +159,13 @@ async function loadGame() {
   // Load game board
   const boardResults = getSetting('game-board');
   if (!boardResults) return;
-  boardResults.forEach((row, rowIndex) => {
-    row.forEach((el, columnIndex) => {
-      if (gameBoard?.[rowIndex]?.[columnIndex]) {
-        gameBoard[rowIndex][columnIndex].textContent = el.letter;
+
+  boardResults.forEach((row, rowI) => {
+    row.forEach((el, colI) => {
+      if (gameBoard?.[rowI]?.[colI]) {
+        gameBoard[rowI][colI].textContent = el.letter;
         if (el.classResult) {
-          animationService.flipWithDelay(gameBoard[rowIndex][columnIndex], el.classResult, columnIndex * 350);
+          animationService.flipWithDelay(gameBoard[rowI][colI], el.classResult, colI * 350);
         }
       }
     });

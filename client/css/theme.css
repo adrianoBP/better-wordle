@@ -9,21 +9,43 @@
     --cell-warn: #999;
     --cell-fail: #555;
     --keyboard-bg: #fff;
+
+    --text-light: #e5e5e5;
+    --text-dark: #000;
 }
 
 .dark {
     --nav-bg: #1d1421;
     --body-bg: #35263d;
+
     --text-colour: #e5e5e5;
     --text-colour-opp: #000;
+
     --cell-bg: #1d1421;
     --cell-border: #180023;
+
     --cell-success: #328b13;
     --cell-warn: #c7971b;
     --cell-fail: #2b252e;
-    --keyboard-bg: #a786b5;
+
+    --keyboard-bg: #C2A2C5;
 }
 
 .light {
-    /* TODO: implement */
+    --nav-bg: #35263d;
+    --body-bg: #FFF1D6;
+
+    --text-colour: #000;
+    --text-colour-opp: #e5e5e5;
+
+    --cell-bg: #C2A2C5;
+    --cell-border: #180023;
+
+    --cell-success: #48C81B;
+    --cell-warn: #FFD15A;
+    --cell-fail: #696769;
+
+    --keyboard-bg: #58395a;
+
+
 }

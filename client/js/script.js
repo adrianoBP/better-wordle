@@ -1,6 +1,7 @@
 'use strict';
 import { initGameBoard, checkInput, dictionaryOptions } from './services/game.service.js';
-import { initKeyboard } from './services/ui.service.js';
+import { initKeyboard, setTheme } from './services/ui.service.js';
+import { getSetting } from './services/storage.service.js';
 
 let rootElement;
 
@@ -20,11 +21,17 @@ function addEventListeners() {
   document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
     el.addEventListener('click', (e) => { checkInput(e.target.textContent); });
   });
+
+  document.querySelector('#theme-switch').addEventListener('click', (event) => {
+    const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+    setTheme(newTheme, event.target);
+  });
 }
 
 function onInit() {
   prepareElements();
   addEventListeners();
+  setTheme(getSetting('selected-theme', false));
 }
 
 // Only once the DOM tree has been built, load
