@@ -153,9 +153,19 @@ function saveGame() {
 
   setSetting('game-board', boardResults);
   saveKeyboard();
+  setSetting('save-game-time', new Date().toISOString());
 }
 
 async function loadGame() {
+  const saveTime = getSetting('save-game-time', false);
+
+  // If we can't verify when the game was saved, don't load it
+  if (!saveTime) return;
+
+  const saveTimeDate = new Date(saveTime);
+  // If the day has changed since the last save, don't load it
+  if (saveTimeDate.getDate() !== new Date().getDate()) return;
+
   // Load game board
   const boardResults = getSetting('game-board');
   if (!boardResults) return;
