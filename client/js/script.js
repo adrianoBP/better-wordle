@@ -7,8 +7,8 @@ let rootElement;
 function prepareElements() {
   // Assign DOM elements
   rootElement = document.querySelector(':root');
-  initGameBoard();
   initKeyboard();
+  initGameBoard();
 
   // Init game options
   rootElement.style.setProperty('--cells-per-row', dictionaryOptions.wordLength);

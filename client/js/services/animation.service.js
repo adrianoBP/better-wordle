@@ -12,14 +12,20 @@ function shake(element) {
   });
 }
 
-async function flip(element, colorClass) {
+async function flip(element, resultClass) {
   element.classList.add('flip');
   // Animations lasts .5s, half way through the animation, change the color
   await sleep(250);
-  if (colorClass) { element.classList.add(colorClass); }
+  if (resultClass) { element.classList.add(resultClass); }
+}
+
+async function flipWithDelay(element, resultClass, delay) {
+  await sleep(delay);
+  flip(element, resultClass);
 }
 
 export {
   shake,
   flip,
+  flipWithDelay,
 };

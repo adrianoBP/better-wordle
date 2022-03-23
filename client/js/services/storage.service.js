@@ -1,13 +1,15 @@
 'use strict';
 function setSetting(key, value) {
+  if (typeof value === 'object') { value = JSON.stringify(value); }
+
   localStorage.setItem(key, value);
 }
 
 function getSetting(key) {
-  JSON.parse(localStorage.getItem(key));
+  return JSON.parse(localStorage.getItem(key));
 }
 
-export default {
+export {
   setSetting,
   getSetting,
 };

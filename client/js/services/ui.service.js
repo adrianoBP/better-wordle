@@ -1,13 +1,7 @@
 'use strict';
-import { getCurrentGuess, guessedLetters } from './game.service.js';
+import { getSetting, setSetting } from './storage.service.js';
 
 let keyBoard = {};
-
-function addClassIfContains(className, arr, value) {
-  if (arr.includes(value.textContent.toLowerCase())) {
-    value.classList.add(className);
-  }
-}
 
 function initKeyboard() {
   keyBoard = [
@@ -18,23 +12,12 @@ function initKeyboard() {
   }, {});
 }
 
-function updateKeyboard() {
-  const selectedLetters = [...getCurrentGuess()].map((el) => el.toLowerCase());
-
-  for (const letter of selectedLetters) {
-    if (!keyBoard[letter]) continue;
-
-    const key = keyBoard[letter];
-
-    // Remove all classes to prevent the same class to be added multiple times
-    ['selected', 'success', 'warn'].forEach((className) => {
-      key.classList.remove(className);
-    });
-
-    addClassIfContains('success', guessedLetters.success, key);
-    addClassIfContains('warn', guessedLetters.warn, key);
-    addClassIfContains('fail', guessedLetters.fail, key);
-  }
+function updateKeyboard(letterResults) {
+  letterResults.forEach(element => {
+    const key = keyBoard[element.letter];
+    key.classList.remove('selected');
+    key.classList.add(element.classResult);
+  });
 }
 
 function selectKey(letter) {
@@ -47,9 +30,38 @@ function unselectKey(letter) {
   keyBoard[letter].classList.remove('selected');
 }
 
+function saveKeyboard() {
+  const keyboardResult = [];
+  Object.keys(keyBoard).forEach((letter) => {
+    keyboardResult.push({ letter, classResult: getClassResult(keyBoard[letter]) });
+  });
+
+  setSetting('keyboard', keyboardResult);
+}
+
+function loadKeyboard() {
+  const keyboardResult = getSetting('keyboard');
+  if (!keyboardResult) return;
+  keyboardResult.forEach((el) => {
+    if (el.classResult) { keyBoard[el.letter].classList.add(el.classResult); }
+  });
+}
+
+function getClassResult(element) {
+  if (element.classList.contains('success')) return 'success';
+  else if (element.classList.contains('warn')) return 'warn';
+  else if (element.classList.contains('fail')) return 'fail';
+  else return '';
+}
+
 export {
+  initKeyboard,
   updateKeyboard,
   selectKey,
   unselectKey,
-  initKeyboard,
+
+  saveKeyboard,
+  loadKeyboard,
+
+  getClassResult,
 };
