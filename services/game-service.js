@@ -4,29 +4,35 @@ function validateGuess(guess, dictionaryOptions) {
   const winningWord = wordsService.getTodayWord(dictionaryOptions);
 
   const result = [];
-  const foundLetters = [];
+  const checkedLetters = [];
 
   guess.forEach((letter, index) => {
     // Letter matches
     if (letter === winningWord[index]) {
       result.push(1);
-      foundLetters.push(letter);
+      checkedLetters.push(letter);
       return;
     }
 
-    // Letter in winning word but in incorrect position
-    if (winningWord.includes(letter)) {
-      // If the letter has not been checked already, show letter as present in the word
-      if (!foundLetters.includes(letter)) {
-        result.push(0);
-        foundLetters.push(letter);
-      } else {
-        result.push(-1);
+    // Letter in winning word but in incorrect position and not already checked
+    if (winningWord.includes(letter) && !checkedLetters.includes(letter)) {
+      // Check the rest of the word
+      for (let i = index + 1; i < guess.length; i++) {
+        // If the letter is in the correct position later in the word, don't show a warning
+        if (winningWord[i] === letter) {
+          result.push(-1);
+          checkedLetters.push(letter);
+          return;
+        }
       }
+
+      // If the is not in the correct position later in the word, show a warning
+      result.push(0);
+      checkedLetters.push(letter);
       return;
     }
 
-    // Letter does not match and not in winning word
+    // Letter already checked or not in winning word
     result.push(-1);
   });
 
