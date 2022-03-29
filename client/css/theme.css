@@ -12,6 +12,8 @@
 
     --text-light: #e5e5e5;
     --text-dark: #000;
+
+    --modal-bg: #fff;
 }
 
 .dark {
@@ -45,7 +47,7 @@
     --cell-warn: #FFD15A;
     --cell-fail: #696769;
 
-    --keyboard-bg: #58395a;
+    --keyboard-bg: #6f2e8b;
 
 
 }

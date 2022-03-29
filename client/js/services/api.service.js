@@ -20,6 +20,7 @@ async function makeRequest(url, method = 'GET', body = null, headers = {}) {
 }
 
 async function validateWord(guess) {
+  // TODO: should this be GET?
   const response = await makeRequest(
         `${SERVICE_URL}/words/validate`,
         'POST', {

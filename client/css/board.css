@@ -1,0 +1,35 @@
+#board {
+  display: grid;
+  grid-template-columns: repeat(var(--cells-per-row), minmax(1rem, 4.5rem));
+  grid-template-rows: repeat(var(--cells-per-col), minmax(1rem, 4.5rem));
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+  gap: 0.6vmin;
+  padding: 2vmin 0;
+}
+
+#board>div {
+  aspect-ratio: 1;
+  border: 3px solid var(--cell-border);
+  border-radius: 40%;
+  background-color: var(--cell-bg);
+  display: flex;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+#board>div.success {
+  background-color: var(--cell-success);
+}
+
+#board>div.warn {
+  background-color: var(--cell-warn);
+}
+
+#board>div.fail {
+  background-color: var(--cell-fail);
+}

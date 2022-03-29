@@ -8,19 +8,13 @@
   --key-padding: 3vmin 1vmin;
 
   --cell-size-multiplier: 0.9;
-  --cell-size: calc((100vmin / var(--cells-per-row)) * var(--cell-size-multiplier));
-
+  --cell-size: 4rem;
   --icon-large: 2rem;
 }
 
 @media (min-width: 500px) {
   :root {
-    --cell-size-multiplier: 0.5;
     --nav-font-size: 4vmin;
-    --keyboard-font-size: 2vmin;
-    --keyboard-width: 30vw;
-    --key-padding: 2vmin 1vmin;
-    --icon-large: 2.5rem;
   }
 }
 
@@ -28,6 +22,7 @@
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
+  /* ! DISABLE ONLY DURING DEBUGGING */
   transition-duration: .2s;
 }
 
@@ -46,6 +41,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.shadow {
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
 }
 
 /* ICONS */
@@ -100,7 +99,7 @@ nav>.nav-right {
 }
 
 main {
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin: 0;
   flex: 1 1 auto;
@@ -108,115 +107,60 @@ main {
   flex-flow: column;
 }
 
-/* GAME BOARD */
-
-#board {
-  flex: 0 1 auto;
-  display: grid;
-  grid-template-rows: repeat(var(--cells-per-col), var(--cell-size));
-  grid-template-columns: repeat(var(--cells-per-row), var(--cell-size));
-  gap: 1vmin;
-  justify-content: center;
-  padding: 2vmin 0;
-}
-
-#board>div {
-  background-color: var(--cell-bg);
-  border: 3px solid var(--cell-border);
-  border-radius: 40%;
-  font-weight: bold;
-  font-size: calc(var(--cell-size) * 0.5);
-  user-select: none;
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  transition-duration: 0s;
+  z-index: 100;
 }
 
-#board>div.success {
-  background-color: var(--cell-success);
-}
-
-#board>div.warn {
-  background-color: var(--cell-warn);
-}
-
-#board>div.fail {
-  background-color: var(--cell-fail);
-}
-
-/* KEYBOARD */
-
-#keyboard {
-  flex: 1 1 auto;
+#modal-content {
+  background-color: var(--modal-bg);
+  border-radius: 2vw;
+  padding: 1vmin;
+  width: 25vw;
+  height: 50vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 1vmin;
   justify-content: center;
   align-items: center;
-  width: var(--keyboard-width);
+  color: #000;
 }
 
-#keyboard>.row {
+#modal-header {
+  font-size: var(--modal-header-font-size);
+  font-weight: bold;
+  flex: 0 1 auto;
   display: flex;
-  justify-content: space-around;
-  width: var(--keyboard-width);
-}
-
-#keyboard>.row>div {
-  font-size: var(--keyboard-font-size);
-  background-color: var(--keyboard-bg);
-  color: var(--text-colour-opp);
-  border: 2px solid var(--cell-border);
-  border-radius: 15%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: var(--key-padding);
-  margin: .5vmin;
+  justify-content: space-between;
   width: 100%;
-  cursor: pointer;
-  user-select: none;
+  align-items: center;
+  height: 10%;
 }
 
-#keyboard>.row:first-child {
-  margin-top: auto;
+#modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-left: 2vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#keyboard>.row>div:not(.selected):hover {
-  opacity: 0.5;
+#modal-close {
+  font-size: var(--modal-close-font-size);
+  font-weight: bold;
+  padding-right: 1vmin;
 }
 
-/* Colours should be defined from lowest to highest in case they overlap */
-
-#keyboard>.row>div.fail {
-  background-color: var(--cell-fail);
-  border: 2px solid var(--cell-border);
-  color: var(--text-colour);
-}
-
-#keyboard>.row>div.warn {
-  background-color: var(--cell-warn);
-  border: 2px solid var(--cell-border);
-  color: var(--text-colour-opp);
-}
-
-#keyboard>.row>div.success {
-  background-color: var(--cell-success);
-  border: 2px solid var(--cell-border);
-  color: var(--text-colour-opp);
-}
-
-.light #keyboard>.row>div.success:not(.selected) {
-  color: var(--text-colour);
-}
-
-.light #keyboard>.row>div.warn:not(.selected) {
-  color: var(--text-colour);
-}
-
-#keyboard>.row>div.selected {
-  background-color: var(--cell-border);
-  border: 2px solid var(--keyboard-bg);
-  color: var(--text-light);
+#modal-body {
+  font-size: var(--modal-body-font-size);
+  margin-bottom: 1vmin;
+  flex: 1 1 auto;
 }

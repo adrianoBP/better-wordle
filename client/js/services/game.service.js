@@ -121,6 +121,7 @@ const checkInput = async (input) => {
         keysToReload.push({ letter: guess[i], classResult });
         animationService.flip(gameBoard[currentWordIndex][i], classResult);
         await sleep(350);
+        // TODO: animService.flip to return a Promise instead
       }
 
       updateKeyboard(keysToReload);

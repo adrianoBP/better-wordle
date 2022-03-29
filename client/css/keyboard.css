@@ -1,0 +1,70 @@
+#keyboard {
+  max-width: 500px;
+  width: 95%;
+  padding-bottom: 2vmin;
+}
+
+#keyboard>.row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#keyboard>.row>div {
+  width: calc(10% - 0.5em);
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--keyboard-bg);
+  color: var(--text-colour-opp);
+  border: 2px solid var(--cell-border);
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 10%;
+  margin: 0.1em;
+  font-size: 125%;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+#keyboard>.row-3>div:first-child,
+#keyboard>.row-3>div:last-child {
+  width: 15%;
+}
+
+#keyboard>.row>div:hover {
+  transform: translateY(-0.2em);
+}
+
+/* Colours should be defined from lowest to highest in case they overlap */
+
+#keyboard>.row>div.fail:not(.selected) {
+  background-color: var(--cell-fail);
+  color: #626262;
+}
+
+.light #keyboard>.row>div.fail:not(.selected) {
+  color: #3e3e3e;
+}
+
+#keyboard>.row>div.warn {
+  background-color: var(--cell-warn);
+}
+
+#keyboard>.row>div.success {
+  background-color: var(--cell-success);
+}
+
+.light #keyboard>.row>div.success:not(.selected) {
+  color: var(--text-colour);
+}
+
+.light #keyboard>.row>div.warn:not(.selected) {
+  color: var(--text-colour);
+}
+
+#keyboard>.row>div.selected {
+  background-color: var(--cell-border);
+  color: var(--text-light);
+}
