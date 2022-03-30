@@ -1,5 +1,6 @@
 'use strict';
 import { getSetting, setSetting } from './storage.service.js';
+import { allowLoading } from './common.service.js';
 
 let keyBoard = {};
 const modal = {
@@ -78,6 +79,8 @@ const saveKeyboard = () => {
 };
 
 const loadKeyboard = () => {
+  if (!allowLoading()) return;
+
   const keyboardResult = getSetting('keyboard');
   if (!keyboardResult) return;
   keyboardResult.forEach((el) => {

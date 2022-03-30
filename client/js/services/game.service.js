@@ -3,7 +3,7 @@ import * as logService from './log.service.js';
 import * as animationService from './animation.service.js';
 import { updateKeyboard, selectKey, unselectKey, getClassResult, saveKeyboard, loadKeyboard, showModal } from './ui.service.js';
 import { validateWord, validateGuess, getTodayWord } from './api.service.js';
-import { sleep } from './common.service.js';
+import { allowLoading, sleep } from './common.service.js';
 import { getSetting, setSetting } from './storage.service.js';
 
 const gameBoard = [];
@@ -163,14 +163,7 @@ const saveGame = () => {
 };
 
 const loadGame = async () => {
-  const saveTime = getSetting('save-game-time', false);
-
-  // If we can't verify when the game was saved, don't load it
-  if (!saveTime) return;
-
-  const saveTimeDate = new Date(saveTime);
-  // If the day has changed since the last save, don't load it
-  if (saveTimeDate.getDate() !== new Date().getDate()) return;
+  if (!allowLoading()) return;
 
   // Load game board
   const boardResults = getSetting('game-board');
