@@ -27,6 +27,8 @@ const initKeyboard = () => {
 };
 
 const updateKeyboard = (letterResults) => {
+  // TODO: check if this can be optimized
+
   letterResults.forEach(element => {
     const key = keyBoard[element.letter];
 
@@ -44,18 +46,15 @@ const updateKeyboard = (letterResults) => {
       return;
     }
 
-    if (element.classResult === 'warn') {
+    if (element.classResult === 'warn' && !key.classList.contains('success')) {
       key.classList.remove('fail');
       key.classList.add('warn');
       return;
     }
 
-    if (element.classResult === 'fail') {
+    if (element.classResult === 'fail' && !key.classList.contains('warn') && !key.classList.contains('success')) {
       key.classList.add('fail');
-      return;
     }
-
-    key.classList.add(element.classResult);
   });
 };
 

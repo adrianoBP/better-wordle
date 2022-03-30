@@ -183,8 +183,9 @@ const loadGame = async () => {
     wordGuessed = row.every((el) => el.classResult === 'success');
   });
 
-  if (wordGuessed) { showModal('You win!'); }
-  if (currentWordIndex === dictionaryOptions.allowedGuessesCount) {
+  if (wordGuessed) {
+    showModal('You win!');
+  } else if (currentWordIndex === dictionaryOptions.allowedGuessesCount) {
     const todaysWord = (await getTodayWord()).word;
     showModal('You lose!', `Today's word is: ${todaysWord}`);
   }

@@ -22,7 +22,7 @@ const getWordDictionary = (dictionaryOptions) => {
 
 const getTodayWord = (dictionaryOptions) => {
   // TODO: implement language and selection of word length - #3
-
+  // TODO: check if there's a better way to select a random word
   const availableWords = getWordDictionary(dictionaryOptions);
 
   // Base word selection on the current date
