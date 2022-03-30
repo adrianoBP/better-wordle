@@ -13,7 +13,6 @@ const validateGuess = (req, res) => {
 
   const { dictionaryOptions, guess } = req.body;
 
-  // TODO: validate all parameters
   if (!guess) {
     res.status(400).json({
       error: 'Invalid request. Please send a guess in the request body.',

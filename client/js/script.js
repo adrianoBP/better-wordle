@@ -34,14 +34,10 @@ function addEventListeners() {
   });
 
 
-  // !
-  // !
-  // TODO: remove once complete
+  // ! #debug
   document.querySelector('#debug').addEventListener('click', () => {
     showModal('debug');
   });
-  // !
-  // !
 }
 
 function onInit() {
