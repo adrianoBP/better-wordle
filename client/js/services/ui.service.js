@@ -3,7 +3,7 @@ import { getSetting, setSetting } from './storage.service.js';
 
 let keyBoard = {};
 
-function initKeyboard() {
+const initKeyboard = () => {
   // Create a dictionary with all the keys
   keyBoard = [
     ...document.querySelectorAll('#keyboard > .row > div'),
@@ -11,9 +11,9 @@ function initKeyboard() {
     acc[el.textContent.toLowerCase()] = el;
     return acc;
   }, {});
-}
+};
 
-function updateKeyboard(letterResults) {
+const updateKeyboard = (letterResults) => {
   letterResults.forEach(element => {
     const key = keyBoard[element.letter];
 
@@ -24,43 +24,43 @@ function updateKeyboard(letterResults) {
 
     key.classList.add(element.classResult);
   });
-}
+};
 
-function selectKey(letter) {
+const selectKey = (letter) => {
   if (!keyBoard[letter]) return;
   keyBoard[letter].classList.add('selected');
-}
+};
 
-function unselectKey(letter) {
+const unselectKey = (letter) => {
   if (!keyBoard[letter]) return;
   keyBoard[letter].classList.remove('selected');
-}
+};
 
-function saveKeyboard() {
+const saveKeyboard = () => {
   const keyboardResult = [];
   Object.keys(keyBoard).forEach((letter) => {
     keyboardResult.push({ letter, classResult: getClassResult(keyBoard[letter]) });
   });
 
   setSetting('keyboard', keyboardResult);
-}
+};
 
-function loadKeyboard() {
+const loadKeyboard = () => {
   const keyboardResult = getSetting('keyboard');
   if (!keyboardResult) return;
   keyboardResult.forEach((el) => {
     if (el.classResult) { keyBoard[el.letter].classList.add(el.classResult); }
   });
-}
+};
 
-function getClassResult(element) {
+const getClassResult = (element) => {
   if (element.classList.contains('success')) return 'success';
   else if (element.classList.contains('warn')) return 'warn';
   else if (element.classList.contains('fail')) return 'fail';
   else return '';
-}
+};
 
-function setTheme(theme, element) {
+const setTheme = (theme, element) => {
   if (theme == null) { theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
 
   document.body.classList.remove('dark');
@@ -76,7 +76,7 @@ function setTheme(theme, element) {
   }
 
   setSetting('selected-theme', theme);
-}
+};
 
 export {
   initKeyboard,

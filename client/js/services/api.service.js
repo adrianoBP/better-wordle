@@ -4,7 +4,7 @@ import { dictionaryOptions } from './game.service.js';
 // Since we are serving the client, we don't need to specify the full path (and will prevent issues with CORS)
 const SERVICE_URL = '/api';
 
-async function makeRequest(url, method = 'GET', body = null, headers = {}) {
+const makeRequest = async (url, method = 'GET', body = null, headers = {}) => {
   // All requests will be done using JSON
 
   headers = {
@@ -17,9 +17,9 @@ async function makeRequest(url, method = 'GET', body = null, headers = {}) {
     headers,
     body: body ? JSON.stringify(body) : null,
   })).json();
-}
+};
 
-async function validateWord(guess) {
+const validateWord = async (guess) => {
   // TODO: should this be GET?
   const response = await makeRequest(
         `${SERVICE_URL}/words/validate`,
@@ -35,9 +35,9 @@ async function validateWord(guess) {
   }
 
   return response.result;
-}
+};
 
-async function validateGuess(guess) {
+const validateGuess = async (guess) => {
   const response = await makeRequest(
         `${SERVICE_URL}/game/validate-guess`,
         'POST', {
@@ -52,7 +52,7 @@ async function validateGuess(guess) {
   }
 
   return response.result;
-}
+};
 
 export {
   validateWord,

@@ -1,6 +1,6 @@
 import wordsService from './words-service.js';
 
-function validateGuess(guess, dictionaryOptions) {
+const validateGuess = (guess, dictionaryOptions) => {
   const winningWord = wordsService.getTodayWord(dictionaryOptions);
 
   const result = [];
@@ -37,7 +37,7 @@ function validateGuess(guess, dictionaryOptions) {
   });
 
   return result;
-}
+};
 
 export default {
   validateGuess,

@@ -4,7 +4,7 @@ import fs from 'fs';
 const DICT_FOLDER = new URL('../misc/dictionaries/filtered', import.meta.url)
   .pathname;
 
-function getWordDictionary(dictionaryOptions) {
+const getWordDictionary = (dictionaryOptions) => {
   const { lang, wordLength } = dictionaryOptions;
   // Use defaults
   const langFile = `${lang ?? 'en_en'}.txt`;
@@ -18,9 +18,9 @@ function getWordDictionary(dictionaryOptions) {
   return content
     .split('\n')
     .filter((word) => word.length === selectedWordLength);
-}
+};
 
-function getTodayWord(dictionaryOptions) {
+const getTodayWord = (dictionaryOptions) => {
   // TODO: implement language and selection of word length - #3
 
   const availableWords = getWordDictionary(dictionaryOptions);
@@ -33,16 +33,16 @@ function getTodayWord(dictionaryOptions) {
   const todayIndex = totalDays % availableWords.length;
 
   return availableWords[todayIndex];
-}
+};
 
-function wordExists(word, dictionaryOptions) {
+const wordExists = (word, dictionaryOptions) => {
   const availableWords = getWordDictionary(dictionaryOptions);
   return availableWords.includes(word);
-}
+};
 
-function getFileContent(filePath) {
+const getFileContent = (filePath) => {
   return fs.readFileSync(filePath, 'utf8');
-}
+};
 
 export default {
   getWordDictionary,

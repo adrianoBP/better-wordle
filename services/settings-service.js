@@ -1,4 +1,4 @@
-function getAvailableLanguages() {
+const getAvailableLanguages = () => {
   return [
     {
       code: 'de_de',
@@ -41,7 +41,7 @@ function getAvailableLanguages() {
       name: 'Unix System',
     },
   ];
-}
+};
 
 export default {
   getAvailableLanguages,

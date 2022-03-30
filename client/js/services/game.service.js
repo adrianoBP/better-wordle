@@ -136,7 +136,7 @@ const checkInput = async (input) => {
   }
 };
 
-function saveGame() {
+const saveGame = () => {
   const boardResults = [];
   gameBoard.forEach((row) => {
     const rowResults = [];
@@ -155,9 +155,9 @@ function saveGame() {
   setSetting('game-board', boardResults);
   saveKeyboard();
   setSetting('save-game-time', new Date().toISOString());
-}
+};
 
-async function loadGame() {
+const loadGame = async () => {
   const saveTime = getSetting('save-game-time', false);
 
   // If we can't verify when the game was saved, don't load it
@@ -187,7 +187,7 @@ async function loadGame() {
 
   await sleep(350 * dictionaryOptions.wordLength);
   loadKeyboard();
-}
+};
 
 export {
   gameBoard,

@@ -1,20 +1,20 @@
 'use strict';
 // ! Do not console.log in the client - Only console.error when required
 
-function success(message) {
+const success = (message) => {
   // TODO: implement
   console.log('SUCCESS:', message);
-}
+};
 
-function warn(message) {
+const warn = (message) => {
   // TODO: implement
   console.warn('WARNING:', message);
-}
+};
 
-function error(message) {
+const error = (message) => {
   // TODO: implement
   console.error('ERROR:', message);
-}
+};
 
 export {
   success,
