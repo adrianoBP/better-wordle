@@ -4,7 +4,6 @@ const shake = (element) => {
   // TODO: why not https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/animationend_event
 
   element.animate([
-    // TODO: validate all CSS to start with 0._ instead of ._
     { transform: 'translateX(-0.1em)' },
     { transform: 'translateX(0.1em)' },
     { transform: 'translateX(0)' },

@@ -20,7 +20,6 @@ const makeRequest = async (url, method = 'GET', body = null, headers = {}) => {
 };
 
 const validateWord = async (guess) => {
-  // TODO: should this be GET?
   const response = await makeRequest(
         `${SERVICE_URL}/words/validate`,
         'POST', {
@@ -54,7 +53,22 @@ const validateGuess = async (guess) => {
   return response.result;
 };
 
+const getTodayWord = async () => {
+  const response = await makeRequest(
+        `${SERVICE_URL}/words/today`,
+        'GET',
+  );
+
+  if (response.error) {
+    logService.error(response.error);
+    return;
+  }
+
+  return response.result;
+};
+
 export {
   validateWord,
   validateGuess,
+  getTodayWord,
 };

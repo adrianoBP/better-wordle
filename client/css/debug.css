@@ -1,0 +1,20 @@
+/* ! */
+/* ! */
+/* TODO: remove once complete */
+/* ! */
+/* ! */
+
+nav>.nav-right {
+  display: flex;
+  float: right;
+  flex-direction: row;
+}
+
+nav>.nav-right #debug {
+  cursor: pointer;
+  width: 2.2em;
+}
+
+nav>.nav-right #debug:hover {
+  transform: scale(1.1);
+}

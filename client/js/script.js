@@ -1,6 +1,6 @@
 'use strict';
 import { initGameBoard, checkInput, dictionaryOptions } from './services/game.service.js';
-import { initKeyboard, setTheme } from './services/ui.service.js';
+import { initUI, setTheme, showModal } from './services/ui.service.js';
 import { getSetting } from './services/storage.service.js';
 
 let rootElement;
@@ -8,7 +8,7 @@ let rootElement;
 function prepareElements() {
   // Assign DOM elements
   rootElement = document.querySelector(':root');
-  initKeyboard();
+  initUI();
   initGameBoard();
 
   // Init game options
@@ -26,6 +26,22 @@ function addEventListeners() {
     const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
     setTheme(newTheme, event.target);
   });
+
+  // TODO: Check if this should be added to ui.service.js
+  document.querySelector('#modal-close').addEventListener('click', () => {
+    const modal = document.querySelector('#modal');
+    if (modal.classList.contains('hidden')) { modal.classList.remove('hidden'); } else { modal.classList.add('hidden'); }
+  });
+
+
+  // !
+  // !
+  // TODO: remove once complete
+  document.querySelector('#debug').addEventListener('click', () => {
+    showModal('debug');
+  });
+  // !
+  // !
 }
 
 function onInit() {

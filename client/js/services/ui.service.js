@@ -2,6 +2,18 @@
 import { getSetting, setSetting } from './storage.service.js';
 
 let keyBoard = {};
+const modal = {
+  main: null,
+  header: null,
+  body: null,
+};
+
+const initUI = () => {
+  initKeyboard();
+  loadKeyboard();
+
+  initModal();
+};
 
 const initKeyboard = () => {
   // Create a dictionary with all the keys
@@ -17,10 +29,30 @@ const updateKeyboard = (letterResults) => {
   letterResults.forEach(element => {
     const key = keyBoard[element.letter];
 
-    // Clear all classes from the key
-    ['selected', 'success', 'warn', 'fail'].forEach(className => {
-      key.classList.remove(className);
-    });
+    key.classList.remove('selected');
+
+    // Don't add the same class again
+    if (key.classList.contains('success') && element.classResult === 'success') { return; }
+    if (key.classList.contains('warn') && element.classResult === 'warn') { return; }
+    if (key.classList.contains('fail') && element.classResult === 'fail') { return; }
+
+    if (element.classResult === 'success') {
+      key.classList.remove('fail');
+      key.classList.remove('warn');
+      key.classList.add('success');
+      return;
+    }
+
+    if (element.classResult === 'warn') {
+      key.classList.remove('fail');
+      key.classList.add('warn');
+      return;
+    }
+
+    if (element.classResult === 'fail') {
+      key.classList.add('fail');
+      return;
+    }
 
     key.classList.add(element.classResult);
   });
@@ -78,8 +110,25 @@ const setTheme = (theme, element) => {
   setSetting('selected-theme', theme);
 };
 
+const initModal = () => {
+  modal.main = document.querySelector('#modal');
+  modal.header = document.querySelector('#modal-title');
+  modal.body = document.querySelector('#modal-body');
+};
+
+const showModal = (title, content) => {
+  modal.main.classList.remove('hidden');
+  modal.header.textContent = title;
+  modal.body.textContent = content;
+};
+
+const hideModal = () => {
+  modal.main.classList.add('hidden');
+};
+
+
 export {
-  initKeyboard,
+  initUI,
   updateKeyboard,
   selectKey,
   unselectKey,
@@ -90,4 +139,6 @@ export {
   getClassResult,
 
   setTheme,
+  showModal,
+  hideModal,
 };

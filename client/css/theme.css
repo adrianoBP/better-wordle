@@ -31,6 +31,8 @@
     --cell-fail: #2b252e;
 
     --keyboard-bg: #C2A2C5;
+
+    --modal-bg: #35263d;
 }
 
 .light {
@@ -49,5 +51,5 @@
 
     --keyboard-bg: #6f2e8b;
 
-
+    --modal-bg: #C2A2C5;
 }

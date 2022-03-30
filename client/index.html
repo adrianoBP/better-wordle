@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="css/animations.css" />
   <link rel="stylesheet" href="css/board.css" />
   <link rel="stylesheet" href="css/keyboard.css" />
-  <!-- ! TODO: Reference in README -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/debug.css" />
   <script type="module" src="js/script.js"></script>
   <script type="module" src="js/services/api.service.js"></script>
   <script type="module" src="js/services/log.service.js"></script>
@@ -16,7 +16,7 @@
 
 <body class="light">
 
-  <!-- <div id="modal">
+  <div id="modal" class="hidden">
     <div id="modal-content" class="shadow">
       <div id="modal-header">
         <h3 id="modal-title">header</h3>
@@ -24,23 +24,23 @@
       </div>
       <div id="modal-body">body</div>
     </div>
-  </div> -->
+  </div>
 
   <nav>
 
     <!-- ! TODO: remove style referencing from HTML -->
     <div class="nav-left center-items">
-      <div>
-        <!-- ! TODO: Use SVGs -->
-        <img src="resources/icons/sun.svg" id="theme-switch">
-      </div>
+      <img src="resources/icons/sun.svg" id="theme-switch">
     </div>
 
     <div class="nav-centre center-items">
       <a>better-wordle</a>
     </div>
 
-    <div class="nav-right"></div>
+    <div class="nav-right center-items">
+      <!-- ! TODO: remove once complete -->
+      <img src="resources/icons/code.svg" id="debug">
+    </div>
 
   </nav>
 

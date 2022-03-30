@@ -1,8 +1,8 @@
 'use strict';
 import * as logService from './log.service.js';
 import * as animationService from './animation.service.js';
-import { updateKeyboard, selectKey, unselectKey, getClassResult, saveKeyboard, loadKeyboard } from './ui.service.js';
-import { validateWord, validateGuess } from './api.service.js';
+import { updateKeyboard, selectKey, unselectKey, getClassResult, saveKeyboard, loadKeyboard, showModal } from './ui.service.js';
+import { validateWord, validateGuess, getTodayWord } from './api.service.js';
 import { sleep } from './common.service.js';
 import { getSetting, setSetting } from './storage.service.js';
 
@@ -64,7 +64,7 @@ const checkInput = async (input) => {
 
   // If the input is a backspace
   if (
-    ['backspace', '←'].includes(input) &&
+    ['backspace'].includes(input) &&
         currentLetterIndex > 0
   ) {
     // Backspace pressed
@@ -82,7 +82,7 @@ const checkInput = async (input) => {
   }
 
   // If the input is enter
-  if (['enter', '↵'].includes(input)) {
+  if (['enter'].includes(input)) {
     // Enter pressed
     if (currentLetterIndex < 5) {
       logService.error('Word is not complete');
@@ -92,8 +92,6 @@ const checkInput = async (input) => {
     const guess = getCurrentGuess();
 
     const wordValidationResult = await validateWord(guess.join(''));
-
-    // TODO: validate response for errors
 
     if (!wordValidationResult.isValid) {
       // Wiggle the word so that the user is aware that the word is invalid
@@ -106,6 +104,7 @@ const checkInput = async (input) => {
 
     const validationResult = await validateGuess(guess);
 
+    // List of keyboard keys that need to be updated according to the validation result
     const keysToReload = [];
 
     if (validationResult) {
@@ -133,6 +132,13 @@ const checkInput = async (input) => {
     }
 
     saveGame();
+
+    if (wordGuessed) {
+      showModal('You win!');
+    } else if (currentWordIndex === dictionaryOptions.allowedGuessesCount) {
+      const todaysWord = (await getTodayWord()).word;
+      showModal('You lose!', `Today's word is: ${todaysWord}`);
+    }
   }
 };
 
@@ -184,6 +190,12 @@ const loadGame = async () => {
     currentWordIndex++;
     wordGuessed = row.every((el) => el.classResult === 'success');
   });
+
+  if (wordGuessed) { showModal('You win!'); }
+  if (currentWordIndex === dictionaryOptions.allowedGuessesCount) {
+    const todaysWord = (await getTodayWord()).word;
+    showModal('You lose!', `Today's word is: ${todaysWord}`);
+  }
 
   await sleep(350 * dictionaryOptions.wordLength);
   loadKeyboard();

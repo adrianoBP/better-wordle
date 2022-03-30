@@ -19,7 +19,7 @@ const validateGuess = (guess, dictionaryOptions) => {
       // Check the rest of the word
       for (let i = index + 1; i < guess.length; i++) {
         // If the letter is in the correct position later in the word, don't show a warning
-        if (winningWord[i] === letter) {
+        if (guess[i] === letter && winningWord[i] === guess[i]) {
           result.push(-1);
           checkedLetters.push(letter);
           return;
