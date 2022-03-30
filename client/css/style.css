@@ -9,7 +9,6 @@
 
   --cell-size-multiplier: 0.9;
   --cell-size: 4rem;
-  --icon-large: 2rem;
 }
 
 @media (min-width: 500px) {
@@ -22,7 +21,6 @@
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
-  /* ! DISABLE ONLY DURING DEBUGGING */
   transition-duration: .2s;
 }
 
@@ -49,12 +47,8 @@ body {
 
 /* ICONS */
 
-i {
+img {
   user-select: none;
-}
-
-i.large {
-  font-size: var(--icon-large);
 }
 
 /* NAVBAR */
@@ -80,8 +74,8 @@ nav>.nav-left {
 }
 
 nav>.nav-left #theme-switch {
-  color: #C2A2C5;
   cursor: pointer;
+  width: 2.2em;
 }
 
 nav>.nav-left #theme-switch:hover {

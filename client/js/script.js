@@ -19,7 +19,7 @@ function addEventListeners() {
   document.addEventListener('keydown', (e) => { checkInput(e.key); });
 
   document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
-    el.addEventListener('click', (e) => { checkInput(e.target.textContent); });
+    el.addEventListener('click', (e) => checkInput(e.currentTarget.dataset.keyref));
   });
 
   document.querySelector('#theme-switch').addEventListener('click', (event) => {

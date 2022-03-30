@@ -20,3 +20,8 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 - Dictionaries are saved as normal txt files as we will only read from them and never write
 
 ## Additional
+
+### References
+
+- Icons: all icons used are under CC0 or PD licensing:  
+SVG Repo - Free SVG Vectors and Icons. (n.d.). www.svgrepo.com. <https://www.svgrepo.com/>

@@ -16,7 +16,12 @@ function initKeyboard() {
 function updateKeyboard(letterResults) {
   letterResults.forEach(element => {
     const key = keyBoard[element.letter];
-    key.classList.remove('selected');
+
+    // Clear all classes from the key
+    ['selected', 'success', 'warn', 'fail'].forEach(className => {
+      key.classList.remove(className);
+    });
+
     key.classList.add(element.classResult);
   });
 }
@@ -65,9 +70,9 @@ function setTheme(theme, element) {
   if (element == null) { element = document.querySelector('#theme-switch'); }
 
   if (theme === 'dark') {
-    element.textContent = 'light_mode';
+    element.src = '../../resources/icons/sun.svg';
   } else if (theme === 'light') {
-    element.textContent = 'dark_mode';
+    element.src = '../../resources/icons/half-moon.svg';
   }
 
   setSetting('selected-theme', theme);

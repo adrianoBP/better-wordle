@@ -28,6 +28,14 @@
   user-select: none;
 }
 
+#keyboard>.row>div>svg {
+  width: 2rem;
+}
+
+#keyboard>.row>div>svg * {
+  transition-duration: 0s;
+}
+
 #keyboard>.row-3>div:first-child,
 #keyboard>.row-3>div:last-child {
   width: 15%;
