@@ -1,3 +1,4 @@
+'use strict';
 import { getSetting } from './storage.service.js';
 
 const sleep = (ms) => {

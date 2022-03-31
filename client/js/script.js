@@ -1,5 +1,5 @@
 'use strict';
-import { initGameBoard, checkInput, dictionaryOptions } from './services/game.service.js';
+import { checkInput, dictionaryOptions, loadGame } from './services/game.service.js';
 import { initUI, setTheme, showModal } from './services/ui.service.js';
 import { getSetting } from './services/storage.service.js';
 
@@ -9,8 +9,7 @@ function prepareElements() {
   // Assign DOM elements
   rootElement = document.querySelector(':root');
   initUI();
-  initGameBoard();
-
+  loadGame();
   // Init game options
   rootElement.style.setProperty('--cells-per-row', dictionaryOptions.wordLength);
 }
@@ -32,7 +31,6 @@ function addEventListeners() {
     const modal = document.querySelector('#modal');
     if (modal.classList.contains('hidden')) { modal.classList.remove('hidden'); } else { modal.classList.add('hidden'); }
   });
-
 
   // ! #debug
   document.querySelector('#debug').addEventListener('click', () => {

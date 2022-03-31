@@ -21,6 +21,10 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 ## Additional
 
+### Acknowledgment
+
+Many elements of the projects are way more complicated of what this kind of project (i.e. components, split all files, validation, etc.), however, since this project has to be a testament of our knowledge of Javascript, HTML and CSS, I believe that it is appropriate to include them.
+
 ### References
 
 - Icons: all icons used are under CC0 or PD licensing:  

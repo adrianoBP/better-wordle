@@ -1,3 +1,4 @@
+'use strict';
 import * as logService from './log.service.js';
 import { dictionaryOptions } from './game.service.js';
 
@@ -26,6 +27,7 @@ const makeRequestParse = async (url, method = 'GET', body = null, headers = {}) 
 };
 
 const validateWord = async (guess) => {
+  // TODO: what about other languages?
   const response = await makeRequest(
     `https://dictionary-dot-sse-2020.nw.r.appspot.com/${guess}`,
     'GET',

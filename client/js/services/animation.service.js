@@ -1,3 +1,4 @@
+'use strict';
 import { sleep } from './common.service.js';
 
 const shake = (element) => {
