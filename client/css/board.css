@@ -33,3 +33,7 @@
 #board>div.fail {
   background-color: var(--cell-fail);
 }
+
+#board>div.error {
+  color: #7a0b0b;
+}

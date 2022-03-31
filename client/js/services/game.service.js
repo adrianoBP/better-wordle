@@ -55,6 +55,16 @@ const checkInput = async (input) => {
                 input;
       currentLetterIndex++;
       selectKey(input);
+
+      if (currentLetterIndex === dictionaryOptions.wordLength) {
+        const guess = getCurrentGuess();
+        const wordValidationResult = await validateWord(guess.join(''));
+        if (!wordValidationResult) {
+          gameBoard[currentWordIndex].forEach(element => {
+            element.classList.add('error');
+          });
+        }
+      }
     } else {
       logService.warn('Word is already complete');
     }
@@ -67,6 +77,10 @@ const checkInput = async (input) => {
     ['backspace'].includes(input) &&
         currentLetterIndex > 0
   ) {
+    gameBoard[currentWordIndex].forEach(element => {
+      element.classList.remove('error');
+    });
+
     // Backspace pressed
     currentLetterIndex--;
     const currentLetterElement = gameBoard[currentWordIndex][currentLetterIndex];
@@ -93,7 +107,7 @@ const checkInput = async (input) => {
 
     const wordValidationResult = await validateWord(guess.join(''));
 
-    if (!wordValidationResult.isValid) {
+    if (!wordValidationResult) {
       // Wiggle the word so that the user is aware that the word is invalid
       gameBoard[currentWordIndex].forEach((el) => {
         animationService.shake(el);

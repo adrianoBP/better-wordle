@@ -10,7 +10,3 @@ nav>.nav-right #debug {
   cursor: pointer;
   width: 2.2em;
 }
-
-nav>.nav-right #debug:hover {
-  transform: scale(1.1);
-}

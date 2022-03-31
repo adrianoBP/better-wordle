@@ -12,32 +12,30 @@ const makeRequest = async (url, method = 'GET', body = null, headers = {}) => {
     'Content-Type': 'application/json',
   };
 
-  return (await fetch(url, {
+  const result = await fetch(url, {
     method,
     headers,
     body: body ? JSON.stringify(body) : null,
-  })).json();
+  });
+
+  return result;
+};
+
+const makeRequestParse = async (url, method = 'GET', body = null, headers = {}) => {
+  return await (await makeRequest(url, method, body, headers)).json();
 };
 
 const validateWord = async (guess) => {
   const response = await makeRequest(
-        `${SERVICE_URL}/words/validate`,
-        'POST', {
-          word: guess,
-          dictionaryOptions,
-        },
+    `https://dictionary-dot-sse-2020.nw.r.appspot.com/${guess}`,
+    'GET',
   );
 
-  if (response.error) {
-    logService.error(response.error);
-    return;
-  }
-
-  return response.result;
+  return response.status === 200;
 };
 
 const validateGuess = async (guess) => {
-  const response = await makeRequest(
+  const response = await makeRequestParse(
         `${SERVICE_URL}/game/validate-guess`,
         'POST', {
           guess,
@@ -54,7 +52,7 @@ const validateGuess = async (guess) => {
 };
 
 const getTodayWord = async () => {
-  const response = await makeRequest(
+  const response = await makeRequestParse(
         `${SERVICE_URL}/words/today`,
         'GET',
   );

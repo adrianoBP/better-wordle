@@ -83,7 +83,7 @@ nav>.nav-left #theme-switch {
   padding-left: 1rem;
 }
 
-nav>.nav-left #theme-switch:hover {
+nav img:hover {
   transform: scale(1.1);
   opacity: 0.5;
 }
