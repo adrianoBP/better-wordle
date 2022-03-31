@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import gameService from '../services/game-service.js';
+import gameService from '../services/game.service.js';
 
 const router = new Router();
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import settingsService from '../services/settings-service.js';
+import settingsService from '../services/settings.service.js';
 
 const router = new Router();
 

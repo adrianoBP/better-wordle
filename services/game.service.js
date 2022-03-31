@@ -1,4 +1,4 @@
-import wordsService from './words-service.js';
+import wordsService from './words.service.js';
 
 const validateGuess = (guess, dictionaryOptions) => {
   const winningWord = wordsService.getTodayWord(dictionaryOptions);

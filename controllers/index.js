@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import wordsController from './words-controller.js';
-import gameController from './game-controller.js';
-import settingsController from './settings-controller.js';
+import wordsController from './words.controller.js';
+import gameController from './game.controller.js';
+import settingsController from './settings.controller.js';
 
 const router = new Router();
 
