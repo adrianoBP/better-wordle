@@ -39,8 +39,8 @@
   transition-duration: 0s;
 }
 
-#keyboard>.row-3>div:first-child,
-#keyboard>.row-3>div:last-child {
+#keyboard>.last-row>div:first-child,
+#keyboard>.last-row>div:last-child {
   width: 15%;
 }
 

@@ -17,9 +17,9 @@ function prepareElements() {
 function addEventListeners() {
   document.addEventListener('keydown', (e) => { checkInput(e.key); });
 
-  document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
-    el.addEventListener('click', (e) => checkInput(e.currentTarget.dataset.keyref));
-  });
+  // document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
+  //   el.addEventListener('click', (e) => checkInput(e.currentTarget.dataset.keyref));
+  // });
 
   document.querySelector('#theme-switch').addEventListener('click', (event) => {
     const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';

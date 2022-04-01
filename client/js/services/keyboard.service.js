@@ -1,84 +1,66 @@
 'use strict';
-import { getSetting, setSetting } from './storage.service.js';
-import { allowLoading } from './common.service.js';
-import { getElementType } from './ui.service.js';
+import { setSetting } from './storage.service.js';
+import Key from '../components/key/Key.js';
 
-let keyBoard = {};
+const keyBoard = {};
 
 const initKeyboard = () => {
-  // Create a dictionary with all the keys
-  keyBoard = [
-    ...document.querySelectorAll('#keyboard > .row > div'),
-  ].reduce((acc, el) => {
-    acc[el.textContent.toLowerCase()] = el;
-    return acc;
-  }, {});
+  const keyRows = [
+    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+    ['backspace', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter'],
+  ];
+
+  keyRows.forEach((row, rowIndex) => {
+    const rowElement = document.createElement('div');
+    rowElement.classList.add('row');
+
+    // Add extra class to the last row to allow css selectors to edit the larger buttons
+    if (rowIndex === keyRows.length - 1) { rowElement.classList.add('last-row'); }
+
+    row.forEach((letter) => {
+      const key = new Key(letter);
+      rowElement.appendChild(key.htmlElement);
+      keyBoard[letter] = key;
+    });
+
+    document.querySelector('#keyboard').appendChild(rowElement);
+  });
+
+  // document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
+  //   keyBoard[el.textContent.toLowerCase()] = new Key(el);
+  // });
 };
 
 const updateKeyboard = (letterResults) => {
   // TODO: check if this can be optimized
 
   letterResults.forEach(element => {
-    const key = keyBoard[element.letter];
-
-    key.classList.remove('selected');
-
-    // Don't add the same class again
-    if (key.classList.contains('success') && element.classResult === 'success') { return; }
-    if (key.classList.contains('warn') && element.classResult === 'warn') { return; }
-    if (key.classList.contains('fail') && element.classResult === 'fail') { return; }
-
-    if (element.classResult === 'success') {
-      key.classList.remove('fail');
-      key.classList.remove('warn');
-      key.classList.add('success');
-      return;
-    }
-
-    if (element.classResult === 'warn' && !key.classList.contains('success')) {
-      key.classList.remove('fail');
-      key.classList.add('warn');
-      return;
-    }
-
-    if (element.classResult === 'fail' && !key.classList.contains('warn') && !key.classList.contains('success')) {
-      key.classList.add('fail');
-    }
+    keyBoard[element.letter].type = element.classResult;
   });
 };
 
 const selectKey = (letter) => {
   if (!keyBoard[letter]) return;
-  keyBoard[letter].classList.add('selected');
+  keyBoard[letter].select();
 };
 
 const unselectKey = (letter) => {
   if (!keyBoard[letter]) return;
-  keyBoard[letter].classList.remove('selected');
+  keyBoard[letter].unselect();
 };
 
 const saveKeyboard = () => {
   const keyboardResult = [];
   Object.keys(keyBoard).forEach((letter) => {
-    keyboardResult.push({ letter, classResult: getElementType(keyBoard[letter]) });
+    keyboardResult.push({ letter, type: keyBoard[letter].type });
   });
 
   setSetting('keyboard', keyboardResult);
 };
 
-const loadKeyboard = () => {
-  if (!allowLoading()) return;
-
-  const keyboardResult = getSetting('keyboard');
-  if (!keyboardResult) return;
-  keyboardResult.forEach((el) => {
-    if (el.classResult) { keyBoard[el.letter].classList.add(el.classResult); }
-  });
-};
-
 export {
   initKeyboard,
-  loadKeyboard,
 
   updateKeyboard,
   selectKey,

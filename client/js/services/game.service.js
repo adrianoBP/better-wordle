@@ -58,7 +58,7 @@ const checkInput = async (input) => {
   }
 
   // If the input is enter
-  if (input === 'enter') {
+  if (input === 'enter' && boardService.wordLengthReached()) {
     const guess = boardService.getCurrentGuess();
 
     const wordValidationResult = await validateWord(guess.join(''));
