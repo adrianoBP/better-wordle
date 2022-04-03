@@ -1,11 +1,10 @@
 'use strict';
 import * as logService from './log.service.js';
-import { getElementType } from './ui.service.js';
 import { selectKey, unselectKey, saveKeyboard } from './keyboard.service.js';
 import { validateWord, validateGuess } from './api.service.js';
 import { allowLoading } from './common.service.js';
 import { getSetting, setSetting } from './storage.service.js';
-import * as boardService from './board.service.js';
+import Gameboard from '../components/gameboard/Gameboard.js';
 
 const dictionaryOptions = {
   lang: 'en_en',
@@ -13,28 +12,33 @@ const dictionaryOptions = {
   allowedGuessesCount: 6,
 };
 
-let wordGuessed = false;
+let gameBoard = null;
+
+const startGame = () => {
+  gameBoard = new Gameboard(dictionaryOptions);
+  loadGame();
+};
 
 const checkInput = async (input) => {
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
-  if (wordGuessed || !boardService.canAcceptWord()) return;
+  if (!gameBoard.canInsert()) return;
 
   input = input.toLowerCase();
 
   // If the input is a letter
   if (/^[a-z]{1,1}$/.test(input)) {
-    if (boardService.canAcceptLetter()) {
-      boardService.addLetter(input);
+    if (gameBoard.canAcceptLetter()) {
+      gameBoard.addLetter(input);
       selectKey(input);
 
       // If we reached the end of the word, check if it is a valid word
-      if (boardService.wordLengthReached()) {
-        const guess = boardService.getCurrentGuess();
+      if (gameBoard.wordLengthReached()) {
+        const guess = gameBoard.getCurrentGuess();
         const wordValidationResult = await validateWord(guess.join(''));
         if (!wordValidationResult) {
-          boardService.markCurrentWordInvalid();
+          gameBoard.markCurrentWordInvalid();
         }
       }
     }
@@ -47,10 +51,10 @@ const checkInput = async (input) => {
     // TODO: check if this can be optimized
 
     // Unselect only if it is the last occurrence
-    let currentGuess = boardService.getCurrentGuess();
+    let currentGuess = gameBoard.getCurrentGuess();
     const lastLetter = currentGuess.filter((el) => el !== '').at(-1);
-    boardService.removeLetter();
-    currentGuess = boardService.getCurrentGuess();
+    gameBoard.removeLetter();
+    currentGuess = gameBoard.getCurrentGuess();
 
     if (!currentGuess.includes(lastLetter)) { unselectKey(lastLetter); }
 
@@ -58,43 +62,27 @@ const checkInput = async (input) => {
   }
 
   // If the input is enter
-  if (input === 'enter' && boardService.wordLengthReached()) {
-    const guess = boardService.getCurrentGuess();
+  if (input === 'enter' && gameBoard.wordLengthReached()) {
+    const guess = gameBoard.getCurrentGuess();
 
     const wordValidationResult = await validateWord(guess.join(''));
 
     if (!wordValidationResult) {
       // Wiggle the word so that the user is aware that the word is invalid
-      boardService.wiggleWord();
+      gameBoard.wiggleWord();
       logService.error('Word is not valid');
       return;
     }
 
     const validationResult = await validateGuess(guess);
-    boardService.applyValidationResult(validationResult, true);
+    await gameBoard.applyValidationResult(validationResult, true);
 
-    // If all the letters are in the correct position, the user won the game
-    if (validationResult.every((el) => el === 1)) wordGuessed = true;
+    saveGame();
   }
 };
 
 const saveGame = () => {
-  const boardResults = [];
-  boardService.gameBoard.forEach((row) => {
-    const rowResults = [];
-    row.forEach((el) => {
-      if (el.textContent) {
-        rowResults.push({
-          letter: el.textContent,
-          classResult: getElementType(el),
-        });
-      }
-    });
-
-    if (rowResults.length > 0) boardResults.push(rowResults);
-  });
-
-  setSetting('game-board', boardResults);
+  setSetting('game-board', gameBoard.details);
   setSetting('save-game-time', new Date().toISOString());
   saveKeyboard();
 };
@@ -109,16 +97,18 @@ const loadGame = () => {
   boardResults.forEach((row) => {
     // Convert the element type to a validation type (-1, 0, 1)
     row.forEach((letter) => {
-      letter.value = letter.classResult === 'success' ? 1 : letter.classResult === 'warn' ? 0 : -1;
+      letter.value = letter.type === 'success' ? 1 : letter.type === 'warn' ? 0 : -1;
     });
 
     const validationResult = row.map((el) => el.value);
-    boardService.addWord(row.map((el) => el.letter), validationResult);
+    gameBoard.addWord(row.map((el) => el.letter), validationResult);
   });
 };
 
 export {
   dictionaryOptions,
+
+  startGame,
 
   saveGame,
   loadGame,

@@ -26,10 +26,6 @@ const initKeyboard = () => {
 
     document.querySelector('#keyboard').appendChild(rowElement);
   });
-
-  // document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
-  //   keyBoard[el.textContent.toLowerCase()] = new Key(el);
-  // });
 };
 
 const updateKeyboard = (letterResults) => {

@@ -17,7 +17,9 @@ const flip = async (element, resultClass) => {
   element.classList.add('flip');
   // Animations lasts .5s, half way through the animation, change the color
   await sleep(250);
-  if (resultClass) { element.classList.add(resultClass); }
+  if (resultClass) {
+    element.classList.add(resultClass);
+  }
 };
 
 const flipWithDelay = async (element, resultClass, delay) => {

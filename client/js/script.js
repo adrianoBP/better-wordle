@@ -1,5 +1,5 @@
 'use strict';
-import { checkInput, dictionaryOptions, loadGame } from './services/game.service.js';
+import { checkInput, dictionaryOptions, startGame } from './services/game.service.js';
 import { initUI, setTheme, showModal } from './services/ui.service.js';
 import { getSetting } from './services/storage.service.js';
 
@@ -9,17 +9,15 @@ function prepareElements() {
   // Assign DOM elements
   rootElement = document.querySelector(':root');
   initUI();
-  loadGame();
   // Init game options
   rootElement.style.setProperty('--cells-per-row', dictionaryOptions.wordLength);
+
+
+  startGame();
 }
 
 function addEventListeners() {
   document.addEventListener('keydown', (e) => { checkInput(e.key); });
-
-  // document.querySelectorAll('#keyboard > .row > div').forEach((el) => {
-  //   el.addEventListener('click', (e) => checkInput(e.currentTarget.dataset.keyref));
-  // });
 
   document.querySelector('#theme-switch').addEventListener('click', (event) => {
     const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';

@@ -1,7 +1,6 @@
 'use strict';
 import { setSetting } from './storage.service.js';
 import { initKeyboard } from './keyboard.service.js';
-import { initBoard } from './board.service.js';
 
 const modal = {
   main: null,
@@ -10,18 +9,8 @@ const modal = {
 };
 
 const initUI = () => {
-  initBoard();
-
   initKeyboard();
-
   initModal();
-};
-
-const getElementType = (element) => {
-  if (element.classList.contains('success')) return 'success';
-  else if (element.classList.contains('warn')) return 'warn';
-  else if (element.classList.contains('fail')) return 'fail';
-  else return '';
 };
 
 const setTheme = (theme, element) => {
@@ -61,8 +50,6 @@ const hideModal = () => {
 
 export {
   initUI,
-
-  getElementType,
 
   setTheme,
   showModal,
