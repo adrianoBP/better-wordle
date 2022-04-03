@@ -2,7 +2,7 @@
 import * as logService from './log.service.js';
 import { selectKey, unselectKey, saveKeyboard } from './keyboard.service.js';
 import { validateWord, validateGuess } from './api.service.js';
-import { allowLoading } from './common.service.js';
+import { allowLoading, getDayFromMillisec } from './common.service.js';
 import { getSetting, setSetting } from './storage.service.js';
 import Gameboard from '../components/gameboard/Gameboard.js';
 
@@ -83,7 +83,7 @@ const checkInput = async (input) => {
 
 const saveGame = () => {
   setSetting('game-board', gameBoard.details);
-  setSetting('save-game-time', new Date().toISOString());
+  setSetting('game-day', getDayFromMillisec().toString());
   saveKeyboard();
 };
 
@@ -104,6 +104,7 @@ const loadGame = () => {
     gameBoard.addWord(row.map((el) => el.letter), validationResult);
   });
 };
+
 
 export {
   dictionaryOptions,

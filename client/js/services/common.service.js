@@ -6,18 +6,23 @@ const sleep = (ms) => {
 };
 
 const allowLoading = () => {
-  const saveTime = getSetting('save-game-time', false);
+  const savedDayWordIndex = getSetting('game-day', false);
 
   // If we can't verify when the game was saved, don't load it
-  if (!saveTime) return false;
+  if (!savedDayWordIndex) return false;
 
-  const saveTimeDate = new Date(saveTime);
   // If the day has changed since the last save, don't load it
-  if (saveTimeDate.getDate() !== new Date().getDate()) return false;
+  if (savedDayWordIndex !== getDayFromMillisec().toString()) return false;
 
   return true;
 };
+
+const getDayFromMillisec = () => {
+  return Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
+};
+
 export {
   sleep,
   allowLoading,
+  getDayFromMillisec,
 };
