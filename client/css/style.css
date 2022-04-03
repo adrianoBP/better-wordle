@@ -1,6 +1,5 @@
 :root {
-  --cells-per-row: 5;
-  --cells-per-col: 6;
+  --cells-per-row: 0;
 
   --nav-font-size: 8vmin;
   --keyboard-font-size: 5vmin;
@@ -81,6 +80,10 @@ nav>.nav-left #theme-switch {
   cursor: pointer;
   width: 2.2em;
   padding-left: 1rem;
+}
+
+nav img {
+  margin: 1vmin 0;
 }
 
 nav img:hover {

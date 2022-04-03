@@ -1,5 +1,4 @@
 'use strict';
-import { setSetting } from './storage.service.js';
 import Key from '../components/key/Key.js';
 
 const keyBoard = {};
@@ -46,21 +45,10 @@ const unselectKey = (letter) => {
   keyBoard[letter].unselect();
 };
 
-const saveKeyboard = () => {
-  const keyboardResult = [];
-  Object.keys(keyBoard).forEach((letter) => {
-    keyboardResult.push({ letter, type: keyBoard[letter].type });
-  });
-
-  setSetting('keyboard', keyboardResult);
-};
-
 export {
   initKeyboard,
 
   updateKeyboard,
   selectKey,
   unselectKey,
-
-  saveKeyboard,
 };

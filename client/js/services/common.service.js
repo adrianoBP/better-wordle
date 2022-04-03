@@ -17,8 +17,9 @@ const allowLoading = () => {
   return true;
 };
 
-const getDayFromMillisec = () => {
-  return Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
+const getDayFromMillisec = (millisec) => {
+  if (millisec == null) { millisec = Date.now(); }
+  return Math.floor(millisec / (1000 * 60 * 60 * 24));
 };
 
 export {

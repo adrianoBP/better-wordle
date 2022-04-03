@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import gameService from '../services/game.service.js';
+import { getDayFromMillisec } from '../services/common.service.js';
 
 const router = new Router();
 
@@ -11,7 +12,7 @@ const validateGuess = (req, res) => {
     return;
   }
 
-  const { dictionaryOptions, guess } = req.body;
+  const { dictionaryOptions, guess, hash } = req.body;
 
   if (!guess) {
     res.status(400).json({
@@ -20,8 +21,16 @@ const validateGuess = (req, res) => {
     return;
   }
 
+  if (getDayFromMillisec(dictionaryOptions?.gameTime) !== getDayFromMillisec()) {
+    res.status(400).json({
+      error: 'Invalid request. If you had the game open for too long, reload the page.',
+    });
+    return;
+  }
+
+
   res.json({
-    result: gameService.validateGuess(guess, dictionaryOptions),
+    result: gameService.validateGuess(guess, dictionaryOptions, hash),
   });
 };
 

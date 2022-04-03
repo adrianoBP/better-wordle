@@ -1,6 +1,6 @@
 'use strict';
-import { checkInput, dictionaryOptions, startGame } from './services/game.service.js';
-import { initUI, setTheme, showModal } from './services/ui.service.js';
+import { checkInput, dictionaryOptions, startGame, saveGame } from './services/game.service.js';
+import { initUI, setTheme } from './services/ui.service.js';
 import { getSetting } from './services/storage.service.js';
 
 let rootElement;
@@ -11,7 +11,6 @@ function prepareElements() {
   initUI();
   // Init game options
   rootElement.style.setProperty('--cells-per-row', dictionaryOptions.wordLength);
-
 
   startGame();
 }
@@ -32,7 +31,8 @@ function addEventListeners() {
 
   // ! #debug
   document.querySelector('#debug').addEventListener('click', () => {
-    showModal('debug');
+    debugger;
+    // showModal('debug');
   });
 }
 

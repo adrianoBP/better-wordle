@@ -36,21 +36,15 @@ const validateWord = async (guess) => {
   return response.status === 200;
 };
 
-const validateGuess = async (guess) => {
-  const response = await makeRequestParse(
+const validateGuess = async (guess, hash) => {
+  return await makeRequestParse(
         `${SERVICE_URL}/game/validate-guess`,
         'POST', {
           guess,
           dictionaryOptions,
+          hash,
         },
   );
-
-  if (response.error) {
-    logService.error(response.error);
-    return;
-  }
-
-  return response.result;
 };
 
 const getTodayWord = async () => {

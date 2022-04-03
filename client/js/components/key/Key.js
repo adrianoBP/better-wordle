@@ -49,11 +49,12 @@ class Key {
 
     // TODO: Check if this can be optimized
 
-    // Don't add the same class again
-    if (this.element.classList.contains('success') && type === 'success') { return; }
-    if (this.element.classList.contains('warn') && type === 'warn') { return; }
-    if (this.element.classList.contains('fail') && type === 'fail') { return; }
+    const currentType = this.type;
 
+    // Don't add the same class again
+    if (currentType === type) return;
+
+    // Success should override everything
     if (type === 'success') {
       this.element.classList.remove('fail');
       this.element.classList.remove('warn');
@@ -61,13 +62,13 @@ class Key {
       return;
     }
 
-    if (type === 'warn' && !this.element.classList.contains('success')) {
+    if (type === 'warn' && currentType !== 'success') {
       this.element.classList.remove('fail');
       this.element.classList.add('warn');
       return;
     }
 
-    if (type === 'fail' && !this.element.classList.contains('warn') && !this.element.classList.contains('success')) {
+    if (type === 'fail' && currentType !== 'success' && currentType !== 'warn') {
       this.element.classList.add('fail');
     }
   }

@@ -86,13 +86,18 @@ class Gameboard {
   removeLetter() {
     if (this.letterIndex === 0) return;
 
+    // If we delete a letter, we know for sure that the word is not a complete word, hence remove the error class
     this.words[this.wordIndex].forEach(tile => {
       tile.removeClass('error');
     });
 
     this.letterIndex--;
 
+    const letterToRemove = this.words[this.wordIndex][this.letterIndex].htmlElement.textContent;
     this.words[this.wordIndex][this.letterIndex].htmlElement.textContent = '';
+
+    // Return the removed letter
+    return letterToRemove;
   }
 
   markCurrentWordInvalid() {

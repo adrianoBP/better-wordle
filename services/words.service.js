@@ -20,19 +20,13 @@ const getWordDictionary = (dictionaryOptions) => {
     .filter((word) => word.length === selectedWordLength);
 };
 
-const getTodayWord = (dictionaryOptions) => {
+const getWordByHash = (hash, dictionaryOptions) => {
   // TODO: implement language and selection of word length - #3
   // TODO: check if there's a better way to select a random word
-  const availableWords = getWordDictionary(dictionaryOptions);
 
-  // Base word selection on the current date
-  // This should always be the server date, hence, it would reset at the same time for all users
   // Note: words are already shuffled
-  const totalMillisecs = new Date().getTime();
-  const totalDays = Math.floor(totalMillisecs / (1000 * 60 * 60 * 24));
-  const todayIndex = totalDays % availableWords.length;
-
-  return availableWords[todayIndex];
+  const availableWords = getWordDictionary(dictionaryOptions);
+  return availableWords[hash % availableWords.length];
 };
 
 const wordExists = (word, dictionaryOptions) => {
@@ -46,6 +40,6 @@ const getFileContent = (filePath) => {
 
 export default {
   getWordDictionary,
-  getTodayWord,
+  getWordByHash,
   wordExists,
 };
