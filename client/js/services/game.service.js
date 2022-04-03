@@ -1,6 +1,6 @@
 'use strict';
 import * as logService from './log.service.js';
-import { selectKey, unselectKey } from './keyboard.service.js';
+import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateWord, validateGuess } from './api.service.js';
 import { getDayFromMillisec } from './common.service.js';
 import { getSetting, setSetting } from './storage.service.js';
@@ -19,6 +19,12 @@ let gameBoard = null;
 const startGame = () => {
   gameBoard = new Gameboard(dictionaryOptions);
   loadGame();
+};
+
+const resetGame = () => {
+  gameBoard.reset();
+  // gameBoard = new Gameboard(dictionaryOptions);
+  resetKeyboard();
 };
 
 const checkInput = async (input) => {
@@ -79,7 +85,9 @@ const checkInput = async (input) => {
     }
 
     await gameBoard.applyValidationResult(validationResponse.result.validation, true);
-    saveGame();
+
+    // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
+    if (!dictionaryOptions.hash) { saveGame(); }
   }
 };
 
@@ -139,6 +147,7 @@ export {
   dictionaryOptions,
 
   startGame,
+  resetGame,
 
   saveGame,
   loadGame,

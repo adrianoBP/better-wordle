@@ -61,8 +61,26 @@ const getTodayWord = async () => {
   return response.result;
 };
 
+const getNewGameHash = async () => {
+  const response = await makeRequestParse(
+    `${SERVICE_URL}/words/random-hash`,
+    'POST', {
+      dictionaryOptions,
+    },
+  );
+
+  if (response.error) {
+    logService.error(response.error);
+    return;
+  }
+
+  return response.result;
+};
+
 export {
   validateWord,
   validateGuess,
   getTodayWord,
+
+  getNewGameHash,
 };

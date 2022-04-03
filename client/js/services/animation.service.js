@@ -15,10 +15,24 @@ const shake = (element) => {
 
 const flip = async (element, resultClass) => {
   element.classList.add('flip');
+
+  // Remove the flip class to be able to re-flip it again
+  element.addEventListener('animationend', () => {
+    element.removeEventListener('animationend', () => {});
+    element.classList.remove('flip');
+  });
+
   // Animations lasts .5s, half way through the animation, change the color
   await sleep(250);
+
   if (resultClass) {
     element.classList.add(resultClass);
+  } else {
+    // If we don't pass a resultClass, we want to reset the tile
+    element.textContent = '';
+    ['success', 'warn', 'fail'].forEach((className) => {
+      element.classList.remove(className);
+    });
   }
 };
 

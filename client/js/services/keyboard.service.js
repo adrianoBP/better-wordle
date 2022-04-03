@@ -27,6 +27,11 @@ const initKeyboard = () => {
   });
 };
 
+const resetKeyboard = () => {
+  document.querySelector('#keyboard').replaceChildren([]);
+  initKeyboard();
+};
+
 const updateKeyboard = (letterResults) => {
   // TODO: check if this can be optimized
 
@@ -47,6 +52,7 @@ const unselectKey = (letter) => {
 
 export {
   initKeyboard,
+  resetKeyboard,
 
   updateKeyboard,
   selectKey,

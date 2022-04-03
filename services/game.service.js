@@ -1,14 +1,14 @@
 import wordsService from './words.service.js';
 
 const validateGuess = (guess, dictionaryOptions, hash) => {
-  if (hash == null) {
+  if (dictionaryOptions.hash == null) {
     /* Base word selection on the current date - This should always be the server date,
     hence, it would reset at the same time for all users */
     const totalMillisecs = new Date().getTime();
-    hash = Math.floor(totalMillisecs / (1000 * 60 * 60 * 24));
+    dictionaryOptions.hash = Math.floor(totalMillisecs / (1000 * 60 * 60 * 24));
   }
 
-  const word = wordsService.getWordByHash(hash, dictionaryOptions);
+  const word = wordsService.getWordByHash(dictionaryOptions.hash, dictionaryOptions);
 
   const result = [];
   const checkedLetters = [];

@@ -18,8 +18,9 @@ class Tile {
   }
 
   flip(newType) {
+    // flip tile can accept a type - If the type is not passed, the tile is gets reset
     flipTile(this.htmlElement, newType);
-    this.class = newType;
+    if (newType) { this.class = newType; }
   }
 
   shake() {

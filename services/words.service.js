@@ -34,6 +34,11 @@ const wordExists = (word, dictionaryOptions) => {
   return availableWords.includes(word);
 };
 
+const getRandomHash = (dictionaryOptions) => {
+  const availableWords = getWordDictionary(dictionaryOptions);
+  return Math.floor(Math.random() * availableWords.length);
+};
+
 const getFileContent = (filePath) => {
   return fs.readFileSync(filePath, 'utf8');
 };
@@ -42,4 +47,5 @@ export default {
   getWordDictionary,
   getWordByHash,
   wordExists,
+  getRandomHash,
 };

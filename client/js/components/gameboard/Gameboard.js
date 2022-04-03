@@ -28,6 +28,19 @@ class Gameboard {
     }
   }
 
+  reset() {
+    this.words.forEach((tiles) => {
+      tiles.forEach((tile) => {
+        if (tile.letter) { tile.flip(); }
+      });
+    });
+
+
+    this.wordIndex = 0;
+    this.letterIndex = 0;
+    this.wordGuessed = false;
+  }
+
   get details() {
     const details = [];
 

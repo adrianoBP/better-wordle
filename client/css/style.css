@@ -73,32 +73,36 @@ nav>div {
 }
 
 nav>.nav-left {
-  width: 5em;
+  margin-left: 1rem;
 }
 
-nav>.nav-left #theme-switch {
-  cursor: pointer;
-  width: 2.2em;
+nav>.nav-right {
+  display: flex;
+  float: right;
+  flex-direction: row;
+  margin-right: 1rem;
+}
+
+/* nav>.nav-left #theme-switch {
   padding-left: 1rem;
-}
+} */
 
-nav img {
-  margin: 1vmin 0;
-}
-
-nav img:hover {
-  transform: scale(1.1);
-  opacity: 0.5;
-}
-
-nav>.nav-centre>a {
+nav #title {
   font-weight: bold;
   font-size: var(--nav-font-size);
   padding: 1vmin 0;
 }
 
-nav>.nav-right {
-  width: 5em;
+nav img {
+  cursor: pointer;
+  margin: 1vmin 0;
+  width: 2rem;
+  padding: 0 0.5rem;
+}
+
+nav img:hover {
+  transform: scale(1.1);
+  opacity: 0.5;
 }
 
 main {
