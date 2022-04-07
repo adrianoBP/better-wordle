@@ -1,18 +1,21 @@
-import { sleep } from '../../services/common.service.js';
-import { updateKeyboard } from '../../services/keyboard.service.js';
+import { sleep } from '../../../services/common.service.js';
+import { updateKeyboard } from '../../../services/keyboard.service.js';
 import Tile from './tile/Tile.js';
 
 class Gameboard {
-  constructor(dictionaryOptions) {
+  constructor(gameElement, dictionaryOptions) {
     this.dictionaryOptions = dictionaryOptions;
 
-    const boardElement = document.querySelector('#board');
-    boardElement.replaceChildren([]);
+    this.boardElement = document.createElement('div');
+    this.boardElement.id = 'board';
+    gameElement.appendChild(this.boardElement);
+
+    this.boardElement.replaceChildren([]);
 
     this.wordIndex = 0;
     this.letterIndex = 0;
     this.words = [];
-    this.wordGuessed = false;
+    this._wordGuessed = false;
 
     // Add board to the DOM
 
@@ -23,22 +26,27 @@ class Gameboard {
       for (let j = 0; j < dictionaryOptions.wordLength; j++) {
         const tile = new Tile();
         this.words[i].push(tile);
-        boardElement.appendChild(tile.htmlElement);
+        this.boardElement.appendChild(tile.htmlElement);
       }
     }
   }
 
+  get wordGuessed() {
+    return this._wordGuessed;
+  }
+
   reset() {
+    this.show();
+
     this.words.forEach((tiles) => {
       tiles.forEach((tile) => {
         if (tile.letter) { tile.flip(); }
       });
     });
 
-
     this.wordIndex = 0;
     this.letterIndex = 0;
-    this.wordGuessed = false;
+    this._wordGuessed = false;
   }
 
   get details() {
@@ -65,7 +73,7 @@ class Gameboard {
   // TODO: Check if this can be optimized
 
   canInsert() {
-    return this.wordIndex < this.dictionaryOptions.allowedGuessesCount && !this.wordGuessed;
+    return this.wordIndex < this.dictionaryOptions.allowedGuessesCount && !this._wordGuessed;
   }
 
   canAcceptLetter() {
@@ -86,12 +94,13 @@ class Gameboard {
   }
 
   addWord(word, validationResult) {
+    if (!this.canInsert()) return;
+
     word.forEach((letter) => {
       this.addLetter(letter);
     });
 
     if (validationResult) this.applyValidationResult(validationResult);
-
     this.wordIndex++;
     this.letterIndex = 0;
   }
@@ -119,6 +128,14 @@ class Gameboard {
     });
   }
 
+  show() {
+    this.boardElement.style.display = 'grid';
+  }
+
+  hide() {
+    this.boardElement.style.display = 'none';
+  }
+
   async applyValidationResult(validationResult, incrementWordIndex) {
     // List of keyboard keys that need to be updated according to the validation result
     const keysToReload = [];
@@ -126,6 +143,8 @@ class Gameboard {
 
     // We copy the index of the word as multiple validations could happen at the same time (i.e. game load)
     const wordToUpdateIndex = this.wordIndex;
+
+    const tileFlips = [];
 
     if (validationResult) {
       for (let i = 0; i < guess.length; i++) {
@@ -139,7 +158,7 @@ class Gameboard {
 
         keysToReload.push({ letter: guess[i], classResult });
 
-        this.words[wordToUpdateIndex][i].flip(classResult);
+        tileFlips.push(this.words[wordToUpdateIndex][i].flip(classResult));
 
         await sleep(350);
       }
@@ -154,7 +173,14 @@ class Gameboard {
 
     // If all the letters are in the correct position, the user won the game
     if (validationResult.every(letter => letter === 1)) {
-      this.wordGuessed = true;
+      this._wordGuessed = true;
+      // this.hide();
+    }
+
+    if (this.wordIndex === this.dictionaryOptions.allowedGuessesCount) {
+      // Add some time to allow the user to see the word before hiding it
+      await sleep(300);
+      // this.hide();
     }
   }
 

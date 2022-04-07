@@ -2,7 +2,6 @@
   animation: 0.5s linear flip;
 }
 
-
 @keyframes flip {
 
   0% {
@@ -15,5 +14,29 @@
 
   100% {
     transform: rotateX(0deg);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(0);
   }
 }

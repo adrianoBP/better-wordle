@@ -4,7 +4,7 @@ import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateWord, validateGuess } from './api.service.js';
 import { getDayFromMillisec } from './common.service.js';
 import { getSetting, setSetting } from './storage.service.js';
-import Gameboard from '../components/gameboard/Gameboard.js';
+import Game from '../components/game/Game.js';
 
 const dictionaryOptions = {
   lang: 'en_en',
@@ -14,16 +14,15 @@ const dictionaryOptions = {
   hash: null, // used to restart the game with a different word for the same day - hash should generated on the server
 };
 
-let gameBoard = null;
+let mainGame = null;
 
 const startGame = () => {
-  gameBoard = new Gameboard(dictionaryOptions);
+  mainGame = new Game(dictionaryOptions);
   loadGame();
 };
 
 const resetGame = () => {
-  gameBoard.reset();
-  // gameBoard = new Gameboard(dictionaryOptions);
+  mainGame.restart();
   resetKeyboard();
 };
 
@@ -31,22 +30,22 @@ const checkInput = async (input) => {
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
-  if (!gameBoard.canInsert()) return;
+  if (!mainGame.board.canInsert()) return;
 
   input = input.toLowerCase();
 
   // If the input is a letter
   if (/^[a-z]{1,1}$/.test(input)) {
-    if (gameBoard.canAcceptLetter()) {
-      gameBoard.addLetter(input);
+    if (mainGame.board.canAcceptLetter()) {
+      mainGame.board.addLetter(input);
       selectKey(input);
 
       // If we reached the end of the word, check if it is a valid word
-      if (gameBoard.wordLengthReached()) {
-        const guess = gameBoard.getCurrentGuess();
+      if (mainGame.board.wordLengthReached()) {
+        const guess = mainGame.board.getCurrentGuess();
         const wordValidationResult = await validateWord(guess.join(''));
         if (!wordValidationResult) {
-          gameBoard.markCurrentWordInvalid();
+          mainGame.board.markCurrentWordInvalid();
         }
       }
     }
@@ -56,8 +55,8 @@ const checkInput = async (input) => {
 
   // If the input is a backspace
   if (input === 'backspace') {
-    const removedLetter = gameBoard.removeLetter();
-    const currentGuess = gameBoard.getCurrentGuess();
+    const removedLetter = mainGame.board.removeLetter();
+    const currentGuess = mainGame.board.getCurrentGuess();
 
     // Unselect only if it is the last occurrence in the guess
     if (!currentGuess.includes(removedLetter)) { unselectKey(removedLetter); }
@@ -66,14 +65,14 @@ const checkInput = async (input) => {
   }
 
   // If the input is enter
-  if (input === 'enter' && gameBoard.wordLengthReached()) {
-    const guess = gameBoard.getCurrentGuess();
+  if (input === 'enter' && mainGame.board.wordLengthReached()) {
+    const guess = mainGame.board.getCurrentGuess();
 
     const wordValidationResult = await validateWord(guess.join(''));
 
     if (!wordValidationResult) {
       // Wiggle the word so that the user is aware that the word is invalid
-      gameBoard.wiggleWord();
+      mainGame.board.wiggleWord();
       logService.error('Word is not valid');
       return;
     }
@@ -84,7 +83,7 @@ const checkInput = async (input) => {
       return;
     }
 
-    await gameBoard.applyValidationResult(validationResponse.result.validation, true);
+    await mainGame.applyValidationResult(validationResponse.result.validation, true);
 
     // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
     if (!dictionaryOptions.hash) { saveGame(); }
@@ -93,7 +92,7 @@ const checkInput = async (input) => {
 
 const saveGame = () => {
   const gameSettings = {
-    gameboard: gameBoard.details,
+    gameboard: this.game.board.details,
     dictionaryOptions,
   };
 
@@ -125,15 +124,7 @@ const loadGame = () => {
     return;
   }
 
-  savedGameSettings.gameboard.forEach((row) => {
-    // Convert the element type to a validation type (-1, 0, 1)
-    row.forEach((letter) => {
-      letter.value = letter.type === 'success' ? 1 : letter.type === 'warn' ? 0 : -1;
-    });
-
-    const validationResult = row.map((el) => el.value);
-    gameBoard.addWord(row.map((el) => el.letter), validationResult);
-  });
+  mainGame.load(savedGameSettings);
 };
 
 const clearGameSettings = () => {

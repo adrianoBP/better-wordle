@@ -1,8 +1,9 @@
-import { flip as flipTile, shake as shakeTile } from '../../../services/animation.service.js';
+import { flip as flipTile, shake as shakeTile } from '../../../../services/animation.service.js';
 
 class Tile {
   constructor() {
     this.htmlElement = document.createElement('div');
+    this.isHidden = false;
   }
 
   get letter() {
@@ -17,9 +18,9 @@ class Tile {
     return this.class;
   }
 
-  flip(newType) {
+  async flip(newType, resolvePercentage) {
     // flip tile can accept a type - If the type is not passed, the tile is gets reset
-    flipTile(this.htmlElement, newType);
+    await flipTile(this.htmlElement, newType, resolvePercentage);
     if (newType) { this.class = newType; }
   }
 

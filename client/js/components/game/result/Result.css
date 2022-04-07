@@ -1,0 +1,21 @@
+#result-component>#result-word {
+  background-color: var(--result-bg);
+  color: var(--text-colour-opp);
+  padding: 1rem 2rem;
+  font-size: 200%;
+  border-radius: 1rem;
+  animation: 0.7s ease-in-out infinite alternate-reverse bounce;
+  cursor: pointer;
+  text-align: center;
+}
+
+#result-component>#result-word:hover {
+  opacity: 0.8;
+}
+
+#result-component>#result-text {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 200%;
+  font-weight: bold;
+}

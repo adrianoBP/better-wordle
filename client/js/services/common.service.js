@@ -8,10 +8,10 @@ const sleep = (ms) => {
 const allowLoading = () => {
   const savedDayWordIndex = getSetting('game-day', false);
 
-  // If we can't verify when the game was saved, don't load it
+  // Don't load the game if we can't verify when the game was saved
   if (!savedDayWordIndex) return false;
 
-  // If the day has changed since the last save, don't load it
+  // Don't load the game if the day has changed since the last save
   if (savedDayWordIndex !== getDayFromMillisec().toString()) return false;
 
   return true;

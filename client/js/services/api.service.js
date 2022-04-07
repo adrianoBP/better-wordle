@@ -47,10 +47,11 @@ const validateGuess = async (guess, hash) => {
   );
 };
 
-const getTodayWord = async () => {
+const getWord = async () => {
   const response = await makeRequestParse(
         `${SERVICE_URL}/words/today`,
-        'GET',
+        'POST',
+        dictionaryOptions,
   );
 
   if (response.error) {
@@ -80,7 +81,7 @@ const getNewGameHash = async () => {
 export {
   validateWord,
   validateGuess,
-  getTodayWord,
+  getWord,
 
   getNewGameHash,
 };

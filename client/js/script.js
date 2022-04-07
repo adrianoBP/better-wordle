@@ -4,7 +4,7 @@ import { initUI, setTheme } from './services/ui.service.js';
 import { getSetting } from './services/storage.service.js';
 
 // ! #debug
-import { getNewGameHash } from './services/api.service.js';
+import { getNewGameHash, getWord } from './services/api.service.js';
 
 let rootElement;
 
@@ -32,15 +32,10 @@ function addEventListeners() {
     resetGame();
   });
 
-  // TODO: Check if this should be added to ui.service.js
-  document.querySelector('#modal-close').addEventListener('click', () => {
-    const modal = document.querySelector('#modal');
-    if (modal.classList.contains('hidden')) { modal.classList.remove('hidden'); } else { modal.classList.add('hidden'); }
-  });
-
   // ! #debug
   document.querySelector('#debug').addEventListener('click', async () => {
-    debugger;
+    console.log(await getWord(dictionaryOptions));
+    // debugger;
   });
 }
 

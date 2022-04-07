@@ -3,6 +3,20 @@ import wordsService from '../services/words.service.js';
 
 const router = new Router();
 
+const getTodaysWord = (req, res) => {
+  if (!req.is('application/json')) {
+    res.status(400).json({
+      error: 'Invalid request type. Please send a JSON request.',
+    });
+    return;
+  }
+
+  const dictionaryOptions = req.body;
+
+  res.json({
+    result: wordsService.getWordByHash(dictionaryOptions),
+  });
+};
 
 // ! TODO: do we need this? Or can we just use the online validation one
 const validateWord = (req, res) => {
@@ -28,6 +42,7 @@ const randomHash = (req, res) => {
   });
 };
 
+router.post('/today', getTodaysWord);
 router.post('/validate', validateWord);
 router.post('/random-hash', randomHash);
 

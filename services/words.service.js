@@ -20,13 +20,20 @@ const getWordDictionary = (dictionaryOptions) => {
     .filter((word) => word.length === selectedWordLength);
 };
 
-const getWordByHash = (hash, dictionaryOptions) => {
+const getWordByHash = (dictionaryOptions) => {
   // TODO: implement language and selection of word length - #3
   // TODO: check if there's a better way to select a random word
 
+  if (dictionaryOptions.hash == null) {
+    /* Base word selection on the current date - This should always be the server date,
+    hence, it would reset at the same time for all users */
+    const totalMillisecs = new Date().getTime();
+    dictionaryOptions.hash = Math.floor(totalMillisecs / (1000 * 60 * 60 * 24));
+  }
+
   // Note: words are already shuffled
   const availableWords = getWordDictionary(dictionaryOptions);
-  return availableWords[hash % availableWords.length];
+  return availableWords[dictionaryOptions.hash % availableWords.length];
 };
 
 const wordExists = (word, dictionaryOptions) => {
