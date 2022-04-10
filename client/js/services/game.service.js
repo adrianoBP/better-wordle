@@ -92,7 +92,7 @@ const checkInput = async (input) => {
 
 const saveGame = () => {
   const gameSettings = {
-    gameboard: this.game.board.details,
+    gameboard: mainGame.board.details,
     dictionaryOptions,
   };
 
