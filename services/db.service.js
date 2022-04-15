@@ -27,7 +27,7 @@ const getNewWordHash = async (difficulty, length) => {
   FROM Words 
   WHERE 
     (last_picked < date('now', '-365 day') OR last_picked IS NULL)
-    AND difficulty = ?
+    AND difficulty <= ?
     AND w_length = ?
   ORDER BY RANDOM()
   LIMIT 1`, [difficulty, length]);
@@ -40,7 +40,7 @@ const getTodaysWord = async (difficulty, length) => {
   SELECT word 
   FROM Words 
   WHERE last_picked = date('now')
-    AND difficulty = ?
+    AND difficulty <= ?
     AND w_length = ?
   LIMIT 1`, [difficulty, length]);
   return result?.word;
