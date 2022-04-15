@@ -3,8 +3,8 @@ import fs from 'fs';
 import readline from 'readline';
 import { URL } from 'url';
 
-const IN_FOLDER_PATH = new URL('../dictionaries/raw', import.meta.url).pathname;
-const OUT_FOLDER_PATH = new URL('../dictionaries/filtered', import.meta.url).pathname;
+const IN_FOLDER_PATH = new URL('../dictionaries/12dicts/raw', import.meta.url).pathname;
+const OUT_FOLDER_PATH = new URL('../dictionaries/12dicts/filtered', import.meta.url).pathname;
 
 fs.readdirSync(IN_FOLDER_PATH).forEach((fileName) => {
   const inFilePath = path.join(IN_FOLDER_PATH, fileName);
@@ -17,9 +17,9 @@ fs.readdirSync(IN_FOLDER_PATH).forEach((fileName) => {
   const result = [];
 
   lineReader.on('line', (line) => {
-    const lower = line.toLowerCase();
+    const lower = line.toLowerCase().replace(/[:&#=<^~+]/g, '');
     if (/^[a-z]{4,8}$/.test(lower)) {
-      result.push(lower);
+      result.push(`('${lower}', 1, ${lower.length}),`);
     }
   });
 

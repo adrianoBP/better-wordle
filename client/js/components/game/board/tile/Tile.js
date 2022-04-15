@@ -1,3 +1,4 @@
+'use strict';
 import { flip as flipTile, shake as shakeTile } from '../../../../services/animation.service.js';
 
 class Tile {

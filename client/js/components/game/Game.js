@@ -1,9 +1,9 @@
+'use strict';
 import { sleep } from '../../services/common.service.js';
 import { dictionaryOptions } from '../../services/game.service.js';
 import Gameboard from './board/Gameboard.js';
 import Result from './result/Result.js';
 import { getWord } from '../../services/api.service.js';
-
 
 class Game {
   constructor() {
@@ -17,7 +17,7 @@ class Game {
     return this._board;
   }
 
-  async applyValidationResult(validationResult, incrementWordIndex) {
+  async applyValidationResult(guess, validationResult, incrementWordIndex) {
     await this._board.applyValidationResult(validationResult, incrementWordIndex);
 
     if (this._board.wordGuessed || !this._board.canInsert()) {
@@ -25,7 +25,7 @@ class Game {
         // TODO: Check if can be done better - i.e. as soon as the animation is complete
         await sleep(350);
         this._board.hide();
-        this._result.show(await getWord(dictionaryOptions), this._board.wordGuessed);
+        this._result.show(guess, this._board.wordGuessed);
       }
     }
   }

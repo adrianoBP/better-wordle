@@ -1,7 +1,19 @@
 import wordsService from './words.service.js';
+import dbService from './db.service.js';
 
-const validateGuess = (guess, dictionaryOptions, hash) => {
-  const word = wordsService.getWordByHash(dictionaryOptions);
+const validateGuess = async (guess, dictionaryOptions) => {
+  let word = null;
+
+  if (dictionaryOptions.hash) {
+    word = await dbService.getWordByHash(dictionaryOptions.hash);
+  } else {
+    word = await wordsService.getTodaysWord(dictionaryOptions);
+  }
+
+  if (word == null) {
+    const todaysHash = await pickTodaysHash(dictionaryOptions);
+    word = await wordsService.getWordByHash(todaysHash);
+  }
 
   const result = [];
   const checkedLetters = [];
@@ -38,10 +50,21 @@ const validateGuess = (guess, dictionaryOptions, hash) => {
 
   return {
     validation: result,
-    hash,
+    hash: dictionaryOptions.hash,
   };
+};
+
+const pickTodaysHash = async (dictionaryOptions) => {
+  const newHash = await randomHash(dictionaryOptions);
+  await dbService.setTodayWord(newHash);
+  return newHash;
+};
+
+const randomHash = async (dictionaryOptions) => {
+  return await dbService.getNewWordHash(dictionaryOptions.difficulty, dictionaryOptions.wordLength);
 };
 
 export default {
   validateGuess,
+  randomHash,
 };

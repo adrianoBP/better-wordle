@@ -12,8 +12,10 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 - No special characters
 - All words converted to lowercase
 
-> Regex: `/^[a-z]{4,8}$/`  
-> Words source: [http://www.gwicks.net/dictionaries.htm](http://www.gwicks.net/dictionaries.htm)
+**Notes**: originally going for different languages ([gwicks.net](http://www.gwicks.net/dictionaries.htm)), but focus on words instead
+
+> - Regex: any word containing latin letters and word length between 4 and 8 characters (`/^[a-z]{4,8}$/`)
+> - Words source: [http://wordlist.aspell.net/12dicts/](http://wordlist.aspell.net/12dicts/)
 
 ## Considerations
 
@@ -24,6 +26,12 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 <!-- TODO: discuss classes being used -->
 
 ## Additional
+
+### Extra features
+
+- Light / dark mode switch
+- Play with random word
+- Word meaning once complete
 
 ### Acknowledgment
 

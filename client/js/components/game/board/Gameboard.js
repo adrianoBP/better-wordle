@@ -1,3 +1,4 @@
+'use strict';
 import { sleep } from '../../../services/common.service.js';
 import { updateKeyboard } from '../../../services/keyboard.service.js';
 import Tile from './tile/Tile.js';

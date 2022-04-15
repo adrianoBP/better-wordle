@@ -7,7 +7,7 @@ import { getSetting, setSetting } from './storage.service.js';
 import Game from '../components/game/Game.js';
 
 const dictionaryOptions = {
-  lang: 'en_en',
+  difficulty: 1,
   wordLength: 5,
   allowedGuessesCount: 6,
   gameTime: Date.now(),
@@ -27,6 +27,8 @@ const resetGame = () => {
 };
 
 const checkInput = async (input) => {
+  // TODO: do not accept input if it is still validating
+
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
@@ -83,7 +85,7 @@ const checkInput = async (input) => {
       return;
     }
 
-    await mainGame.applyValidationResult(validationResponse.result.validation, true);
+    await mainGame.applyValidationResult(guess.join(''), validationResponse.result.validation, true);
 
     // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
     if (!dictionaryOptions.hash) { saveGame(); }
@@ -112,8 +114,7 @@ const loadGame = () => {
   }
 
   // If the game settings changed, don't load
-  if (savedGameSettings.dictionaryOptions.wordLength !== dictionaryOptions.wordLength ||
-    savedGameSettings.dictionaryOptions.lang !== dictionaryOptions.lang) {
+  if (savedGameSettings.dictionaryOptions.wordLength !== dictionaryOptions.wordLength) {
     clearGameSettings();
     return;
   }

@@ -1,3 +1,4 @@
+'use strict';
 import { backspaceSVG, enterSVG } from '../../svg/index.js';
 import { checkInput } from '../../services/game.service.js';
 

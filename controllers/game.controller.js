@@ -4,7 +4,7 @@ import { getDayFromMillisec } from '../services/common.service.js';
 
 const router = new Router();
 
-const validateGuess = (req, res) => {
+const validateGuess = async (req, res) => {
   if (!req.is('application/json')) {
     res.status(400).json({
       error: 'Invalid request type. Please send a JSON request.',
@@ -28,14 +28,29 @@ const validateGuess = (req, res) => {
     return;
   }
 
+  res.json({
+    result: await gameService.validateGuess(guess, dictionaryOptions, hash),
+  });
+};
+
+const randomHash = async (req, res) => {
+  if (!req.is('application/json')) {
+    res.status(400).json({
+      error: 'Invalid request type. Please send a JSON request.',
+    });
+    return;
+  }
+
+  const { dictionaryOptions } = req.body;
 
   res.json({
-    result: gameService.validateGuess(guess, dictionaryOptions, hash),
+    result: await gameService.randomHash(dictionaryOptions),
   });
 };
 
 // TODO: Add async wrappers in all controllers to handle errors (only when async is being used)
 
 router.post('/validate-guess', validateGuess);
+router.post('/random-hash', randomHash);
 
 export default router;
