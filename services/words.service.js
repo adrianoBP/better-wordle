@@ -9,8 +9,17 @@ const getWordByHash = async (hash) => {
   return await dbService.getWordByHash(hash);
 };
 
+const getWord = (dictionaryOptions) => {
+  if (dictionaryOptions.hash) {
+    return getWordByHash(dictionaryOptions.hash);
+  } else {
+    return getTodaysWord(dictionaryOptions);
+  }
+};
+
 
 export default {
   getTodaysWord,
   getWordByHash,
+  getWord,
 };

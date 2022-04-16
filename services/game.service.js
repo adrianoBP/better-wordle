@@ -2,13 +2,7 @@ import wordsService from './words.service.js';
 import dbService from './db.service.js';
 
 const validateGuess = async (guess, dictionaryOptions) => {
-  let word = null;
-
-  if (dictionaryOptions.hash) {
-    word = await dbService.getWordByHash(dictionaryOptions.hash);
-  } else {
-    word = await wordsService.getTodaysWord(dictionaryOptions);
-  }
+  let word = await wordsService.getWord(dictionaryOptions);
 
   if (word == null) {
     const todaysHash = await pickTodaysHash(dictionaryOptions);

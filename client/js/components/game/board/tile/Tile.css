@@ -10,6 +10,8 @@
   font-weight: bold;
   font-size: 2rem;
   align-self: center;
+
+  transition-duration: 0s;
 }
 
 #board>div.success {
@@ -26,4 +28,8 @@
 
 #board>div.error {
   color: #7a0b0b;
+}
+
+#board>div.selected {
+  border: 3px solid var(--cell-border-selected);
 }

@@ -5,6 +5,7 @@
     --text-colour-opp: #000;
     --cell-bg: #000;
     --cell-border: #000;
+    --cell-border-selected: #fff;
     --cell-success: #ddd;
     --cell-warn: #999;
     --cell-fail: #555;
@@ -25,6 +26,7 @@
 
     --cell-bg: #1d1421;
     --cell-border: #180023;
+    --cell-border-selected: #C2A2C5;
 
     --cell-success: #328b13;
     --cell-warn: #c7971b;
@@ -43,7 +45,8 @@
     --text-colour-opp: #e5e5e5;
 
     --cell-bg: #C2A2C5;
-    --cell-border: #180023;
+    --cell-border: #654774;
+    --cell-border-selected: #180023;
 
     --cell-success: #48C81B;
     --cell-warn: #FFD15A;

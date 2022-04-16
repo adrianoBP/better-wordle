@@ -1,7 +1,7 @@
 'use strict';
 import * as logService from './log.service.js';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
-import { validateWord, validateGuess } from './api.service.js';
+import { validateGuess } from './api.service.js';
 import { getDayFromMillisec } from './common.service.js';
 import { getSetting, setSetting } from './storage.service.js';
 import Game from '../components/game/Game.js';
@@ -44,11 +44,7 @@ const checkInput = async (input) => {
 
       // If we reached the end of the word, check if it is a valid word
       if (mainGame.board.wordLengthReached()) {
-        const guess = mainGame.board.getCurrentGuess();
-        const wordValidationResult = await validateWord(guess.join(''));
-        if (!wordValidationResult) {
-          mainGame.board.markCurrentWordInvalid();
-        }
+        mainGame.validateGuess();
       }
     }
 
@@ -70,9 +66,7 @@ const checkInput = async (input) => {
   if (input === 'enter' && mainGame.board.wordLengthReached()) {
     const guess = mainGame.board.getCurrentGuess();
 
-    const wordValidationResult = await validateWord(guess.join(''));
-
-    if (!wordValidationResult) {
+    if (!mainGame.isGuessValid) {
       // Wiggle the word so that the user is aware that the word is invalid
       mainGame.board.wiggleWord();
       logService.error('Word is not valid');

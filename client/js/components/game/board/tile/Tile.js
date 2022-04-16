@@ -5,6 +5,8 @@ class Tile {
   constructor() {
     this.htmlElement = document.createElement('div');
     this.isHidden = false;
+
+    this.isSelected = false;
   }
 
   get letter() {
@@ -35,6 +37,15 @@ class Tile {
 
   addClass(className) {
     this.htmlElement.classList.add(className);
+  }
+
+  toggleSelection() {
+    this.isSelected = !this.isSelected;
+    if (this.isSelected) {
+      this.addClass('selected');
+    } else {
+      this.removeClass('selected');
+    }
   }
 }
 

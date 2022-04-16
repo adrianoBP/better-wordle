@@ -19,7 +19,6 @@ class Gameboard {
     this._wordGuessed = false;
 
     // Add board to the DOM
-
     // Create rows of words
     for (let i = 0; i < dictionaryOptions.allowedGuessesCount; i++) {
       this.words.push([]);
@@ -30,6 +29,7 @@ class Gameboard {
         this.boardElement.appendChild(tile.htmlElement);
       }
     }
+    this.toggleNextTile();
   }
 
   get wordGuessed() {
@@ -48,6 +48,8 @@ class Gameboard {
     this.wordIndex = 0;
     this.letterIndex = 0;
     this._wordGuessed = false;
+
+    this.toggleNextTile();
   }
 
   get details() {
@@ -90,8 +92,11 @@ class Gameboard {
   }
 
   addLetter(letter) {
+    this.toggleNextTile();
     this.words[this.wordIndex][this.letterIndex].letter = letter;
     this.letterIndex++;
+
+    this.toggleNextTile();
   }
 
   addWord(word, validationResult) {
@@ -104,10 +109,14 @@ class Gameboard {
     if (validationResult) this.applyValidationResult(validationResult);
     this.wordIndex++;
     this.letterIndex = 0;
+
+    this.toggleNextTile();
   }
 
   removeLetter() {
     if (this.letterIndex === 0) return;
+
+    this.toggleNextTile();
 
     // If we delete a letter, we know for sure that the word is not a complete word, hence remove the error class
     this.words[this.wordIndex].forEach(tile => {
@@ -118,6 +127,7 @@ class Gameboard {
 
     const letterToRemove = this.words[this.wordIndex][this.letterIndex].htmlElement.textContent;
     this.words[this.wordIndex][this.letterIndex].htmlElement.textContent = '';
+    this.toggleNextTile();
 
     // Return the removed letter
     return letterToRemove;
@@ -169,6 +179,8 @@ class Gameboard {
       if (incrementWordIndex) {
         this.wordIndex++;
         this.letterIndex = 0;
+
+        this.toggleNextTile();
       }
     }
 
@@ -189,6 +201,15 @@ class Gameboard {
     this.words[this.wordIndex].forEach((tile) => {
       tile.shake();
     });
+  }
+
+  toggleNextTile() {
+    // TODO: implement setting to disable this feature
+
+    if (this.wordIndex < this.dictionaryOptions.allowedGuessesCount &&
+      this.letterIndex < this.dictionaryOptions.wordLength) {
+      this.words[this.wordIndex][this.letterIndex].toggleSelection();
+    }
   }
 }
 

@@ -48,7 +48,7 @@ const validateGuess = async (guess, hash) => {
 
 const getWord = async () => {
   const response = await makeRequestParse(
-        `${SERVICE_URL}/words/today`,
+        `${SERVICE_URL}/words/by-hash`,
         'POST',
         dictionaryOptions,
   );
