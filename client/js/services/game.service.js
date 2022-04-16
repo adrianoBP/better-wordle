@@ -32,7 +32,7 @@ const checkInput = async (input) => {
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
-  if (!mainGame.board.canInsert()) return;
+  if (!mainGame.board.canInsert() || mainGame.isValidating) return;
 
   input = input.toLowerCase();
 
