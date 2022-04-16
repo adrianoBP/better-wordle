@@ -1,28 +1,40 @@
 'use strict';
 import { flip as flipTile, shake as shakeTile } from '../../../../services/animation.service.js';
+import './tile.component.js';
 
 class Tile {
-  constructor() {
-    this.htmlElement = document.createElement('div');
-    this.isHidden = false;
+  constructor(parentElement) {
+    this.htmlElement = document.createElement('board-tile');
+    this.htmlElement.setAttribute('letter', '');
+    this.htmlElement.setAttribute('type', '');
+    parentElement.appendChild(this.htmlElement);
 
     this.isSelected = false;
   }
 
   get letter() {
-    return this.htmlElement.textContent;
+    return this.htmlElement.getAttribute('letter');
   }
 
   set letter(letter) {
-    this.htmlElement.textContent = letter;
+    this.htmlElement.setAttribute('letter', letter);
   }
 
   get type() {
     return this.class;
   }
 
+  set type(type) {
+    // Do not trigger component update if not needed
+    if (this.type === type) { return; }
+    this.htmlElement.setAttribute('type', type);
+
+    // If we don't pass the type, we are resetting the tile
+    if (!type) { this.isSelected = false; }
+  }
+
   async flip(newType, resolvePercentage) {
-    // flip tile can accept a type - If the type is not passed, the tile is gets reset
+    // flip tile can accept a type - If the type is not passed, the tile gets reset
     await flipTile(this.htmlElement, newType, resolvePercentage);
     if (newType) { this.class = newType; }
   }
@@ -35,16 +47,12 @@ class Tile {
     this.htmlElement.classList.remove(className);
   }
 
-  addClass(className) {
-    this.htmlElement.classList.add(className);
-  }
-
   toggleSelection() {
     this.isSelected = !this.isSelected;
     if (this.isSelected) {
-      this.addClass('selected');
+      this.htmlElement.setAttribute('type', 'selected');
     } else {
-      this.removeClass('selected');
+      this.htmlElement.setAttribute('type', '');
     }
   }
 }

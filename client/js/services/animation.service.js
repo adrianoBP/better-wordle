@@ -27,13 +27,11 @@ const flip = (element, resultClass) => {
     // Animations lasts .5s, half way through the animation, change the color
     setTimeout(() => {
       if (resultClass) {
-        element.classList.add(resultClass);
+        element.setAttribute('type', resultClass);
       } else {
         // If we don't pass a resultClass, we want to reset the tile
-        element.textContent = '';
-        ['success', 'warn', 'fail'].forEach((className) => {
-          element.classList.remove(className);
-        });
+        element.setAttribute('type', '');
+        element.setAttribute('letter', '');
       }
     }, 250);
   });

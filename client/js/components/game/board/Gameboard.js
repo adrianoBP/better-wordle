@@ -24,9 +24,8 @@ class Gameboard {
       this.words.push([]);
       // Create characters for each word
       for (let j = 0; j < dictionaryOptions.wordLength; j++) {
-        const tile = new Tile();
+        const tile = new Tile(this.boardElement);
         this.words[i].push(tile);
-        this.boardElement.appendChild(tile.htmlElement);
       }
     }
     this.toggleNextTile();
@@ -36,18 +35,25 @@ class Gameboard {
     return this._wordGuessed;
   }
 
-  reset() {
+  async reset() {
     this.show();
 
     this.words.forEach((tiles) => {
       tiles.forEach((tile) => {
-        if (tile.letter) { tile.flip(); }
+        if (tile.letter) {
+          tile.flip();
+        } else {
+          tile.type = '';
+        }
       });
     });
 
     this.wordIndex = 0;
     this.letterIndex = 0;
     this._wordGuessed = false;
+
+    // Wait for the flip to finish
+    await sleep(350);
 
     this.toggleNextTile();
   }
@@ -120,13 +126,13 @@ class Gameboard {
 
     // If we delete a letter, we know for sure that the word is not a complete word, hence remove the error class
     this.words[this.wordIndex].forEach(tile => {
-      tile.removeClass('error');
+      tile.type = '';
     });
 
     this.letterIndex--;
 
-    const letterToRemove = this.words[this.wordIndex][this.letterIndex].htmlElement.textContent;
-    this.words[this.wordIndex][this.letterIndex].htmlElement.textContent = '';
+    const letterToRemove = this.words[this.wordIndex][this.letterIndex].letter;
+    this.words[this.wordIndex][this.letterIndex].letter = '';
     this.toggleNextTile();
 
     // Return the removed letter
@@ -135,7 +141,7 @@ class Gameboard {
 
   markCurrentWordInvalid() {
     this.words[this.wordIndex].forEach(tile => {
-      tile.addClass('error');
+      tile.type = 'error';
     });
   }
 
@@ -205,7 +211,6 @@ class Gameboard {
 
   toggleNextTile() {
     // TODO: implement setting to disable this feature
-
     if (this.wordIndex < this.dictionaryOptions.allowedGuessesCount &&
       this.letterIndex < this.dictionaryOptions.wordLength) {
       this.words[this.wordIndex][this.letterIndex].toggleSelection();

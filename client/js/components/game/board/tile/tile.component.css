@@ -1,4 +1,4 @@
-#board>div {
+div {
   aspect-ratio: 1;
   border: 3px solid var(--cell-border);
   border-radius: 40%;
@@ -11,25 +11,27 @@
   font-size: 2rem;
   align-self: center;
 
-  transition-duration: 0s;
+  transition-duration: 0.2s;
+  transition-property: color;
+
 }
 
-#board>div.success {
+div.success {
   background-color: var(--cell-success);
 }
 
-#board>div.warn {
+div.warn {
   background-color: var(--cell-warn);
 }
 
-#board>div.fail {
+div.fail {
   background-color: var(--cell-fail);
 }
 
-#board>div.error {
+div.error {
   color: #7a0b0b;
 }
 
-#board>div.selected {
+div.selected {
   border: 3px solid var(--cell-border-selected);
 }
