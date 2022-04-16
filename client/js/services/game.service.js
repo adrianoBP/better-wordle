@@ -15,15 +15,20 @@ const dictionaryOptions = {
 };
 
 let mainGame = null;
+let isLoading = false;
 
-const startGame = () => {
+const startGame = async () => {
+  isLoading = true;
   mainGame = new Game(dictionaryOptions);
-  loadGame();
+  await loadGame();
+  isLoading = false;
 };
 
-const resetGame = () => {
-  mainGame.restart();
+const resetGame = async () => {
+  isLoading = true;
+  await mainGame.restart();
   resetKeyboard();
+  isLoading = false;
 };
 
 const checkInput = async (input) => {
@@ -32,11 +37,11 @@ const checkInput = async (input) => {
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
-  if (!mainGame.board.canInsert() || mainGame.isValidating) return;
+  if (!mainGame.board.canInsert() || isLoading) return;
 
   input = input.toLowerCase();
 
-  // If the input is a letter
+  // LETTER
   if (/^[a-z]{1,1}$/.test(input)) {
     if (mainGame.board.canAcceptLetter()) {
       mainGame.board.addLetter(input);
@@ -44,14 +49,16 @@ const checkInput = async (input) => {
 
       // If we reached the end of the word, check if it is a valid word
       if (mainGame.board.wordLengthReached()) {
-        mainGame.validateGuess();
+        isLoading = true;
+        await mainGame.validateGuess();
+        isLoading = false;
       }
     }
 
     return;
   }
 
-  // If the input is a backspace
+  // BACKSPACE
   if (input === 'backspace') {
     const removedLetter = mainGame.board.removeLetter();
     const currentGuess = mainGame.board.getCurrentGuess();
@@ -62,7 +69,7 @@ const checkInput = async (input) => {
     return;
   }
 
-  // If the input is enter
+  // ENTER
   if (input === 'enter' && mainGame.board.wordLengthReached()) {
     const guess = mainGame.board.getCurrentGuess();
 
@@ -95,7 +102,7 @@ const saveGame = () => {
   setSetting('game-save', gameSettings);
 };
 
-const loadGame = () => {
+const loadGame = async () => {
   const savedGameSettings = getSetting('game-save');
 
   // If there are no settings, don't load
@@ -119,7 +126,9 @@ const loadGame = () => {
     return;
   }
 
-  mainGame.load(savedGameSettings);
+  isLoading = true;
+  await mainGame.load(savedGameSettings);
+  isLoading = false;
 };
 
 const clearGameSettings = () => {
@@ -131,6 +140,7 @@ const clearGameSettings = () => {
 
 export {
   dictionaryOptions,
+  isLoading,
 
   startGame,
   resetGame,

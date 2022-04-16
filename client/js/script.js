@@ -1,5 +1,5 @@
 'use strict';
-import { checkInput, dictionaryOptions, startGame, resetGame, saveGame } from './services/game.service.js';
+import { checkInput, dictionaryOptions, startGame, resetGame, saveGame, isLoading } from './services/game.service.js';
 import { initUI, setTheme } from './services/ui.service.js';
 import { getSetting } from './services/storage.service.js';
 
@@ -27,6 +27,8 @@ function addEventListeners() {
   });
 
   document.querySelector('#random-game').addEventListener('click', async () => {
+    if (isLoading) return;
+
     // Creates a new game - The game is not saved!
     dictionaryOptions.hash = await getNewGameHash();
     resetGame();
