@@ -13,7 +13,6 @@ class Game {
     this._result = new Result(this._gameElement);
 
     this._isGuessValid = false;
-    this._isValidating = false;
   }
 
   get board() {
@@ -24,9 +23,6 @@ class Game {
     return this._isGuessValid;
   }
 
-  get isValidating() {
-    return this._isValidating;
-  }
 
   async validateGuess() {
     // By default make it false to prevent the user from submitting the guess
@@ -39,8 +35,6 @@ class Game {
   }
 
   async applyValidationResult(guess, validationResult, incrementWordIndex) {
-    this._isValidating = true;
-
     await this._board.applyValidationResult(validationResult, incrementWordIndex);
 
     if (this._board.wordGuessed || !this._board.canInsert()) {
@@ -54,13 +48,9 @@ class Game {
       this._board.hide();
       this._result.show(guess, this._board.wordGuessed);
     }
-
-    this._isValidating = false;
   }
 
   async load(savedGameSettings) {
-    this._isValidating = true;
-
     for (const row of savedGameSettings.gameboard) {
       // Convert the element type to a validation type (-1: not present, 0: wrong position, 1: correct position)
       row.forEach((letter) => {
@@ -79,13 +69,12 @@ class Game {
       this._board.hide();
       this._result.show(await getWord(dictionaryOptions), this._board.wordGuessed);
     }
-
-    this._isValidating = false;
   }
 
-  restart() {
+  async restart() {
     this._board.reset();
     this._result.hide();
+    await sleep(500);
   }
 }
 
