@@ -165,12 +165,10 @@ class Gameboard {
 
     if (validationResult) {
       for (let i = 0; i < guess.length; i++) {
-        const letter = validationResult[i];
-
         let classResult = '';
 
-        if (letter === 1) classResult = 'success';
-        else if (letter === 0) classResult = 'warn';
+        if (validationResult[i] === 1) classResult = 'success';
+        else if (validationResult[i] === 0) classResult = 'warn';
         else classResult = 'fail';
 
         keysToReload.push({ letter: guess[i], classResult });
@@ -180,6 +178,8 @@ class Gameboard {
         await sleep(350);
       }
 
+      // Wait for the last flip animation to fully finish
+      await sleep(200);
       updateKeyboard(keysToReload);
 
       if (incrementWordIndex) {
