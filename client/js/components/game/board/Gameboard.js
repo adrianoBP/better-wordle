@@ -1,12 +1,11 @@
 'use strict';
 import { sleep } from '../../../services/common.service.js';
 import { updateKeyboard } from '../../../services/keyboard.service.js';
+import { settings } from '../../../services/settings.service.js';
 import Tile from './tile/Tile.js';
 
 class Gameboard {
-  constructor(gameElement, dictionaryOptions) {
-    this.dictionaryOptions = dictionaryOptions;
-
+  constructor(gameElement) {
     this.boardElement = document.createElement('div');
     this.boardElement.id = 'board';
     gameElement.appendChild(this.boardElement);
@@ -20,10 +19,10 @@ class Gameboard {
 
     // Add board to the DOM
     // Create rows of words
-    for (let i = 0; i < dictionaryOptions.allowedGuessesCount; i++) {
+    for (let i = 0; i < settings.allowedGuessesCount; i++) {
       this.words.push([]);
       // Create characters for each word
-      for (let j = 0; j < dictionaryOptions.wordLength; j++) {
+      for (let j = 0; j < settings.wordLength; j++) {
         const tile = new Tile(this.boardElement);
         this.words[i].push(tile);
       }
@@ -82,15 +81,15 @@ class Gameboard {
   // TODO: Check if this can be optimized
 
   canInsert() {
-    return this.wordIndex < this.dictionaryOptions.allowedGuessesCount && !this._wordGuessed;
+    return this.wordIndex < settings.allowedGuessesCount && !this._wordGuessed;
   }
 
   canAcceptLetter() {
-    return this.letterIndex < this.dictionaryOptions.wordLength;
+    return this.letterIndex < settings.wordLength;
   }
 
   wordLengthReached() {
-    return this.letterIndex === this.dictionaryOptions.wordLength;
+    return this.letterIndex === settings.wordLength;
   }
 
   getCurrentGuess() {
@@ -196,7 +195,7 @@ class Gameboard {
       // this.hide();
     }
 
-    if (this.wordIndex === this.dictionaryOptions.allowedGuessesCount) {
+    if (this.wordIndex === settings.allowedGuessesCount) {
       // Add some time to allow the user to see the word before hiding it
       await sleep(300);
       // this.hide();
@@ -211,9 +210,16 @@ class Gameboard {
 
   toggleNextTile() {
     // TODO: implement setting to disable this feature
-    if (this.wordIndex < this.dictionaryOptions.allowedGuessesCount &&
-      this.letterIndex < this.dictionaryOptions.wordLength) {
+    if (settings.tileSelection && this.wordIndex < settings.allowedGuessesCount &&
+      this.letterIndex < settings.wordLength) {
       this.words[this.wordIndex][this.letterIndex].toggleSelection();
+    }
+  }
+
+  forceTileSelection() {
+    if (this.wordIndex < settings.allowedGuessesCount &&
+      this.letterIndex < settings.wordLength) {
+      this.words[this.wordIndex][this.letterIndex].forceTileSelection(settings.tileSelection);
     }
   }
 }

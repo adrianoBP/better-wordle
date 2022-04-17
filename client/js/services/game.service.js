@@ -3,23 +3,17 @@ import * as logService from './log.service.js';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess } from './api.service.js';
 import { getDayFromMillisec } from './common.service.js';
-import { getSetting, setSetting } from './storage.service.js';
+import { getItem, setItem } from './storage.service.js';
+import { settings, saveSettings } from './settings.service.js';
 import Game from '../components/game/Game.js';
 
-const dictionaryOptions = {
-  difficulty: 1,
-  wordLength: 5,
-  allowedGuessesCount: 6,
-  gameTime: Date.now(),
-  hash: null, // used to restart the game with a different word for the same day - hash should generated on the server
-};
 
 let mainGame = null;
 let isLoading = false;
 
 const startGame = async () => {
   isLoading = true;
-  mainGame = new Game(dictionaryOptions);
+  mainGame = new Game();
   await loadGame();
   isLoading = false;
 };
@@ -32,8 +26,6 @@ const resetGame = async () => {
 };
 
 const checkInput = async (input) => {
-  // TODO: do not accept input if it is still validating
-
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
@@ -89,57 +81,45 @@ const checkInput = async (input) => {
     await mainGame.applyValidationResult(guess.join(''), validationResponse.result.validation, true);
 
     // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
-    if (!dictionaryOptions.hash) { saveGame(); }
+    if (!settings.hash) { saveGame(); }
   }
 };
 
 const saveGame = () => {
-  const gameSettings = {
-    gameboard: mainGame.board.details,
-    dictionaryOptions,
-  };
-
-  setSetting('game-save', gameSettings);
+  setItem('game-save', mainGame.board.details);
 };
 
 const loadGame = async () => {
-  const savedGameSettings = getSetting('game-save');
+  const savedGame = getItem('game-save');
 
   // If there are no settings, don't load
-  if (!savedGameSettings) return;
+  if (!savedGame) return;
 
-  // If the game index changed, don't load
-  if (getDayFromMillisec(savedGameSettings.dictionaryOptions.gameTime) !== getDayFromMillisec()) {
-    clearGameSettings();
-    return;
-  }
-
-  // If the game settings changed, don't load
-  if (savedGameSettings.dictionaryOptions.wordLength !== dictionaryOptions.wordLength) {
-    clearGameSettings();
-    return;
-  }
-
-  // If the game settings are the same, load
-  if (!savedGameSettings.gameboard) {
+  // If the game day, don't load
+  if (getDayFromMillisec(settings.gameTime) !== getDayFromMillisec()) {
     clearGameSettings();
     return;
   }
 
   isLoading = true;
-  await mainGame.load(savedGameSettings);
+  await mainGame.load(savedGame);
   isLoading = false;
 };
 
-const clearGameSettings = () => {
-  dictionaryOptions.hash = null;
-  dictionaryOptions.gameTime = Date.now();
-  saveGame();
+const applySettings = () => {
+  // Tile selection
+  mainGame.board.forceTileSelection();
 };
 
+const clearGameSettings = () => {
+  saveGame();
+  // Make sure to reset the settings
+  settings.hash = null;
+  settings.gameTime = Date.now();
+  saveSettings();
+};
 
 export {
-  dictionaryOptions,
   isLoading,
 
   startGame,
@@ -147,6 +127,7 @@ export {
 
   saveGame,
   loadGame,
+  applySettings,
 
   checkInput,
 };

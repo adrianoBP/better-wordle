@@ -1,6 +1,6 @@
 'use strict';
 import * as logService from './log.service.js';
-import { dictionaryOptions } from './game.service.js';
+import { settings } from './settings.service.js';
 
 // Since we are serving the client, we don't need to specify the full path (and will prevent issues with CORS)
 const SERVICE_URL = '/api';
@@ -40,7 +40,7 @@ const validateGuess = async (guess, hash) => {
         `${SERVICE_URL}/game/validate-guess`,
         'POST', {
           guess,
-          dictionaryOptions,
+          settings,
           hash,
         },
   );
@@ -50,7 +50,7 @@ const getWord = async () => {
   const response = await makeRequestParse(
         `${SERVICE_URL}/words/by-hash`,
         'POST',
-        dictionaryOptions,
+        settings,
   );
 
   if (response.error) {
@@ -65,7 +65,7 @@ const getNewGameHash = async () => {
   const response = await makeRequestParse(
     `${SERVICE_URL}/game/random-hash`,
     'POST', {
-      dictionaryOptions,
+      settings,
     },
   );
 

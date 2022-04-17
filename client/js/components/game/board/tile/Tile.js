@@ -55,6 +55,11 @@ class Tile {
       this.htmlElement.setAttribute('type', '');
     }
   }
+
+  forceTileSelection(tileSelected) {
+    this.isSelected = tileSelected;
+    this.htmlElement.setAttribute('type', tileSelected ? 'selected' : '');
+  }
 }
 
 export default Tile;

@@ -11,10 +11,10 @@ const getWordByHash = async (req, res) => {
     return;
   }
 
-  const dictionaryOptions = req.body;
+  const settings = req.body;
 
   res.json({
-    result: await wordsService.getWord(dictionaryOptions),
+    result: await wordsService.getWord(settings),
   });
 };
 

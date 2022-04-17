@@ -1,11 +1,11 @@
 import wordsService from './words.service.js';
 import dbService from './db.service.js';
 
-const validateGuess = async (guess, dictionaryOptions) => {
-  let word = await wordsService.getWord(dictionaryOptions);
+const validateGuess = async (guess, settings) => {
+  let word = await wordsService.getWord(settings);
 
   if (word == null) {
-    const todaysHash = await pickTodaysHash(dictionaryOptions);
+    const todaysHash = await pickTodaysHash(settings);
     word = await wordsService.getWordByHash(todaysHash);
   }
 
@@ -44,18 +44,18 @@ const validateGuess = async (guess, dictionaryOptions) => {
 
   return {
     validation: result,
-    hash: dictionaryOptions.hash,
+    hash: settings.hash,
   };
 };
 
-const pickTodaysHash = async (dictionaryOptions) => {
-  const newHash = await randomHash(dictionaryOptions);
+const pickTodaysHash = async (settings) => {
+  const newHash = await randomHash(settings);
   await dbService.setTodayWord(newHash);
   return newHash;
 };
 
-const randomHash = async (dictionaryOptions) => {
-  return await dbService.getNewWordHash(dictionaryOptions.difficulty, dictionaryOptions.wordLength);
+const randomHash = async (settings) => {
+  return await dbService.getNewWordHash(settings.difficulty, settings.wordLength);
 };
 
 export default {

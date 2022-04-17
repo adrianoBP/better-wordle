@@ -1,12 +1,12 @@
 'use strict';
-import { getSetting } from './storage.service.js';
+import { getItem } from './storage.service.js';
 
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 const allowLoading = () => {
-  const savedDayWordIndex = getSetting('game-day', false);
+  const savedDayWordIndex = getItem('game-day', false);
 
   // Don't load the game if we can't verify when the game was saved
   if (!savedDayWordIndex) return false;

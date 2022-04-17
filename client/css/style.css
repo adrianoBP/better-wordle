@@ -72,6 +72,7 @@ nav>.nav-left {
   margin-left: 1rem;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 nav>.nav-right {
@@ -107,4 +108,8 @@ main {
   flex: 1 1 auto;
   display: flex;
   flex-flow: column;
+}
+
+sliding-menu {
+  z-index: 998;
 }

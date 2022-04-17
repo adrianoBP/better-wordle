@@ -8,9 +8,7 @@
   <link rel="stylesheet" href="css/animations.css" />
   <link rel="stylesheet" href="js/components/game/Game.css" />
   <link rel="stylesheet" href="css/keyboard.css" />
-  <link rel="stylesheet" href="css/modal.css" />
   <link rel="stylesheet" href="css/debug.css" />
-  <link rel="stylesheet" href="css/menu.css" />
 
   <script type="module" src="js/script.js"></script>
   <script type="module" src="js/services/api.service.js"></script>
@@ -19,23 +17,16 @@
   <title>better-worlde</title>
 </head>
 
-<body class="light">
-
-  <div class="menu">
-    <p>Section #1</p>
-    <p>Section #2</p>
-    <p>Section #3</p>
-  </div>
+<body class="dark">
 
   <nav>
 
     <div class="nav-left center-items">
-      <div class="menu-toggle"><span></span></div>
+      <sliding-menu active="false"></sliding-menu>
       <a id="title">better-wordle</a>
     </div>
 
     <div class="nav-right center-items">
-      <img src="resources/icons/sun.svg" id="theme-switch">
       <img src="resources/icons/dice.svg" id="random-game">
       <!-- ! #debug -->
       <img src="resources/icons/code.svg" id="debug">

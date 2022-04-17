@@ -12,7 +12,7 @@ const validateGuess = async (req, res) => {
     return;
   }
 
-  const { dictionaryOptions, guess, hash } = req.body;
+  const { settings, guess, hash } = req.body;
 
   if (!guess) {
     res.status(400).json({
@@ -21,7 +21,7 @@ const validateGuess = async (req, res) => {
     return;
   }
 
-  if (getDayFromMillisec(dictionaryOptions?.gameTime) !== getDayFromMillisec()) {
+  if (getDayFromMillisec(settings?.gameTime) !== getDayFromMillisec()) {
     res.status(400).json({
       error: 'Invalid request. If you had the game open for too long, reload the page.',
     });
@@ -29,7 +29,7 @@ const validateGuess = async (req, res) => {
   }
 
   res.json({
-    result: await gameService.validateGuess(guess, dictionaryOptions, hash),
+    result: await gameService.validateGuess(guess, settings, hash),
   });
 };
 
@@ -41,10 +41,10 @@ const randomHash = async (req, res) => {
     return;
   }
 
-  const { dictionaryOptions } = req.body;
+  const { settings } = req.body;
 
   res.json({
-    result: await gameService.randomHash(dictionaryOptions),
+    result: await gameService.randomHash(settings),
   });
 };
 

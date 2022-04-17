@@ -89,7 +89,7 @@
 }
 
 #keyboard>.row>div.selected {
-  background-color: var(--cell-border);
+  background-color: #180023;
   color: var(--text-light);
   fill: var(--text-light);
 }
