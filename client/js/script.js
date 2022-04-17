@@ -34,6 +34,30 @@ function addEventListeners() {
     resetGame();
   });
 
+
+  // * MENU
+  const toggler = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.menu');
+  toggler.addEventListener('click', () => {
+    toggler.classList.toggle('active');
+    menu.classList.toggle('active');
+  });
+
+  // Close menu on escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      toggler.classList.remove('active');
+      menu.classList.remove('active');
+    }
+  });
+
+  // Close menu on backdrop
+  document.querySelector('main').addEventListener('click', () => {
+    toggler.classList.remove('active');
+    menu.classList.remove('active');
+  });
+
+
   // ! #debug
   document.querySelector('#debug').addEventListener('click', async () => {
     console.log(await getWord(dictionaryOptions));

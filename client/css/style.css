@@ -1,7 +1,6 @@
 :root {
   --cells-per-row: 0;
 
-  --nav-font-size: 8vmin;
   --keyboard-font-size: 5vmin;
   --keyboard-width: 98%;
   --key-padding: 3vmin 1vmin;
@@ -10,11 +9,7 @@
   --cell-size: 4rem;
 }
 
-@media (min-width: 500px) {
-  :root {
-    --nav-font-size: 4vmin;
-  }
-}
+
 
 * {
   margin: 0;
@@ -74,6 +69,8 @@ nav>div {
 
 nav>.nav-left {
   margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
 }
 
 nav>.nav-right {
@@ -83,14 +80,11 @@ nav>.nav-right {
   margin-right: 1rem;
 }
 
-/* nav>.nav-left #theme-switch {
-  padding-left: 1rem;
-} */
-
 nav #title {
   font-weight: bold;
-  font-size: var(--nav-font-size);
+  font-size: 2rem;
   padding: 1vmin 0;
+  margin-left: 1rem;
 }
 
 nav img {
