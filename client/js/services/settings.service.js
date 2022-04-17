@@ -9,6 +9,11 @@ let settings = {
   gameTime: Date.now(),
   hash: null, // used to restart the game with a different word for the same day - hash should generated on the server
   tileSelection: true,
+  stats: {
+    played: 0,
+    won: 0,
+    results: [0, 0, 0, 0, 0, 0],
+  },
 };
 
 const loadSettings = () => {
@@ -20,9 +25,11 @@ const loadSettings = () => {
 };
 
 const saveSettings = (newSettings) => {
+  // Update the settings before saving them
+  settings = { ...settings, ...newSettings };
+
   // Never save the hash to prevent errors on loading
-  settings = { ...settings, ...newSettings, hash: null };
-  setItem('settings', settings);
+  setItem('settings', { ...settings, hash: null });
 };
 
 export {

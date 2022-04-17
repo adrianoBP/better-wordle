@@ -1,8 +1,7 @@
 'use strict';
 import { sleep } from '../../services/common.service.js';
-import { settings } from '../../services/settings.service.js';
+import { saveSettings, settings } from '../../services/settings.service.js';
 import Gameboard from './board/Gameboard.js';
-// import Result from './result/Result.js';
 import { getWord, validateWord } from '../../services/api.service.js';
 import './result/result.component.js';
 class Game {
@@ -14,8 +13,6 @@ class Game {
     this._result = document.createElement('result-details');
     this._result.setAttribute('show', false);
     this._gameElement.appendChild(this._result);
-
-    // this._result = new Result(this._gameElement);
 
     this._isGuessValid = false;
   }
@@ -49,12 +46,16 @@ class Game {
 
       // TODO: Check if can be done better - i.e. as soon as the animation is complete
       await sleep(350);
-      this._board.hide();
-      this._result.setAttribute('show', true);
-      this._result.setAttribute('word', guess);
-      this._result.setAttribute('win', this._board.wordGuessed);
+
+      settings.stats.played++;
+      settings.stats.won += this._board.wordGuessed ? 1 : 0;
+      settings.stats.results[this._board.wordIndex - 1] += this._board.wordGuessed ? 1 : 0;
+      saveSettings();
+
+      this.showResult(guess);
     }
   }
+
 
   async load(savedGame) {
     for (const row of savedGame) {
@@ -71,10 +72,7 @@ class Game {
     await sleep(450 * settings.wordLength);
 
     if (this._board.wordGuessed || !this._board.canInsert()) {
-      this._board.hide();
-      this._result.setAttribute('show', true);
-      this._result.setAttribute('word', await getWord(settings));
-      this._result.setAttribute('win', this._board.wordGuessed);
+      this.showResult(await getWord(settings));
     }
   }
 
@@ -83,6 +81,13 @@ class Game {
     this._result.setAttribute('show', false);
     // this._result.hide();
     await sleep(500);
+  }
+
+  showResult(guess) {
+    this._board.hide();
+    this._result.setAttribute('show', true);
+    this._result.setAttribute('word', guess);
+    this._result.setAttribute('win', this._board.wordGuessed);
   }
 }
 
