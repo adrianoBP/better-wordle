@@ -1,3 +1,7 @@
+#result-component {
+  display: none;
+}
+
 #result-component>#result-word {
   background-color: var(--result-bg);
   color: var(--text-colour-opp);

@@ -2,15 +2,20 @@
 import { sleep } from '../../services/common.service.js';
 import { settings } from '../../services/settings.service.js';
 import Gameboard from './board/Gameboard.js';
-import Result from './result/Result.js';
+// import Result from './result/Result.js';
 import { getWord, validateWord } from '../../services/api.service.js';
-
+import './result/result.component.js';
 class Game {
   constructor() {
     this._gameElement = document.querySelector('#game');
 
     this._board = new Gameboard(this._gameElement);
-    this._result = new Result(this._gameElement);
+
+    this._result = document.createElement('result-details');
+    this._result.setAttribute('show', false);
+    this._gameElement.appendChild(this._result);
+
+    // this._result = new Result(this._gameElement);
 
     this._isGuessValid = false;
   }
@@ -45,7 +50,9 @@ class Game {
       // TODO: Check if can be done better - i.e. as soon as the animation is complete
       await sleep(350);
       this._board.hide();
-      this._result.show(guess, this._board.wordGuessed);
+      this._result.setAttribute('show', true);
+      this._result.setAttribute('word', guess);
+      this._result.setAttribute('win', this._board.wordGuessed);
     }
   }
 
@@ -65,13 +72,16 @@ class Game {
 
     if (this._board.wordGuessed || !this._board.canInsert()) {
       this._board.hide();
-      this._result.show(await getWord(settings), this._board.wordGuessed);
+      this._result.setAttribute('show', true);
+      this._result.setAttribute('word', await getWord(settings));
+      this._result.setAttribute('win', this._board.wordGuessed);
     }
   }
 
   async restart() {
     this._board.reset();
-    this._result.hide();
+    this._result.setAttribute('show', false);
+    // this._result.hide();
     await sleep(500);
   }
 }
