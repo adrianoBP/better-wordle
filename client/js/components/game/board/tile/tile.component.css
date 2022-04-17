@@ -13,7 +13,6 @@ div {
 
   transition-duration: 0.2s;
   transition-property: color;
-
 }
 
 div.success {
@@ -29,9 +28,9 @@ div.fail {
 }
 
 div.error {
-  color: #7a0b0b;
+  color: #ad0202;
 }
 
 div.selected {
-  border: 3px solid var(--cell-border-selected);
+  border-bottom: 3px solid var(--cell-border-selected);
 }

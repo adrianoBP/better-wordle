@@ -3,7 +3,7 @@
   grid-template-columns: repeat(var(--cells-per-row), minmax(1rem, 4.5rem));
   width: 100%;
   max-width: 500px;
+  padding: 2vmin 0;
   justify-content: center;
   gap: 0.6vmin;
-  padding: 2vmin 0;
 }
