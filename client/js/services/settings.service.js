@@ -20,7 +20,8 @@ const loadSettings = () => {
 };
 
 const saveSettings = (newSettings) => {
-  settings = { ...settings, ...newSettings };
+  // Never save the hash to prevent errors on loading
+  settings = { ...settings, ...newSettings, hash: null };
   setItem('settings', settings);
 };
 
