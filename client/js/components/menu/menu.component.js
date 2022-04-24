@@ -36,6 +36,7 @@ const define = (template) => {
         // Save settings once the settings page closes
         const newSettings = {
           tileSelection: this.shadow.querySelector('#tile-selection').checked,
+          validateOnComplete: this.shadow.querySelector('#validate-word').checked,
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
         };
         saveSettings(newSettings);
@@ -44,8 +45,10 @@ const define = (template) => {
     }
 
     updateSettings() {
-      const tileSelection = this.shadow.querySelector('#tile-selection');
-      tileSelection.setAttribute('checked', this.settings.tileSelection);
+      this.shadow.querySelector('#tile-selection')
+        .setAttribute('checked', this.settings.tileSelection);
+      this.shadow.querySelector('#validate-word')
+        .setAttribute('checked', this.settings.validateOnComplete);
     }
 
     get active() {

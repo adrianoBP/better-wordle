@@ -9,6 +9,7 @@ let settings = {
   gameTime: Date.now(),
   hash: null, // used to restart the game with a different word for the same day - hash is generated on the server
   tileSelection: true,
+  validateOnComplete: true,
   stats: {
     played: 0,
     won: 0,
