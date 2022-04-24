@@ -1,5 +1,4 @@
 'use strict';
-
 import { settings } from '../../../services/settings.service.js';
 
 fetch('js/components/game/result/result.component.html')

@@ -1,68 +1,49 @@
 'use strict';
-import { sleep } from '../../../services/common.service.js';
-import { updateKeyboard } from '../../../services/keyboard.service.js';
 import { settings } from '../../../services/settings.service.js';
+import { updateKeyboard } from '../../../services/keyboard.service.js';
+import { sleep } from '../../../services/common.service.js';
 import '../board/tile/tile.component.js';
 
-class Gameboard {
-  constructor(gameElement) {
-    this.boardElement = document.createElement('div');
-    this.boardElement.id = 'board';
-    gameElement.appendChild(this.boardElement);
+class BoardDetails extends HTMLElement {
+  constructor() {
+    super();
 
-    this.boardElement.replaceChildren([]);
+    this.shadow = this.attachShadow({ mode: 'open' });
+    this.shadow.innerHTML = `
+      <style>
+        @import url('js/components/game/board/board.component.css');
+      </style>
+      <div></div>
+      `;
 
-    this.wordIndex = 0;
-    this.letterIndex = 0;
     this.words = [];
     this._wordGuessed = false;
-
-    // Add board to the DOM
-    // Create rows of words
-    for (let i = 0; i < settings.allowedGuessesCount; i++) {
-      this.words.push([]);
-      // Create characters for each word
-      for (let j = 0; j < settings.wordLength; j++) {
-        // const tile = new Tile(this.boardElement);
-        this.words[i].push(this.createTile());
-      }
-    }
-    this.toggleNextTile();
-  }
-
-  createTile() {
-    const tile = document.createElement('board-tile');
-    tile.setAttribute('letter', '');
-    tile.setAttribute('type', '');
-    this.boardElement.appendChild(tile);
-    return tile;
   }
 
   get wordGuessed() {
     return this._wordGuessed;
   }
 
-  async reset() {
-    this.show();
+  get wordIndex() {
+    if (!this.hasAttribute('word-index')) { return 0; }
+    return parseInt(this.getAttribute('word-index'));
+  }
 
-    this.words.forEach((tiles) => {
-      tiles.forEach((tile) => {
-        if (tile.letter) {
-          tile.flip();
-        } else {
-          tile.type = '';
-        }
-      });
-    });
+  set wordIndex(value) {
+    this.setAttribute('word-index', value);
+  }
 
-    this.wordIndex = 0;
-    this.letterIndex = 0;
-    this._wordGuessed = false;
+  get letterIndex() {
+    if (!this.hasAttribute('letter-index')) { return 0; }
+    return parseInt(this.getAttribute('letter-index'));
+  }
 
-    // Wait for the flip to finish
-    await sleep(350);
+  set letterIndex(value) {
+    this.setAttribute('letter-index', value);
+  }
 
-    this.toggleNextTile();
+  get guess() {
+    return this.words[this.wordIndex].map((tile) => tile.letter);
   }
 
   get details() {
@@ -86,7 +67,15 @@ class Gameboard {
     return details;
   }
 
-  // TODO: Check if this can be optimized
+  get tileSelection() {
+    // By default, show the tile selection
+    if (!this.hasAttribute('tile-selection')) return true;
+    return this.getAttribute('tile-selection') === 'enabled';
+  }
+
+  set tileSelection(isEnabled) {
+    this.setAttribute('tile-selection', isEnabled ? 'enabled' : 'disabled');
+  }
 
   canInsert() {
     return this.wordIndex < settings.allowedGuessesCount && !this._wordGuessed;
@@ -100,17 +89,6 @@ class Gameboard {
     return this.letterIndex === settings.wordLength;
   }
 
-  getCurrentGuess() {
-    return this.words[this.wordIndex].map((tile) => tile.letter);
-  }
-
-  addLetter(letter) {
-    this.words[this.wordIndex][this.letterIndex].isSelected = false;
-    this.words[this.wordIndex][this.letterIndex].letter = letter;
-    this.letterIndex++;
-    this.toggleNextTile();
-  }
-
   addWord(word, validationResult) {
     if (!this.canInsert()) return;
 
@@ -122,6 +100,13 @@ class Gameboard {
     this.wordIndex++;
     this.letterIndex = 0;
 
+    this.toggleNextTile();
+  }
+
+  addLetter(letter) {
+    this.words[this.wordIndex][this.letterIndex].isSelected = false;
+    this.words[this.wordIndex][this.letterIndex].letter = letter;
+    this.letterIndex++;
     this.toggleNextTile();
   }
 
@@ -145,24 +130,10 @@ class Gameboard {
     return letterToRemove;
   }
 
-  markCurrentWordInvalid() {
-    this.words[this.wordIndex].forEach(tile => {
-      tile.type = 'error';
-    });
-  }
-
-  show() {
-    this.boardElement.style.display = 'grid';
-  }
-
-  hide() {
-    this.boardElement.style.display = 'none';
-  }
-
   async applyValidationResult(validationResult, incrementWordIndex) {
     // List of keyboard keys that need to be updated according to the validation result
     const keysToReload = [];
-    const guess = this.getCurrentGuess();
+    const guess = this.guess;
 
     // We copy the index of the word as multiple validations could happen at the same time (i.e. game load)
     const wordToUpdateIndex = this.wordIndex;
@@ -207,32 +178,94 @@ class Gameboard {
     }
   }
 
+  toggleNextTile() {
+    if (this.tileSelection && this.wordIndex < settings.allowedGuessesCount &&
+      this.letterIndex < settings.wordLength) {
+      this.words[this.wordIndex][this.letterIndex].toggleSelection();
+    }
+  }
+
+  markCurrentWordInvalid() {
+    this.words[this.wordIndex].forEach(tile => {
+      tile.type = 'error';
+    });
+  }
+
+  async reset() {
+    this.show();
+
+    this.words.forEach((tiles) => {
+      tiles.forEach((tile) => {
+        if (tile.letter) {
+          tile.flip();
+        } else {
+          tile.type = '';
+        }
+      });
+    });
+
+    this.wordIndex = 0;
+    this.letterIndex = 0;
+    this._wordGuessed = false;
+
+    // Wait for the flip to finish
+    await sleep(350);
+
+    this.toggleNextTile();
+  }
+
+  show() {
+    this.shadow.querySelector('div').style.display = 'grid';
+  }
+
+  hide() {
+    this.shadow.querySelector('div').style.display = 'none';
+  }
+
   wiggleWord() {
     this.words[this.wordIndex].forEach((tile) => {
       tile.shake();
     });
   }
 
-  toggleTile(tile) {
-    if (settings.tileSelection && this.wordIndex < settings.allowedGuessesCount &&
-      this.letterIndex < settings.wordLength) {
-      tile.toggleSelection();
+  connectedCallback() {
+    this.wordIndex = 0;
+    this.letterIndex = 0;
+
+    // Add board to the DOM
+    // Create rows of words
+    for (let i = 0; i < settings.allowedGuessesCount; i++) {
+      this.words.push([]);
+      // Create characters for each word
+      for (let j = 0; j < settings.wordLength; j++) {
+        // const tile = new Tile(this.boardElement);
+        this.words[i].push(this.createTile());
+      }
     }
   }
 
-  toggleNextTile() {
-    if (settings.tileSelection && this.wordIndex < settings.allowedGuessesCount &&
-      this.letterIndex < settings.wordLength) {
-      this.words[this.wordIndex][this.letterIndex].toggleSelection();
-    }
+  createTile() {
+    const tile = document.createElement('board-tile');
+    tile.setAttribute('letter', '');
+    tile.setAttribute('type', '');
+    this.shadow.querySelector('div').appendChild(tile);
+    return tile;
   }
 
-  updateTileSelection() {
+  onTileSelectionChange() {
     if (this.wordIndex < settings.allowedGuessesCount &&
       this.letterIndex < settings.wordLength) {
-      this.words[this.wordIndex][this.letterIndex].isSelected = settings.tileSelection;
+      this.words[this.wordIndex][this.letterIndex].isSelected = this.tileSelection;
     }
+  }
+
+  static get observedAttributes() {
+    return ['tile-selection'];
+  }
+
+  attributeChangedCallback(name) {
+    if (name === 'tile-selection') { this.onTileSelectionChange(); }
   }
 }
 
-export default Gameboard;
+customElements.define('board-details', BoardDetails);

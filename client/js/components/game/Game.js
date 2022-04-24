@@ -1,14 +1,16 @@
 'use strict';
 import { sleep } from '../../services/common.service.js';
 import { saveSettings, settings } from '../../services/settings.service.js';
-import Gameboard from './board/Gameboard.js';
+// import Gameboard from './board/Gameboard.js';
 import { getWord, validateWord } from '../../services/api.service.js';
+import './board/board.component.js';
 import './result/result.component.js';
 class Game {
   constructor() {
     this._gameElement = document.querySelector('#game');
 
-    this._board = new Gameboard(this._gameElement);
+    this._board = document.createElement('board-details');
+    this._gameElement.appendChild(this._board);
 
     this._result = document.createElement('result-details');
     this._result.setAttribute('show', false);
@@ -28,7 +30,7 @@ class Game {
   async validateGuess() {
     // By default make it false to prevent the user from submitting the guess
     this._isGuessValid = false;
-    const guess = this._board.getCurrentGuess();
+    const guess = this._board.guess;
     this._isGuessValid = await validateWord(guess.join(''));
     if (!this._isGuessValid) {
       this._board.markCurrentWordInvalid();

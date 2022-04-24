@@ -53,7 +53,7 @@ const checkInput = async (input) => {
   // BACKSPACE
   if (input === 'backspace') {
     const removedLetter = mainGame.board.removeLetter();
-    const currentGuess = mainGame.board.getCurrentGuess();
+    const currentGuess = mainGame.board.guess;
 
     // Unselect only if it is the last occurrence in the guess
     if (!currentGuess.includes(removedLetter)) { unselectKey(removedLetter); }
@@ -63,7 +63,7 @@ const checkInput = async (input) => {
 
   // ENTER
   if (input === 'enter' && mainGame.board.wordLengthReached()) {
-    const guess = mainGame.board.getCurrentGuess();
+    const guess = mainGame.board.guess;
 
     if (!mainGame.isGuessValid) {
       // Wiggle the word so that the user is aware that the word is invalid
@@ -108,7 +108,7 @@ const loadGame = async () => {
 
 const applySettings = () => {
   // Tile selection
-  mainGame.board.updateTileSelection();
+  mainGame.board.tileSelection = settings.tileSelection;
 };
 
 const clearGameSettings = () => {
