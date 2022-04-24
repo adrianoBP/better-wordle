@@ -96,7 +96,7 @@ const define = (template) => {
         this._wordElement.textContent = newValue;
       }
       if (name === 'win') {
-        this._resultElement.textContent = newValue ? 'You won!' : 'You lost!';
+        this._resultElement.textContent = newValue === 'true' ? 'You won!' : 'You lost!';
       }
     }
   }

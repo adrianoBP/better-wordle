@@ -63,25 +63,30 @@ const checkInput = async (input) => {
 
   // ENTER
   if (input === 'enter' && mainGame.board.wordLengthReached()) {
+    isLoading = true;
     const guess = mainGame.board.guess;
 
-    if (!mainGame.isGuessValid) {
-      // Wiggle the word so that the user is aware that the word is invalid
-      mainGame.board.wiggleWord();
-      logService.error('Word is not valid');
-      return;
+    try {
+      if (!mainGame.isGuessValid) {
+        // Wiggle the word so that the user is aware that the word is invalid
+        mainGame.board.wiggleWord();
+        logService.error('Word is not valid');
+        return;
+      }
+
+      const validationResponse = await validateGuess(guess);
+      if (validationResponse.error) {
+        logService.error(validationResponse.error);
+        return;
+      }
+
+      await mainGame.applyValidationResult(guess.join(''), validationResponse.result.validation, true);
+
+      // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
+      if (!settings.hash) { saveGame(); }
+    } finally {
+      isLoading = false;
     }
-
-    const validationResponse = await validateGuess(guess);
-    if (validationResponse.error) {
-      logService.error(validationResponse.error);
-      return;
-    }
-
-    await mainGame.applyValidationResult(guess.join(''), validationResponse.result.validation, true);
-
-    // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
-    if (!settings.hash) { saveGame(); }
   }
 };
 
