@@ -34,3 +34,32 @@ div.error {
 div.selected {
   border-bottom: 3px solid var(--cell-border-selected);
 }
+
+.flip {
+  animation: 0.5s linear flip;
+}
+
+@keyframes flip {
+
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  50% {
+    transform: rotateX(90deg);
+  }
+
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

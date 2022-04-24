@@ -108,7 +108,7 @@ const loadGame = async () => {
 
 const applySettings = () => {
   // Tile selection
-  mainGame.board.forceTileSelection();
+  mainGame.board.updateTileSelection();
 };
 
 const clearGameSettings = () => {

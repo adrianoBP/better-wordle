@@ -2,7 +2,7 @@
 import { sleep } from '../../../services/common.service.js';
 import { updateKeyboard } from '../../../services/keyboard.service.js';
 import { settings } from '../../../services/settings.service.js';
-import Tile from './tile/Tile.js';
+import '../board/tile/tile.component.js';
 
 class Gameboard {
   constructor(gameElement) {
@@ -23,11 +23,19 @@ class Gameboard {
       this.words.push([]);
       // Create characters for each word
       for (let j = 0; j < settings.wordLength; j++) {
-        const tile = new Tile(this.boardElement);
-        this.words[i].push(tile);
+        // const tile = new Tile(this.boardElement);
+        this.words[i].push(this.createTile());
       }
     }
     this.toggleNextTile();
+  }
+
+  createTile() {
+    const tile = document.createElement('board-tile');
+    tile.setAttribute('letter', '');
+    tile.setAttribute('type', '');
+    this.boardElement.appendChild(tile);
+    return tile;
   }
 
   get wordGuessed() {
@@ -97,10 +105,9 @@ class Gameboard {
   }
 
   addLetter(letter) {
-    this.toggleNextTile();
+    this.words[this.wordIndex][this.letterIndex].isSelected = false;
     this.words[this.wordIndex][this.letterIndex].letter = letter;
     this.letterIndex++;
-
     this.toggleNextTile();
   }
 
@@ -160,8 +167,6 @@ class Gameboard {
     // We copy the index of the word as multiple validations could happen at the same time (i.e. game load)
     const wordToUpdateIndex = this.wordIndex;
 
-    const tileFlips = [];
-
     if (validationResult) {
       for (let i = 0; i < guess.length; i++) {
         let classResult = '';
@@ -172,7 +177,7 @@ class Gameboard {
 
         keysToReload.push({ letter: guess[i], classResult });
 
-        tileFlips.push(this.words[wordToUpdateIndex][i].flip(classResult));
+        this.words[wordToUpdateIndex][i].flip(classResult);
 
         await sleep(350);
       }
@@ -208,18 +213,24 @@ class Gameboard {
     });
   }
 
+  toggleTile(tile) {
+    if (settings.tileSelection && this.wordIndex < settings.allowedGuessesCount &&
+      this.letterIndex < settings.wordLength) {
+      tile.toggleSelection();
+    }
+  }
+
   toggleNextTile() {
-    // TODO: implement setting to disable this feature
     if (settings.tileSelection && this.wordIndex < settings.allowedGuessesCount &&
       this.letterIndex < settings.wordLength) {
       this.words[this.wordIndex][this.letterIndex].toggleSelection();
     }
   }
 
-  forceTileSelection() {
+  updateTileSelection() {
     if (this.wordIndex < settings.allowedGuessesCount &&
       this.letterIndex < settings.wordLength) {
-      this.words[this.wordIndex][this.letterIndex].forceTileSelection(settings.tileSelection);
+      this.words[this.wordIndex][this.letterIndex].isSelected = settings.tileSelection;
     }
   }
 }
