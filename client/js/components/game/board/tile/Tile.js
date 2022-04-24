@@ -49,11 +49,7 @@ class Tile {
 
   toggleSelection() {
     this.isSelected = !this.isSelected;
-    if (this.isSelected) {
-      this.htmlElement.setAttribute('type', 'selected');
-    } else {
-      this.htmlElement.setAttribute('type', '');
-    }
+    this.htmlElement.setAttribute('type', this.isSelected ? 'selected' : '');
   }
 
   forceTileSelection(tileSelected) {

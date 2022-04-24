@@ -7,7 +7,7 @@ let settings = {
   wordLength: 5,
   allowedGuessesCount: 6,
   gameTime: Date.now(),
-  hash: null, // used to restart the game with a different word for the same day - hash should generated on the server
+  hash: null, // used to restart the game with a different word for the same day - hash is generated on the server
   tileSelection: true,
   stats: {
     played: 0,
@@ -29,7 +29,8 @@ const saveSettings = (newSettings) => {
   settings = { ...settings, ...newSettings };
 
   // Never save the hash to prevent errors on loading
-  setItem('settings', { ...settings, hash: null });
+  // Never save the wordLength as by default, we always want it to be 5
+  setItem('settings', { ...settings, hash: null, wordLength: 5 });
 };
 
 export {
