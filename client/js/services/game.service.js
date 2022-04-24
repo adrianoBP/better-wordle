@@ -7,7 +7,6 @@ import { getItem, setItem } from './storage.service.js';
 import { settings, saveSettings } from './settings.service.js';
 import Game from '../components/game/Game.js';
 
-
 let mainGame = null;
 let isLoading = false;
 
@@ -40,7 +39,8 @@ const checkInput = async (input) => {
       selectKey(input);
 
       // If we reached the end of the word, check if it is a valid word
-      if (mainGame.board.wordLengthReached()) {
+      // If not enabled in the settings, don't validate
+      if (settings.validateOnComplete && mainGame.board.wordLengthReached()) {
         isLoading = true;
         await mainGame.validateGuess();
         isLoading = false;
@@ -67,6 +67,9 @@ const checkInput = async (input) => {
     const guess = mainGame.board.guess;
 
     try {
+      // If we don't validate on complete, validate on enter
+      if (!settings.validateOnComplete) { await mainGame.validateGuess(); }
+
       if (!mainGame.isGuessValid) {
         // Wiggle the word so that the user is aware that the word is invalid
         mainGame.board.wiggleWord();

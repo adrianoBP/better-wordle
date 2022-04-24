@@ -28,9 +28,6 @@ class Game {
   }
 
   async validateGuess() {
-    // If not enabled in the settings, don't validate
-    if (!settings.validateOnComplete) { return true; }
-
     // By default make it false to prevent the user from submitting the guess
     this._isGuessValid = false;
     const guess = this._board.guess;
