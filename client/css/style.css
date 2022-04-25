@@ -50,7 +50,7 @@ nav {
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
-  color: var(--text-light);
+  text-decoration: none;
 }
 
 nav>*:first-child,
@@ -66,9 +66,15 @@ nav>.nav-right {
 }
 
 nav #title {
+  color: var(--text-light);
+  text-decoration: none;
   font-weight: bold;
   font-size: 2rem;
   padding: 1vmin 0;
+}
+
+nav #title:hover {
+  transform: scale(0.95);
 }
 
 nav img {

@@ -67,7 +67,7 @@ const define = (template) => {
 
     connectedCallback() {
       this._resultElement = this.shadow.querySelector('#result-text');
-      this._wordElement = this.shadow.querySelector('#result-word');
+      this._wordElement = this.shadow.querySelector('#result-word-text');
       this._statsHeader = this.shadow.querySelector('#stats-header');
       this._statsContent = this.shadow.querySelector('#stats-content');
 
@@ -77,7 +77,7 @@ const define = (template) => {
     }
 
     updateVisibility() {
-      this.shadow.querySelector('#result-component').style.display = this.show ? 'flex' : 'none';
+      this.shadow.querySelector('section').style.display = this.show ? 'flex' : 'none';
 
       if (this.show) {
         this.buildStats();
