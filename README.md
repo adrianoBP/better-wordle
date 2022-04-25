@@ -6,11 +6,7 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 [Figma Prototype](https://www.figma.com/file/u0nTlcMm0l8TFa9kjbFQUP/Untitled?node-id=0%3A1)
 
-## Word conditions
-
-- Word length between 4 and 8 inclusive
-- No special characters
-- All words converted to lowercase
+## Words
 
 **Notes**: originally going for different languages ([gwicks.net](http://www.gwicks.net/dictionaries.htm)), but focus on words instead
 
@@ -26,13 +22,25 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 <!-- TODO: discuss classes being used -->
 
-## Additional
+### SVG icons
+
+SVGs are loaded in three different ways:
+
+- `<svg>` tag (i.e. [`result.component.html`](client/js/components/game/result/result.component.html))  
+This is done when the icon is static and does not need to change
+- `<img>` tag (i.e. [`index.html`](client/index.html))  
+This is done when basic transitions need to be applied (e.g. `scale` or `translate`) or when the icon needs to change (done by swapping the `src` attribute)
+- Created in JS (i.e. [`enter.js`](client/js/svg/enter.js))  
+This is done when the image needs to be added dynamically within a component for better code readability. All these images are referenced by an [index file](client/js/svg/index.js) that can be imported.
+
+## Non-core features
 
 ### Extra features
 
 - Light / dark mode switch
 - Play with random word
-- Word meaning once complete
+- Word meaning search
+- Validate word on completion
 
 ### Acknowledgment
 
