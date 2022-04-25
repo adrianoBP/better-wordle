@@ -6,6 +6,44 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 [Figma Prototype](https://www.figma.com/file/u0nTlcMm0l8TFa9kjbFQUP/Untitled?node-id=0%3A1)
 
+## Core functionalities
+
+### Basic five-letter game
+
+- Underline
+- Red word on fail
+
+### Different word each day
+
+- Resets at 12am UTC
+- Selected randomly (how?)
+
+### Non discoverable word
+
+> See [cheating](#cheating)
+
+### Statistics
+
+### Keyboard
+
+## Non-core functionalities
+
+### Light / dark mode switch
+
+### Play with random word
+
+### Word meaning search
+
+### Validate word on completion
+
+### Settings
+
+### Share game
+
+When playing with random words (i.e. not today's word), the URL gets updated with a `hash` code that identifies the word.
+Users can copy and share the URL with other users to see how many attempts it takes them. The `hash` of a word is a base64 representation of the row index in the database.  
+By default, the URL will not specify the word length, allowing a minimalist approach; however, if the word length is different from the default (5), it will be specified in the URL parameters.
+
 ## Considerations
 
 ### Words
@@ -31,21 +69,6 @@ This is done when basic transitions need to be applied (e.g. `scale` or `transla
 - Created in JS (i.e. [`enter.js`](client/js/svg/enter.js))  
 This is done when the image needs to be added dynamically within a component for better code readability. All these images are referenced by an [index file](client/js/svg/index.js) that can be imported.
 
-## Non-core features
-
-### Light / dark mode switch
-
-### Play with random word
-
-### Word meaning search
-
-### Validate word on completion
-
-### Share game
-
-When playing with random words (i.e. not today's word), the URL gets updated with a `hash` code that identifies the word.
-Users can copy and share the URL with other users to see how many attempts it takes them.
-
 ## Acknowledgments
 
 ### Overkill
@@ -54,8 +77,8 @@ Many elements of the projects are way more complicated of what this kind of proj
 
 ### Cheating
 
-Technically speaking, there may be way to cheat the game by changing the game save time, however, having this value is necessary to know when the client should reset the board.
-Another possible way to cheat is to manually run the API call to get today's word.
+Cheating by checking the word has been reduced to the minium.
+During testing, the only way to cheat that was found was by manually calling the `words/by-hash` endpoint that is needed to provide the word to the user in case they cannot find the correct word. However, this would require the user to first acquire the `hash` of the word, which can be done by setting breakpoints in the browser developer tools.
 
 ## References
 
