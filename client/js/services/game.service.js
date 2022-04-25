@@ -23,6 +23,8 @@ const resetGame = async (hash) => {
     // Update URL in case user wants to share the game
     const url = new URL(location.href);
     url.searchParams.set('hash', settings.hash);
+    // For base version, don't save length param to keep URL short
+    if (settings.wordLength !== 5) { url.searchParams.set('length', settings.wordLength); }
     history.pushState(null, '', url);
   }
 

@@ -31,6 +31,9 @@ const loadSettings = () => {
   // If we are starting a game with a hash, override the hash but don't save in memory
   const searchParams = new URLSearchParams(window.location.search);
   settings.hash = searchParams.get('hash');
+  if (searchParams.has('length')) {
+    settings.wordLength = parseInt(searchParams.get('length'));
+  }
 };
 
 const saveSettings = (newSettings) => {
