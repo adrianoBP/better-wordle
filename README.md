@@ -6,17 +6,15 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 [Figma Prototype](https://www.figma.com/file/u0nTlcMm0l8TFa9kjbFQUP/Untitled?node-id=0%3A1)
 
-## Words
+## Considerations
+
+### Words
 
 **Notes**: originally going for different languages ([gwicks.net](http://www.gwicks.net/dictionaries.htm)), but focus on words instead
 
 - Regex: any word containing latin letters and word length between 4 and 8 characters (`/^[a-z]{4,8}$/`)
 - Words source: [http://wordlist.aspell.net/12dicts/](http://wordlist.aspell.net/12dicts/)
 - Time resets at 12 am UTC
-
-## Considerations
-
-- Dictionaries are saved as normal txt files as we will only read from them and never write
 
 ### Classes
 
@@ -35,25 +33,31 @@ This is done when the image needs to be added dynamically within a component for
 
 ## Non-core features
 
-### Extra features
+### Light / dark mode switch
 
-- Light / dark mode switch
-- Play with random word
-- Word meaning search
-- Validate word on completion
+### Play with random word
 
-### Acknowledgment
+### Word meaning search
 
-#### Overkill
+### Validate word on completion
+
+### Share game
+
+When playing with random words (i.e. not today's word), the URL gets updated with a `hash` code that identifies the word.
+Users can copy and share the URL with other users to see how many attempts it takes them.
+
+## Acknowledgments
+
+### Overkill
 
 Many elements of the projects are way more complicated of what this kind of project (i.e. components, split all files, validation, etc.), however, since this project has to be a testament of our knowledge of Javascript, HTML and CSS, I believe that it is appropriate to include them.
 
-#### Cheating
+### Cheating
 
 Technically speaking, there may be way to cheat the game by changing the game save time, however, having this value is necessary to know when the client should reset the board.
 Another possible way to cheat is to manually run the API call to get today's word.
 
-### References
+## References
 
 - Icons: all icons used are under CC0 or PD licensing:  
 SVG Repo - Free SVG Vectors and Icons. (n.d.). www.svgrepo.com. <https://www.svgrepo.com/>

@@ -27,7 +27,8 @@ function addEventListeners() {
     if (isLoading) return;
     // Creates a new game - The game is not saved!
     settings.hash = await getNewGameHash();
-    resetGame();
+
+    resetGame(settings.hash);
   });
 
   // Close menu on backdrop click

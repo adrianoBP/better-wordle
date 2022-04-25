@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import wordsService from '../services/words.service.js';
+import { fromBase64 } from '../services/common.service.js';
 
 const router = new Router();
 
@@ -14,7 +15,7 @@ const getWordByHash = async (req, res) => {
   const settings = req.body;
 
   res.json({
-    result: await wordsService.getWord(settings),
+    result: await wordsService.getWord({ ...settings, hash: fromBase64(settings.hash) }),
   });
 };
 

@@ -58,7 +58,6 @@ class Game {
     }
   }
 
-
   async load(savedGame) {
     for (const row of savedGame) {
       // Convert the element type to a validation type (-1: not present, 0: wrong position, 1: correct position)
@@ -81,7 +80,6 @@ class Game {
   async restart() {
     this._board.reset();
     this._result.setAttribute('show', false);
-    // this._result.hide();
     await sleep(500);
   }
 

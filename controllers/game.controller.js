@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import gameService from '../services/game.service.js';
-import { getDayFromMillisec } from '../services/common.service.js';
+import { getDayFromMillisec, fromBase64, toBase64 } from '../services/common.service.js';
 
 const router = new Router();
 
@@ -12,7 +12,7 @@ const validateGuess = async (req, res) => {
     return;
   }
 
-  const { settings, guess, hash } = req.body;
+  const { settings, guess } = req.body;
 
   if (!guess) {
     res.status(400).json({
@@ -29,7 +29,7 @@ const validateGuess = async (req, res) => {
   }
 
   res.json({
-    result: await gameService.validateGuess(guess, settings, hash),
+    result: await gameService.validateGuess(guess, { ...settings, hash: fromBase64(settings.hash) }),
   });
 };
 
@@ -44,7 +44,7 @@ const randomHash = async (req, res) => {
   const { settings } = req.body;
 
   res.json({
-    result: await gameService.randomHash(settings),
+    result: toBase64(await gameService.randomHash(settings)),
   });
 };
 

@@ -42,10 +42,7 @@ const validateGuess = async (guess, settings) => {
     result.push(-1);
   });
 
-  return {
-    validation: result,
-    hash: settings.hash,
-  };
+  return result;
 };
 
 const pickTodaysHash = async (settings) => {
@@ -55,7 +52,8 @@ const pickTodaysHash = async (settings) => {
 };
 
 const randomHash = async (settings) => {
-  return await dbService.getNewWordHash(settings.difficulty, settings.wordLength);
+  const hash = await dbService.getNewWordHash(settings.difficulty, settings.wordLength);
+  return hash;
 };
 
 export default {

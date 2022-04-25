@@ -2,8 +2,7 @@
 import * as logService from './log.service.js';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess } from './api.service.js';
-import { getDayFromMillisec } from './common.service.js';
-import { getItem, setItem } from './storage.service.js';
+import { getItem, setItem, getDayFromMillisec } from './common.service.js';
 import { settings, saveSettings } from './settings.service.js';
 import Game from '../components/game/Game.js';
 
@@ -17,7 +16,16 @@ const startGame = async () => {
   isLoading = false;
 };
 
-const resetGame = async () => {
+// Game is reset when the user changes the game settings (i.e. word length, difficulty, etc.)
+// or when the user starts a new game with a random word
+const resetGame = async (hash) => {
+  if (hash) {
+    // Update URL in case user wants to share the game
+    const url = new URL(location.href);
+    url.searchParams.set('hash', settings.hash);
+    history.pushState(null, '', url);
+  }
+
   isLoading = true;
   await mainGame.restart();
   resetKeyboard();
@@ -83,7 +91,7 @@ const checkInput = async (input) => {
         return;
       }
 
-      await mainGame.applyValidationResult(guess.join(''), validationResponse.result.validation, true);
+      await mainGame.applyValidationResult(guess.join(''), validationResponse.result, true);
 
       // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
       if (!settings.hash) { saveGame(); }
@@ -108,6 +116,9 @@ const loadGame = async () => {
     clearGameSettings();
     return;
   }
+
+  // If we have a hash from the URL, don't load
+  if (settings.hash != null) return;
 
   isLoading = true;
   await mainGame.load(savedGame);
@@ -134,7 +145,6 @@ export {
   resetGame,
 
   saveGame,
-  loadGame,
   applySettings,
 
   checkInput,

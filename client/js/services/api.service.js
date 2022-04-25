@@ -35,18 +35,18 @@ const validateWord = async (guess) => {
   return response.status === 200;
 };
 
-const validateGuess = async (guess, hash) => {
+const validateGuess = async (guess) => {
   return await makeRequestParse(
         `${SERVICE_URL}/game/validate-guess`,
         'POST', {
           guess,
           settings,
-          hash,
         },
   );
 };
 
 const getWord = async () => {
+  // We get the word by hash - if no has is specified, we get the word using the current settings
   const response = await makeRequestParse(
         `${SERVICE_URL}/words/by-hash`,
         'POST',

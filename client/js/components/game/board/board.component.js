@@ -168,13 +168,6 @@ class BoardDetails extends HTMLElement {
     // If all the letters are in the correct position, the user won the game
     if (validationResult.every(letter => letter === 1)) {
       this._wordGuessed = true;
-      // this.hide();
-    }
-
-    if (this.wordIndex === settings.allowedGuessesCount) {
-      // Add some time to allow the user to see the word before hiding it
-      await sleep(300);
-      // this.hide();
     }
   }
 
@@ -238,7 +231,6 @@ class BoardDetails extends HTMLElement {
       this.words.push([]);
       // Create characters for each word
       for (let j = 0; j < settings.wordLength; j++) {
-        // const tile = new Tile(this.boardElement);
         this.words[i].push(this.createTile());
       }
     }

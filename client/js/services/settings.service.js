@@ -1,4 +1,4 @@
-import { getItem, setItem } from './storage.service.js';
+import { getItem, setItem } from './common.service.js';
 import { setTheme } from './ui.service.js';
 
 let settings = {
@@ -7,7 +7,8 @@ let settings = {
   wordLength: 5,
   allowedGuessesCount: 6,
   gameTime: Date.now(),
-  hash: null, // used to restart the game with a different word for the same day - hash is generated on the server
+  // used to restart the game with a different word for the same day - hash is generated on the server
+  hash: null,
   tileSelection: true,
   validateOnComplete: true,
   stats: {
@@ -22,7 +23,14 @@ const loadSettings = () => {
   if (savedSettings) {
     settings = savedSettings;
     setTheme(settings.theme);
+  } else {
+    // If no settings are found, save the default ones
+    saveSettings();
   }
+
+  // If we are starting a game with a hash, override the hash but don't save in memory
+  const searchParams = new URLSearchParams(window.location.search);
+  settings.hash = searchParams.get('hash');
 };
 
 const saveSettings = (newSettings) => {
