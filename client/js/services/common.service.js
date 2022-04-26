@@ -4,18 +4,6 @@ const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-const allowLoading = () => {
-  const savedDayWordIndex = getItem('game-day', false);
-
-  // Don't load the game if we can't verify when the game was saved
-  if (!savedDayWordIndex) return false;
-
-  // Don't load the game if the day has changed since the last save
-  if (savedDayWordIndex !== getDayFromMillisec().toString()) return false;
-
-  return true;
-};
-
 const getDayFromMillisec = (millisec) => {
   if (millisec == null) { millisec = Date.now(); }
   return Math.floor(millisec / (1000 * 60 * 60 * 24));
@@ -32,11 +20,28 @@ const getItem = (key, parse = true) => {
   return localStorage.getItem(key);
 };
 
+const setTheme = (theme, element) => {
+  if (theme == null) { theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+
+  document.body.classList.remove('dark');
+  document.body.classList.remove('light');
+  document.body.classList.add(theme);
+
+  if (element != null) {
+    if (theme === 'dark') {
+      element.src = '../../resources/icons/sun.svg';
+    } else if (theme === 'light') {
+      element.src = '../../resources/icons/half-moon.svg';
+    }
+  }
+};
+
 export {
   sleep,
-  allowLoading,
   getDayFromMillisec,
 
   setItem,
   getItem,
+
+  setTheme,
 };

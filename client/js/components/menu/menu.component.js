@@ -1,6 +1,6 @@
 'use strict';
 
-import { setTheme } from '../../services/ui.service.js';
+import { setTheme } from '../../services/common.service.js';
 import { applySettings } from '../../services/game.service.js';
 import { settings, saveSettings } from '../../services/settings.service.js';
 import '../toggle/toggle.component.js';
