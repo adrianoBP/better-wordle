@@ -14,17 +14,47 @@ const define = (template) => {
       this.shadow.innerHTML = template;
     }
 
-    get show() {
-      return this.getAttribute('show') === 'true';
+    get wordElem() {
+      return this.shadow.querySelector('#result-word-text');
     }
 
-    set show(value) {
-      this.setAttribute('show', value);
+    get statsHeaderElem() {
+      return this.shadow.querySelector('#stats-header');
+    }
+
+    get statsContentElem() {
+      return this.shadow.querySelector('#stats-content');
+    }
+
+    get isShowing() {
+      return this.getAttribute('is-showing') === 'true';
+    }
+
+    set isShowing(value) {
+      this.setAttribute('is-showing', value);
+    }
+
+    get word() {
+      return this.getAttribute('word');
+    }
+
+    set word(value) {
+      this.setAttribute('word', value);
+    }
+
+    show(guess, gameWon) {
+      this.shadow.querySelector('#result-text').textContent = gameWon ? 'You won!' : 'You lost!';
+      this.word = guess;
+      this.isShowing = true;
+    }
+
+    hide() {
+      this.isShowing = false;
     }
 
     buildStats() {
-      this._statsHeader.innerHTML = '';
-      this._statsContent.innerHTML = '';
+      this.statsHeaderElem.innerHTML = '';
+      this.statsContentElem.innerHTML = '';
 
       // Add totals
       const totalTemplate = this.shadow.querySelector('#stat-total-template');
@@ -43,7 +73,7 @@ const define = (template) => {
         const stat = totalTemplate.content.cloneNode(true);
         stat.querySelector('.total-label').textContent = statHeader.label;
         stat.querySelector('.total-value').textContent = statHeader.value;
-        this._statsHeader.appendChild(stat);
+        this.statsHeaderElem.appendChild(stat);
       }
 
       const elementTemplate = this.shadow.querySelector('#stat-element-template');
@@ -61,43 +91,35 @@ const define = (template) => {
 
         statValue.style.width = `${(value / maxCount) * 100}%`;
 
-        this._statsContent.appendChild(statRow);
+        this.statsContentElem.appendChild(statRow);
       }
     }
 
     connectedCallback() {
-      this._resultElement = this.shadow.querySelector('#result-text');
-      this._wordContainer = this.shadow.querySelector('#result-word');
-      this._wordElement = this.shadow.querySelector('#result-word-text');
-      this._statsHeader = this.shadow.querySelector('#stats-header');
-      this._statsContent = this.shadow.querySelector('#stats-content');
-
-      this._wordContainer.addEventListener('click', () => {
-        window.open(`https://google.com/search?q=${this._wordElement.textContent}+meaning`);
-      });
+      this.shadow.querySelector('#result-word')
+        .addEventListener('click', () => {
+          window.open(`https://google.com/search?q=${this.wordElem.textContent}+meaning`);
+        });
     }
 
-    updateVisibility() {
-      this.shadow.querySelector('section').style.display = this.show ? 'flex' : 'none';
+    onVisibilityChange() {
+      this.shadow.querySelector('section').style.display = this.isShowing ? 'flex' : 'none';
 
-      if (this.show) {
+      if (this.isShowing) {
         this.buildStats();
       }
     }
 
     static get observedAttributes() {
-      return ['show', 'word', 'win'];
+      return ['is-showing', 'word', 'win'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-      if (name === 'show' &&
+      if (name === 'is-showing' &&
         oldValue != null &&
-        oldValue !== newValue) { this.updateVisibility(); }
+        oldValue !== newValue) { this.onVisibilityChange(); }
       if (name === 'word') {
-        this._wordElement.textContent = newValue;
-      }
-      if (name === 'win') {
-        this._resultElement.textContent = newValue === 'true' ? 'You won!' : 'You lost!';
+        this.wordElem.textContent = newValue;
       }
     }
   }

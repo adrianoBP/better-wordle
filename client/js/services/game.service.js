@@ -4,14 +4,21 @@ import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess, isWordValid } from './api.service.js';
 import { getItem, setItem, getDayFromMillisec } from './common.service.js';
 import { settings, saveSettings } from './settings.service.js';
-import Game from '../components/game/Game.js';
+
+import '../components/game/game.component.js';
 
 let mainGame = null;
 let isLoading = false;
 
 const startGame = async () => {
   isLoading = true;
-  mainGame = new Game();
+
+  mainGame = document.createElement('game-component');
+  mainGame.setAttribute('is-guess-valid', true);
+
+  // Append at the top of the main element
+  document.querySelector('main').prepend(mainGame);
+
   await loadGame();
   isLoading = false;
 };
@@ -38,19 +45,19 @@ const checkInput = async (input) => {
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
-  if (!mainGame.board.canInsert() || isLoading) return;
+  if (!mainGame.boardElem.canInsert() || isLoading) return;
 
   input = input.toLowerCase();
 
   // LETTER
   if (/^[a-z]{1,1}$/.test(input)) {
-    if (mainGame.board.canAcceptLetter()) {
-      mainGame.board.addLetter(input);
+    if (mainGame.boardElem.canAcceptLetter()) {
+      mainGame.boardElem.addLetter(input);
       selectKey(input);
 
       // If we reached the end of the word, check if it is a valid word
       // If not enabled in the settings, don't validate
-      if (settings.validateOnComplete && mainGame.board.wordLengthReached()) {
+      if (settings.validateOnComplete && mainGame.boardElem.wordLengthReached()) {
         isLoading = true;
         await isGuessValid(mainGame);
         isLoading = false;
@@ -62,8 +69,8 @@ const checkInput = async (input) => {
 
   // BACKSPACE
   if (input === 'backspace') {
-    const removedLetter = mainGame.board.removeLetter();
-    const currentGuess = mainGame.board.guess;
+    const removedLetter = mainGame.boardElem.removeLetter();
+    const currentGuess = mainGame.boardElem.guess;
 
     // Unselect only if it is the last occurrence in the guess
     if (!currentGuess.includes(removedLetter)) { unselectKey(removedLetter); }
@@ -72,9 +79,9 @@ const checkInput = async (input) => {
   }
 
   // ENTER
-  if (input === 'enter' && mainGame.board.wordLengthReached()) {
+  if (input === 'enter' && mainGame.boardElem.wordLengthReached()) {
     isLoading = true;
-    const guess = mainGame.board.guess;
+    const guess = mainGame.boardElem.guess;
 
     try {
       // If we don't validate on complete, validate on enter
@@ -82,7 +89,7 @@ const checkInput = async (input) => {
 
       if (!mainGame.isGuessValid) {
         // Wiggle the word so that the user is aware that the word is invalid
-        mainGame.board.wiggleWord();
+        mainGame.boardElem.wiggleWord();
         logService.error('Word is not valid');
         return;
       }
@@ -103,29 +110,22 @@ const checkInput = async (input) => {
   }
 };
 
-// List of words that the user has already guessed and are wrong - Reduce round trips to the server
-const wrongGuesses = [];
+// Dictionary of words and their validity to reduce API calls
+const guesses = {};
 
 const isGuessValid = async (game) => {
-  const guess = game._board.guess.join('');
+  const guess = game.boardElem.guess.join('');
 
-  // If the word is already guessed, don't validate
-  if (wrongGuesses.includes(game.board.guess.join(''))) {
-    game._isGuessValid = false;
-  } else {
-    // By default make it false to prevent the user from submitting the guess (word validation takes time)
-    game._isGuessValid = false;
-    game._isGuessValid = await isWordValid(guess);
+  // If we don't know if the word is valid yet, check it
+  if (guesses[guess] == null) {
+    guesses[guess] = await isWordValid(guess);
   }
 
-  if (!game._isGuessValid) {
-    game._board.markCurrentWordInvalid();
-    wrongGuesses.push(guess);
-  }
+  game.isGuessValid = guesses[guess];
 };
 
 const saveGame = () => {
-  setItem('game-save', mainGame.board.details);
+  setItem('game-save', mainGame.boardElem.details);
 };
 
 const loadGame = async () => {
@@ -149,8 +149,8 @@ const loadGame = async () => {
 };
 
 const applySettings = () => {
-  // Tile selection
-  mainGame.board.tileSelection = settings.tileSelection;
+  // Tile selection change
+  mainGame.boardElem.tileSelection = settings.tileSelection;
 };
 
 const clearGameSettings = () => {

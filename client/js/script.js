@@ -50,7 +50,7 @@ function onInit() {
   addEventListeners();
 
   initKeyboard();
-  startGame(true);
+  startGame();
 }
 
 // Only once the DOM tree has been built, load

@@ -22,7 +22,7 @@ const define = (template) => {
         this.shadow.querySelector('#theme-switch'));
     }
 
-    toggleMenu() {
+    onActiveChange() {
       const menuToggle = this.shadow.querySelector('#menu-toggle');
       const menuContent = this.shadow.querySelector('#menu-content');
 
@@ -44,7 +44,7 @@ const define = (template) => {
       }
     }
 
-    updateSettings() {
+    onSettingsChange() {
       this.shadow.querySelector('#tile-selection')
         .setAttribute('checked', this.settings.tileSelection);
       this.shadow.querySelector('#validate-word')
@@ -92,10 +92,10 @@ const define = (template) => {
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'active' &&
         oldValue != null &&
-        oldValue !== newValue) { this.toggleMenu(); }
+        oldValue !== newValue) { this.onActiveChange(); }
       if (name === 'settings' &&
         (oldValue == null &&
-        oldValue !== newValue)) { this.updateSettings(); }
+        oldValue !== newValue)) { this.onSettingsChange(); }
     }
   }
 
