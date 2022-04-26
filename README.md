@@ -38,6 +38,8 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 
 ### Validate word on completion
 
+- Error word caching
+
 ### Settings / Menu
 
 - Edit app settings

@@ -26,7 +26,7 @@ const makeRequestParse = async (url, method = 'GET', body = null, headers = {}) 
   return await (await makeRequest(url, method, body, headers)).json();
 };
 
-const validateWord = async (guess) => {
+const isWordValid = async (guess) => {
   const response = await makeRequest(
     `https://dictionary-dot-sse-2020.nw.r.appspot.com/${guess}`,
     'GET',
@@ -78,7 +78,7 @@ const getNewGameHash = async () => {
 };
 
 export {
-  validateWord,
+  isWordValid,
   validateGuess,
   getWord,
 

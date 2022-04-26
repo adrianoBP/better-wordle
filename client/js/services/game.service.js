@@ -1,7 +1,7 @@
 'use strict';
 import * as logService from './log.service.js';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
-import { validateGuess } from './api.service.js';
+import { validateGuess, isWordValid } from './api.service.js';
 import { getItem, setItem, getDayFromMillisec } from './common.service.js';
 import { settings, saveSettings } from './settings.service.js';
 import Game from '../components/game/Game.js';
@@ -52,7 +52,7 @@ const checkInput = async (input) => {
       // If not enabled in the settings, don't validate
       if (settings.validateOnComplete && mainGame.board.wordLengthReached()) {
         isLoading = true;
-        await mainGame.validateGuess();
+        await isGuessValid(mainGame);
         isLoading = false;
       }
     }
@@ -78,7 +78,7 @@ const checkInput = async (input) => {
 
     try {
       // If we don't validate on complete, validate on enter
-      if (!settings.validateOnComplete) { await mainGame.validateGuess(); }
+      if (!settings.validateOnComplete) { await isGuessValid(mainGame); }
 
       if (!mainGame.isGuessValid) {
         // Wiggle the word so that the user is aware that the word is invalid
@@ -103,6 +103,27 @@ const checkInput = async (input) => {
   }
 };
 
+// List of words that the user has already guessed and are wrong - Reduce round trips to the server
+const wrongGuesses = [];
+
+const isGuessValid = async (game) => {
+  const guess = game._board.guess.join('');
+
+  // If the word is already guessed, don't validate
+  if (wrongGuesses.includes(game.board.guess.join(''))) {
+    game._isGuessValid = false;
+  } else {
+    // By default make it false to prevent the user from submitting the guess (word validation takes time)
+    game._isGuessValid = false;
+    game._isGuessValid = await isWordValid(guess);
+  }
+
+  if (!game._isGuessValid) {
+    game._board.markCurrentWordInvalid();
+    wrongGuesses.push(guess);
+  }
+};
+
 const saveGame = () => {
   setItem('game-save', mainGame.board.details);
 };
@@ -113,13 +134,13 @@ const loadGame = async () => {
   // If there are no settings, don't load
   if (!savedGame) return;
 
-  // If the game day, don't load
+  // If the game day changed, don't load
   if (getDayFromMillisec(settings.gameTime) !== getDayFromMillisec()) {
     clearGameSettings();
     return;
   }
 
-  // If we have a hash from the URL, don't load
+  // If we have a hash in the URL, don't load
   if (settings.hash != null) return;
 
   isLoading = true;

@@ -1,18 +1,21 @@
 :root {
+    --text-light: #e5e5e5;
+    --text-dark: #000;
+
     --nav-bg: #000;
     --body-bg: #fff;
+
     --text-colour: #fff;
     --text-colour-opp: #000;
+
     --cell-bg: #000;
     --cell-border: #000;
     --cell-border-selected: #fff;
     --cell-success: #ddd;
     --cell-warn: #999;
     --cell-fail: #555;
-    --keyboard-bg: #fff;
 
-    --text-light: #e5e5e5;
-    --text-dark: #000;
+    --keyboard-bg: #fff;
 
     --result-bg: #fff;
 }
@@ -27,7 +30,6 @@
     --cell-bg: #1d1421;
     --cell-border: #180023;
     --cell-border-selected: #C2A2C5;
-
     --cell-success: #328b13;
     --cell-warn: #c7971b;
     --cell-fail: #2b252e;
@@ -47,7 +49,6 @@
     --cell-bg: #C2A2C5;
     --cell-border: #654774;
     --cell-border-selected: #edc4ff;
-
     --cell-success: #48C81B;
     --cell-warn: #FFD15A;
     --cell-fail: #696769;

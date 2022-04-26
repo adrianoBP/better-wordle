@@ -1,8 +1,7 @@
 'use strict';
 import { sleep } from '../../services/common.service.js';
 import { saveSettings, settings } from '../../services/settings.service.js';
-// import Gameboard from './board/Gameboard.js';
-import { getWord, validateWord } from '../../services/api.service.js';
+import { getWord } from '../../services/api.service.js';
 import './board/board.component.js';
 import './result/result.component.js';
 class Game {
@@ -17,6 +16,8 @@ class Game {
     this._gameElement.appendChild(this._result);
 
     this._isGuessValid = false;
+
+    this._invalidWords = [];
   }
 
   get board() {
@@ -25,16 +26,6 @@ class Game {
 
   get isGuessValid() {
     return this._isGuessValid;
-  }
-
-  async validateGuess() {
-    // By default make it false to prevent the user from submitting the guess
-    this._isGuessValid = false;
-    const guess = this._board.guess;
-    this._isGuessValid = await validateWord(guess.join(''));
-    if (!this._isGuessValid) {
-      this._board.markCurrentWordInvalid();
-    }
   }
 
   async applyValidationResult(guess, validationResult, incrementWordIndex) {
