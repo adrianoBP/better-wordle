@@ -26,6 +26,8 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 ### Keyboard
 
+Since we have multiple components using and talking to the keyboard, a keyboard service was created to be injected in the components.
+
 ## Non-core functionalities
 
 ### Light / dark mode switch
@@ -36,7 +38,10 @@ Coursework for Web Programming module (M30237) at University of Portsmouth
 
 ### Validate word on completion
 
-### Settings
+### Settings / Menu
+
+- Edit app settings
+- Open using Escape key
 
 ### Share game
 
@@ -52,7 +57,6 @@ By default, the URL will not specify the word length, allowing a minimalist appr
 
 - Regex: any word containing latin letters and word length between 4 and 8 characters (`/^[a-z]{4,8}$/`)
 - Words source: [http://wordlist.aspell.net/12dicts/](http://wordlist.aspell.net/12dicts/)
-- Time resets at 12 am UTC
 
 ### Classes
 

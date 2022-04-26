@@ -67,11 +67,12 @@ const define = (template) => {
 
     connectedCallback() {
       this._resultElement = this.shadow.querySelector('#result-text');
+      this._wordContainer = this.shadow.querySelector('#result-word');
       this._wordElement = this.shadow.querySelector('#result-word-text');
       this._statsHeader = this.shadow.querySelector('#stats-header');
       this._statsContent = this.shadow.querySelector('#stats-content');
 
-      this._wordElement.addEventListener('click', () => {
+      this._wordContainer.addEventListener('click', () => {
         window.open(`https://google.com/search?q=${this._wordElement.textContent}+meaning`);
       });
     }
