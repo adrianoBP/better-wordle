@@ -46,11 +46,10 @@ const validateGuess = async (guess) => {
 };
 
 const getWord = async () => {
-  // We get the word by hash - if no has is specified, we get the word using the current settings
+  // We get the word by code - if no has is specified, we get the word using the current settings
   const response = await makeRequestParse(
-        `${SERVICE_URL}/words/by-hash`,
-        'POST',
-        settings,
+        `${SERVICE_URL}/words/by-code?code=${settings.code ? settings.code : ''}`,
+        'GET',
   );
 
   if (response.error) {
@@ -61,12 +60,10 @@ const getWord = async () => {
   return response.result;
 };
 
-const getNewGameHash = async () => {
+const getNewGameCode = async () => {
   const response = await makeRequestParse(
-    `${SERVICE_URL}/game/random-hash`,
-    'POST', {
-      settings,
-    },
+    `${SERVICE_URL}/game/random?difficulty=${settings.difficulty}&wordLength=${settings.wordLength}`,
+    'GET',
   );
 
   if (response.error) {
@@ -82,5 +79,5 @@ export {
   validateGuess,
   getWord,
 
-  getNewGameHash,
+  getNewGameCode,
 };

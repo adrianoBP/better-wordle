@@ -47,8 +47,8 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 
 ### Share game
 
-When playing with random words (i.e. not today's word), the URL gets updated with a `hash` code that identifies the word.
-Users can copy and share the URL with other users to see how many attempts it takes them. The `hash` of a word is a base64 representation of the row index in the database.  
+When playing with random words (i.e. not today's word), the URL gets updated with a `code` code that identifies the word.
+Users can copy and share the URL with other users to see how many attempts it takes them. The `code` of a word is a base64 representation of the row index in the database.  
 By default, the URL will not specify the word length, allowing a minimalist approach; however, if the word length is different from the default (5), it will be specified in the URL parameters.
 
 ## Considerations
@@ -84,7 +84,7 @@ Many elements of the projects are way more complicated of what this kind of proj
 ### Cheating
 
 Cheating by checking the word has been reduced to the minium.
-During testing, the only way to cheat that was found was by manually calling the `words/by-hash` endpoint that is needed to provide the word to the user in case they cannot find the correct word. However, this would require the user to first acquire the `hash` of the word, which can be done by setting breakpoints in the browser developer tools.
+During testing, the only way to cheat that was found was by manually calling the `words/by-code` endpoint that is needed to provide the word to the user in case they cannot find the correct word. However, this would require the user to first acquire the `code` of the word, which can be done by setting breakpoints in the browser developer tools.
 
 ## References
 

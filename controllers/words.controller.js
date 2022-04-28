@@ -4,22 +4,15 @@ import { fromBase64 } from '../services/common.service.js';
 
 const router = new Router();
 
-const getWordByHash = async (req, res) => {
-  if (!req.is('application/json')) {
-    res.status(400).json({
-      error: 'Invalid request type. Please send a JSON request.',
-    });
-    return;
-  }
-
-  const settings = req.body;
+const getWordByCode = async (req, res) => {
+  const { code } = req.query;
 
   res.json({
-    result: await wordsService.getWord({ ...settings, hash: fromBase64(settings.hash) }),
+    result: await wordsService.getWord(fromBase64(code)),
   });
 };
 
 
-router.post('/by-hash', getWordByHash);
+router.get('/by-code', getWordByCode);
 
 export default router;

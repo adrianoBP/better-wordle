@@ -1,25 +1,20 @@
 import dbService from '../services/db.service.js';
 
-const getTodaysWord = async (settings) => {
-  const { difficulty, wordLength } = settings;
-  return await dbService.getTodaysWord(difficulty, wordLength);
+const getTodaysWord = async () => {
+  return await dbService.getTodaysWord();
 };
 
-const getWordByHash = async (hash) => {
-  return await dbService.getWordByHash(hash);
-};
-
-const getWord = (settings) => {
-  if (settings.hash) {
-    return getWordByHash(settings.hash);
+const getWord = (code) => {
+  // If the code is null, return today's word
+  if (code) {
+    return dbService.getWordById(code);
   } else {
-    return getTodaysWord(settings);
+    return getTodaysWord();
   }
 };
 
 
 export default {
   getTodaysWord,
-  getWordByHash,
   getWord,
 };

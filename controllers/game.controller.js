@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import gameService from '../services/game.service.js';
+import dbService from '../services/db.service.js';
 import { getDayFromMillisec, fromBase64, toBase64 } from '../services/common.service.js';
 
 const router = new Router();
@@ -29,28 +30,26 @@ const validateGuess = async (req, res) => {
   }
 
   res.json({
-    result: await gameService.validateGuess(guess, { ...settings, hash: fromBase64(settings.hash) }),
+    result: await gameService.validateGuess(guess, { ...settings, code: fromBase64(settings.code) }),
   });
 };
 
-const randomHash = async (req, res) => {
-  if (!req.is('application/json')) {
+const random = async (req, res) => {
+  const { difficulty, wordLength } = req.query;
+
+  if (!difficulty || !wordLength) {
     res.status(400).json({
-      error: 'Invalid request type. Please send a JSON request.',
+      error: 'Invalid request. Please send a difficulty and word length in the query string.',
     });
     return;
   }
 
-  const { settings } = req.body;
-
   res.json({
-    result: toBase64(await gameService.randomHash(settings)),
+    result: toBase64((await dbService.getNewWordId(difficulty, wordLength)).id),
   });
 };
 
-// TODO: Add async wrappers in all controllers to handle errors (only when async is being used)
-
 router.post('/validate-guess', validateGuess);
-router.post('/random-hash', randomHash);
+router.get('/random', random);
 
 export default router;

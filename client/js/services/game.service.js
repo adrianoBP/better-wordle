@@ -25,11 +25,11 @@ const startGame = async () => {
 
 // Game is reset when the user changes the game settings (i.e. word length, difficulty, etc.)
 // or when the user starts a new game with a random word
-const resetGame = async (hash) => {
-  if (hash) {
+const resetGame = async (code) => {
+  if (code) {
     // Update URL in case user wants to share the game
     const url = new URL(location.href);
-    url.searchParams.set('hash', settings.hash);
+    url.searchParams.set('code', settings.code);
     // For base version, don't save length param to keep URL short
     if (settings.wordLength !== 5) { url.searchParams.set('length', settings.wordLength); }
     history.pushState(null, '', url);
@@ -102,8 +102,8 @@ const checkInput = async (input) => {
 
       await mainGame.applyValidationResult(guess.join(''), validationResponse.result, true);
 
-      // If we have a hash, it means that we are playing a custom game, hence, we don't want to store the game
-      if (!settings.hash) { saveGame(); }
+      // If we have a code, it means that we are playing a custom game, hence, we don't want to store the game
+      if (!settings.code) { saveGame(); }
     } finally {
       isLoading = false;
     }
@@ -140,8 +140,8 @@ const loadGame = async () => {
     return;
   }
 
-  // If we have a hash in the URL, don't load
-  if (settings.hash != null) return;
+  // If we have a code in the URL, don't load
+  if (settings.code != null) return;
 
   isLoading = true;
   await mainGame.load(savedGame);
@@ -156,7 +156,7 @@ const applySettings = () => {
 const clearGameSettings = () => {
   saveGame();
   // Make sure to reset the settings
-  settings.hash = null;
+  settings.code = null;
   settings.gameTime = Date.now();
   saveSettings();
 };

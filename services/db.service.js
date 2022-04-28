@@ -20,10 +20,11 @@ const findWord = async (word) => {
   return result;
 };
 
-const getNewWordHash = async (difficulty, length) => {
+// Pick a word that has not been picked within the last 365 days
+const getNewWordId = async (difficulty, length) => {
   const db = await dbConnection;
   const result = await db.get(`
-  SELECT id 
+  SELECT id, word
   FROM Words 
   WHERE 
     (last_picked < date('now', '-365 day') OR last_picked IS NULL)
@@ -31,37 +32,35 @@ const getNewWordHash = async (difficulty, length) => {
     AND w_length = ?
   ORDER BY RANDOM()
   LIMIT 1`, [difficulty, length]);
-  return result?.id;
+  return { id: result?.id, word: result?.word };
 };
 
-const getTodaysWord = async (difficulty, length) => {
+const getTodaysWord = async () => {
   const db = await dbConnection;
   const result = await db.get(`
   SELECT word 
   FROM Words 
   WHERE last_picked = date('now')
-    AND difficulty <= ?
-    AND w_length = ?
-  LIMIT 1`, [difficulty, length]);
+  LIMIT 1`);
   return result?.word;
 };
 
-const getWordByHash = async (hash) => {
+const getWordById = async (id) => {
   const db = await dbConnection;
-  const result = await db.get('SELECT word FROM Words WHERE id = ?', [hash]);
+  const result = await db.get('SELECT word FROM Words WHERE id = ?', [id]);
   return result.word;
 };
 
-const setTodayWord = async (hash) => {
+const setTodayWord = async (id) => {
   const db = await dbConnection;
-  const result = await db.run('UPDATE Words SET last_picked = date(\'now\') WHERE id = ?', [hash]);
+  const result = await db.run('UPDATE Words SET last_picked = date(\'now\') WHERE id = ?', [id]);
   return result;
 };
 
 export default {
   findWord,
   getTodaysWord,
-  getNewWordHash,
-  getWordByHash,
+  getNewWordId,
+  getWordById,
   setTodayWord,
 };

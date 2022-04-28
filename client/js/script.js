@@ -5,7 +5,7 @@ import { initKeyboard } from './services/keyboard.service.js';
 import './components/menu/menu.component.js';
 
 // ! #debug
-import { getNewGameHash, getWord } from './services/api.service.js';
+import { getNewGameCode, getWord } from './services/api.service.js';
 
 let rootElement;
 let menu;
@@ -26,9 +26,9 @@ function addEventListeners() {
   document.querySelector('#random-game').addEventListener('click', async () => {
     if (isLoading) return;
     // Creates a new game - The game is not saved!
-    settings.hash = await getNewGameHash();
+    settings.code = await getNewGameCode();
 
-    resetGame(settings.hash);
+    resetGame(settings.code);
   });
 
   // Close menu on backdrop click
