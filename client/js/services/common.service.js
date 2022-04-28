@@ -29,9 +29,9 @@ const setTheme = (theme, element) => {
 
   if (element != null) {
     if (theme === 'dark') {
-      element.src = '../../resources/icons/sun.svg';
-    } else if (theme === 'light') {
       element.src = '../../resources/icons/half-moon.svg';
+    } else if (theme === 'light') {
+      element.src = '../../resources/icons/sun.svg';
     }
   }
 };

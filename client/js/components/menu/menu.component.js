@@ -24,14 +24,14 @@ const define = (template) => {
 
     onActiveChange() {
       const menuToggle = this.shadow.querySelector('#menu-toggle');
-      const menuContent = this.shadow.querySelector('#menu-content');
+      const menuElem = this.shadow.querySelector('section');
 
       if (this.active) {
         menuToggle.classList.add('active');
-        menuContent.classList.add('active');
+        menuElem.classList.add('active');
       } else {
         menuToggle.classList.remove('active');
-        menuContent.classList.remove('active');
+        menuElem.classList.remove('active');
 
         // Save settings once the settings page closes
         const newSettings = {

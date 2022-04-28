@@ -5,7 +5,7 @@ import { sleep } from '../../services/common.service.js';
 import './board/board.component.js';
 import './result/result.component.js';
 
-class BoardDetails extends HTMLElement {
+class GameDetails extends HTMLElement {
   constructor() {
     super();
 
@@ -100,4 +100,4 @@ class BoardDetails extends HTMLElement {
   }
 }
 
-customElements.define('game-component', BoardDetails);
+customElements.define('game-component', GameDetails);

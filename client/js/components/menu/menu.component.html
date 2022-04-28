@@ -2,23 +2,28 @@
   @import url('js/components/menu/menu.component.css');
 </style>
 
-<div id="menu-content">
+<section>
 
-  <div class="menu-item">
-    Theme:
-    <img src="resources/icons/sun.svg" id="theme-switch">
+  <div id="menu-content">
+    <div class="menu-item">
+      <p>Theme:</p>
+      <img src="resources/icons/sun.svg" id="theme-switch">
+    </div>
+
+    <div class="menu-item">
+      <p>Tile selection:</p>
+      <fancy-toggle checked="true" id="tile-selection"></fancy-toggle>
+    </div>
+
+    <div class="menu-item">
+      <p>Validate word:</p>
+      <fancy-toggle checked="true" id="validate-word"></fancy-toggle>
+    </div>
+
+    <input type="range" id="volume" name="volume" min="4" max="8">
+
   </div>
 
-  <div class="menu-item">
-    Tile selection:
-    <fancy-toggle checked="true" id="tile-selection"></fancy-toggle>
-  </div>
-
-  <div class="menu-item">
-    Validate word:
-    <fancy-toggle checked="true" id="validate-word"></fancy-toggle>
-  </div>
-
-</div>
+</section>
 
 <div id="menu-toggle"><span></span></div>
