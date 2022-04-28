@@ -1,7 +1,7 @@
 'use strict';
 import * as logService from './log.service.js';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
-import { validateGuess, isWordValid } from './api.service.js';
+import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
 import { getItem, setItem, getDayFromMillisec } from './common.service.js';
 import { settings, saveSettings } from './settings.service.js';
 
@@ -30,6 +30,10 @@ const resetGame = async (code) => {
     // Update URL in case user wants to share the game
     const url = new URL(location.href);
     url.searchParams.set('code', settings.code);
+
+    // Reset the length from the URL
+    if (url.searchParams.has('length')) { url.searchParams.delete('length'); }
+
     // For base version, don't save length param to keep URL short
     if (settings.wordLength !== 5) { url.searchParams.set('length', settings.wordLength); }
     history.pushState(null, '', url);
@@ -148,9 +152,18 @@ const loadGame = async () => {
   isLoading = false;
 };
 
-const applySettings = () => {
+const applySettings = async (newSettings) => {
   // Tile selection change
-  mainGame.boardElem.tileSelection = settings.tileSelection;
+  mainGame.boardElem.tileSelection = newSettings.tileSelection;
+
+  if (settings.wordLength !== newSettings.wordLength) {
+    settings.wordLength = newSettings.wordLength;
+
+    settings.code = await getNewGameCode();
+
+    resetGame(settings.code);
+    mainGame.boardElem.initBoard();
+  }
 };
 
 const clearGameSettings = () => {

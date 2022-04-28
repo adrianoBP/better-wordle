@@ -221,11 +221,14 @@ class BoardDetails extends HTMLElement {
     });
   }
 
-  connectedCallback() {
-    this.wordIndex = 0;
-    this.letterIndex = 0;
+  initBoard() {
+    // Make sure that the correct word length is set
+    document.querySelector(':root')
+      .style.setProperty('--cells-per-row', settings.wordLength);
 
-    // Add board to the DOM
+    this.words = [];
+    this.shadow.querySelector('div').innerHTML = '';
+
     // Create rows of words
     for (let i = 0; i < settings.allowedGuessesCount; i++) {
       this.words.push([]);
@@ -234,6 +237,8 @@ class BoardDetails extends HTMLElement {
         this.words[i].push(this.createTile());
       }
     }
+
+    this.onTileSelectionChange(settings.tileSelection);
   }
 
   createTile() {
@@ -244,11 +249,19 @@ class BoardDetails extends HTMLElement {
     return tile;
   }
 
-  onTileSelectionChange() {
+  onTileSelectionChange(isSelected) {
     if (this.wordIndex < settings.allowedGuessesCount &&
       this.letterIndex < settings.wordLength) {
-      this.words[this.wordIndex][this.letterIndex].isSelected = this.tileSelection;
+      this.words[this.wordIndex][this.letterIndex].isSelected = isSelected == null ? this.tileSelection : isSelected;
     }
+  }
+
+  connectedCallback() {
+    this.wordIndex = 0;
+    this.letterIndex = 0;
+
+    // Add board to the DOM
+    this.initBoard();
   }
 
   static get observedAttributes() {

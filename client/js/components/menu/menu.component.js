@@ -22,7 +22,7 @@ const define = (template) => {
         this.shadow.querySelector('#theme-switch'));
     }
 
-    onActiveChange() {
+    async onActiveChange() {
       const menuToggle = this.shadow.querySelector('#menu-toggle');
       const menuElem = this.shadow.querySelector('section');
 
@@ -38,9 +38,10 @@ const define = (template) => {
           tileSelection: this.shadow.querySelector('#tile-selection').checked,
           validateOnComplete: this.shadow.querySelector('#validate-word').checked,
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
+          wordLength: parseInt(this.shadow.querySelector('#word-length').value, 10),
         };
+        await applySettings(newSettings);
         saveSettings(newSettings);
-        applySettings();
       }
     }
 
@@ -49,6 +50,7 @@ const define = (template) => {
         .setAttribute('checked', this.settings.tileSelection);
       this.shadow.querySelector('#validate-word')
         .setAttribute('checked', this.settings.validateOnComplete);
+      this.shadow.querySelector('#word-length').value = this.settings.wordLength;
     }
 
     get active() {
@@ -71,6 +73,7 @@ const define = (template) => {
       menuToggle.addEventListener('click', () => {
         this.active = !this.active;
       });
+
 
       // Toggle menu on escape
       document.addEventListener('keydown', (e) => {
