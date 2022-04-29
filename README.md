@@ -30,20 +30,21 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 
 ## Non-core functionalities
 
-### Light / dark mode switch
-
 ### Play with random word
 
 ### Word meaning search
-
-### Validate word on completion
-
-- Error word caching
 
 ### Settings / Menu
 
 - Edit app settings
 - Open using Escape key
+
+- Light/dark mode switch
+- Tile selection
+- Validate word
+- Custom game
+  - Word length
+  - Word difficulty
 
 ### Share game
 
@@ -59,6 +60,9 @@ By default, the URL will not specify the word length, allowing a minimalist appr
 
 - Regex: any word containing latin letters and word length between 4 and 8 characters (`/^[a-z]{4,8}$/`)
 - Words source: [http://wordlist.aspell.net/12dicts/](http://wordlist.aspell.net/12dicts/)
+  - 2of5core: easy (British and American English, ordinary words)
+  - 2of12: medium (American English, less common words)
+  - 5d+2a: hard (British and American English, uncommon words, Names, Acronyms)
 
 ### Classes
 

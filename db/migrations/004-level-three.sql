@@ -1,3 +1,4 @@
+INSERT INTO Words (word, difficulty, w_length) VALUES 
 ('aboulia', 3, 7),
 ('pamlico', 3, 7),
 ('chintz', 3, 6),
@@ -35079,4 +35080,4 @@
 ('lughole', 3, 7),
 ('hamperer', 3, 8),
 ('scotty', 3, 6),
-('bookcase', 3, 8),
+('bookcase', 3, 8);

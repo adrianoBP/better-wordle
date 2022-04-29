@@ -39,6 +39,7 @@ const define = (template) => {
           validateOnComplete: this.shadow.querySelector('#validate-word').checked,
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
           wordLength: parseInt(this.shadow.querySelector('#word-length').value, 10),
+          difficulty: parseInt(this.shadow.querySelector('#difficulty').value, 10),
         };
         await applySettings(newSettings);
         saveSettings(newSettings);
@@ -51,6 +52,7 @@ const define = (template) => {
       this.shadow.querySelector('#validate-word')
         .setAttribute('checked', this.settings.validateOnComplete);
       this.shadow.querySelector('#word-length').value = this.settings.wordLength;
+      this.shadow.querySelector('#difficulty').value = this.settings.difficulty;
     }
 
     get active() {

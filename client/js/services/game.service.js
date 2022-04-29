@@ -159,8 +159,9 @@ const applySettings = async (newSettings) => {
   // Tile selection change
   mainGame.boardElem.tileSelection = newSettings.tileSelection;
 
-  if (settings.wordLength !== newSettings.wordLength) {
+  if (settings.wordLength !== newSettings.wordLength || settings.difficulty !== newSettings.difficulty) {
     settings.wordLength = newSettings.wordLength;
+    settings.difficulty = newSettings.difficulty;
 
     settings.code = await getNewGameCode();
 

@@ -14,12 +14,6 @@ const init = async () => {
 
 const dbConnection = init();
 
-const findWord = async (word) => {
-  const db = await dbConnection;
-  const result = await db.get(`SELECT * FROM words WHERE word = '${word}' LIMIT 1`);
-  return result;
-};
-
 // Pick a word that has not been picked within the last 365 days
 const getNewWordId = async (difficulty, length) => {
   const db = await dbConnection;
@@ -58,7 +52,6 @@ const setTodayWord = async (id) => {
 };
 
 export default {
-  findWord,
   getTodaysWord,
   getNewWordId,
   getWordById,

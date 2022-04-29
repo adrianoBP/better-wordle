@@ -1,3 +1,4 @@
+INSERT INTO Words (word, difficulty, w_length) VALUES 
 ('shrivel', 2, 7),
 ('morals', 2, 6),
 ('condemn', 2, 7),
@@ -20905,4 +20906,4 @@
 ('seconds', 2, 7),
 ('speckled', 2, 8),
 ('moonlit', 2, 7),
-('airstrip', 2, 8),
+('airstrip', 2, 8);
