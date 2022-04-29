@@ -1,5 +1,7 @@
 'use strict';
 import { settings } from '../../../services/settings.service.js';
+import { getItem } from '../../../services/common.service.js';
+import { shareSVG, tickSVG } from '../../../svg/index.js';
 
 fetch('js/components/game/result/result.component.html')
   .then(stream => stream.text())
@@ -47,6 +49,7 @@ const define = (template) => {
       this.word = guess;
 
       this.shadow.querySelector('#stats').style.display = showStats ? 'block' : 'none';
+      this.shadow.querySelector('#share').style.display = showStats ? 'flex' : 'none';
 
       this.isShowing = true;
     }
@@ -103,6 +106,41 @@ const define = (template) => {
         .addEventListener('click', () => {
           window.open(`https://google.com/search?q=${this.wordElem.textContent}+meaning`);
         });
+
+      // Share button
+      const shareButton = this.shadow.querySelector('#share');
+      this.updateIcon(shareButton, shareSVG);
+
+      shareButton.addEventListener('click', () => {
+        const savedGame = getItem('game-save');
+
+        const emojiGame = savedGame.map(word => {
+          return word.map((letter) => {
+            return letter.type === 'success' ? '🟩' : letter.type === 'warn' ? '🟨' : '🟪';
+          }).join('');
+        }).join('\n');
+
+        const date = new Date(settings.gameTime);
+        const copyText = `
+better-wordle
+
+date: ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}
+attempts: ${savedGame.length}/${settings.allowedGuessesCount}
+
+${emojiGame}`;
+
+        navigator.clipboard.writeText(copyText).then(() => {
+          this.updateIcon(shareButton, tickSVG);
+          setTimeout(() => {
+            this.updateIcon(shareButton, shareSVG);
+          }, 2000);
+        });
+      });
+    }
+
+    updateIcon(element, svgIcon) {
+      element.innerHTML = '';
+      element.appendChild(svgIcon);
     }
 
     onVisibilityChange() {
