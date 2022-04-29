@@ -42,9 +42,12 @@ const define = (template) => {
       this.setAttribute('word', value);
     }
 
-    show(guess, gameWon) {
+    show(guess, gameWon, showStats) {
       this.shadow.querySelector('#result-text').textContent = gameWon ? 'You won!' : 'You lost!';
       this.word = guess;
+
+      this.shadow.querySelector('#stats').style.display = showStats ? 'block' : 'none';
+
       this.isShowing = true;
     }
 

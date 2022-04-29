@@ -20,7 +20,7 @@ let settings = {
 const loadSettings = () => {
   const savedSettings = getItem('settings');
   if (savedSettings) {
-    settings = savedSettings;
+    settings = { ...settings, ...savedSettings };
     setTheme(settings.theme);
   } else {
     // If no settings are found, save the default ones
@@ -39,9 +39,14 @@ const saveSettings = (newSettings) => {
   // Update the settings before saving them
   settings = { ...settings, ...newSettings };
 
-  // Never save the code to prevent errors on loading
-  // Never save the wordLength as by default, we always want it to be 5
-  setItem('settings', { ...settings, code: null, wordLength: 5 });
+  // Save only the necessary settings
+  setItem('settings', {
+    tileSelection: settings.tileSelection,
+    validateOnComplete: settings.validateOnComplete,
+    stats: settings.stats,
+    theme: settings.theme,
+    gameTime: settings.gameTime,
+  });
 };
 
 export {

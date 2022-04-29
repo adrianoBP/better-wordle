@@ -43,15 +43,19 @@ class GameDetails extends HTMLElement {
         guess = await getWord(settings);
       }
 
-      // TODO: Check if can be done better - i.e. as soon as the animation is complete
-      await sleep(350);
+      // Don't save the stats if it is a custom game
+      if (!settings.code) {
+        // TODO: Check if can be done better - i.e. as soon as the animation is complete
+        await sleep(350);
 
-      settings.stats.played++;
-      settings.stats.won += this.boardElem.wordGuessed ? 1 : 0;
-      settings.stats.results[this.boardElem.wordIndex - 1] += this.boardElem.wordGuessed ? 1 : 0;
-      saveSettings();
+        settings.stats.played++;
+        settings.stats.won += this.boardElem.wordGuessed ? 1 : 0;
+        settings.stats.results[this.boardElem.wordIndex - 1] += this.boardElem.wordGuessed ? 1 : 0;
+        saveSettings();
+      }
 
-      this.showResult(guess);
+      // Only show the result if it is the current day word and not a random game
+      this.showResult(guess, settings.code == null);
     }
   }
 
@@ -70,7 +74,7 @@ class GameDetails extends HTMLElement {
     await sleep(450 * settings.wordLength);
 
     if (this.boardElem.wordGuessed || !this.boardElem.canInsert()) {
-      this.showResult(await getWord(settings));
+      this.showResult(await getWord(settings), true);
     }
   }
 
@@ -80,9 +84,9 @@ class GameDetails extends HTMLElement {
     await sleep(500);
   }
 
-  showResult(guess) {
+  showResult(guess, showStats) {
     this.boardElem.hide();
-    this.resultElem.show(guess, this.boardElem.wordGuessed);
+    this.resultElem.show(guess, this.boardElem.wordGuessed, showStats);
   }
 
   onIsGuessValidChange() {

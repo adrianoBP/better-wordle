@@ -128,8 +128,8 @@ const isGuessValid = async (game) => {
   game.isGuessValid = guesses[guess];
 };
 
-const saveGame = () => {
-  setItem('game-save', mainGame.boardElem.details);
+const saveGame = (reset) => {
+  if (!settings.code) { setItem('game-save', reset ? [] : mainGame.boardElem.details); }
 };
 
 const loadGame = async () => {
@@ -150,6 +150,9 @@ const loadGame = async () => {
   isLoading = true;
   await mainGame.load(savedGame);
   isLoading = false;
+
+  settings.gameTime = Date.now();
+  saveSettings();
 };
 
 const applySettings = async (newSettings) => {
@@ -167,9 +170,9 @@ const applySettings = async (newSettings) => {
 };
 
 const clearGameSettings = () => {
-  saveGame();
-  // Make sure to reset the settings
-  settings.code = null;
+  // Save the game and specify that we want to reset ('true')
+  saveGame(true);
+  // Reset the game time
   settings.gameTime = Date.now();
   saveSettings();
 };

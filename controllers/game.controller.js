@@ -22,7 +22,8 @@ const validateGuess = async (req, res) => {
     return;
   }
 
-  if (getDayFromMillisec(settings?.gameTime) !== getDayFromMillisec()) {
+  // If we don't have a code (custom game) and the client time is out of sync with the server time
+  if (!settings.code && getDayFromMillisec(settings?.gameTime) !== getDayFromMillisec()) {
     res.status(400).json({
       error: 'Invalid request. If you had the game open for too long, reload the page.',
     });
