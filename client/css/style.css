@@ -3,10 +3,18 @@
 
   --keyboard-font-size: 5vmin;
   --keyboard-width: 98%;
+  --keyboard-ratio: 1 / 1.2;
   --key-padding: 3vmin 1vmin;
 
   --cell-size-multiplier: 0.9;
   --cell-size: 4rem;
+}
+
+@media (min-width: 500px) {
+  :root {
+    --keyboard-width: 100%;
+    --keyboard-ratio: 1;
+  }
 }
 
 * {
@@ -100,4 +108,10 @@ main {
 
 sliding-menu {
   z-index: 998;
+}
+
+keyboard-component {
+  max-width: 500px;
+  width: var(--keyboard-width);
+  padding-bottom: 2vmin;
 }

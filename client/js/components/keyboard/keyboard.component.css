@@ -1,0 +1,23 @@
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+section>.row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 0.25rem
+}
+
+section>.row>key-component {
+  width: calc(10% - 0.25rem);
+  aspect-ratio: var(--keyboard-ratio);
+}
+
+section>:last-child>key-component:first-child,
+section>:last-child>key-component:last-child {
+  width: 14%;
+  aspect-ratio: unset;
+}

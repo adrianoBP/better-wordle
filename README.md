@@ -34,6 +34,8 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 
 ### Word meaning search
 
+### Share game result (emoji format)
+
 ### Settings / Menu
 
 - Edit app settings

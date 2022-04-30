@@ -59,8 +59,8 @@ const define = (template) => {
     }
 
     buildStats() {
-      this.statsHeaderElem.innerHTML = '';
-      this.statsContentElem.innerHTML = '';
+      this.statsHeaderElem.replaceChildren([]);
+      this.statsContentElem.replaceChildren([]);
 
       // Add totals
       const totalTemplate = this.shadow.querySelector('#stat-total-template');
@@ -139,7 +139,7 @@ ${emojiGame}`;
     }
 
     updateIcon(element, svgIcon) {
-      element.innerHTML = '';
+      element.replaceChildren([]);
       element.appendChild(svgIcon);
     }
 

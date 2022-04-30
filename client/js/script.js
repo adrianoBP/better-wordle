@@ -1,8 +1,8 @@
 'use strict';
 import { checkInput, startGame, resetGame, isLoading } from './services/game.service.js';
 import { loadSettings, settings } from './services/settings.service.js';
-import { initKeyboard } from './services/keyboard.service.js';
 import './components/menu/menu.component.js';
+import './components/keyboard/keyboard.component.js';
 
 // ! #debug
 import { getNewGameCode, getWord } from './services/api.service.js';
@@ -39,7 +39,6 @@ function addEventListeners() {
   // ! #debug
   document.querySelector('#debug').addEventListener('click', async () => {
     console.log(await getWord(settings));
-    // debugger;
   });
 }
 
@@ -49,7 +48,6 @@ function onInit() {
   prepareElements();
   addEventListeners();
 
-  initKeyboard();
   startGame();
 }
 
