@@ -74,6 +74,8 @@ section {
   justify-content: center;
   align-items: center;
 
+  z-index: 999;
+
   transition:
     300ms left cubic-bezier(0.7, 0, 0.3, 1),
     background-color 200ms linear;
@@ -103,7 +105,7 @@ section p {
 /* MENU ITEMS */
 .menu-item {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 1fr 1fr;
   font-size: 150%;
   align-items: center;
 }
