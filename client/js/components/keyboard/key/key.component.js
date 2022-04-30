@@ -33,8 +33,6 @@ class Key extends HTMLElement {
   onTypeChange(newType) {
     const keyElem = this.shadow.querySelector('div');
 
-    this.unselect();
-
     if (newType === 'success') {
       // Remove warn in case the letter was already guessed but in the wrong position
       keyElem.classList.remove('warn');
@@ -92,7 +90,12 @@ class Key extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'letter' && oldValue == null) { this.onLetterInit(newValue); }
-    if (name === 'type' && oldValue !== newValue) { this.onTypeChange(newValue); }
+    if (name === 'type') {
+      this.unselect();
+      if (oldValue !== newValue) {
+        this.onTypeChange(newValue);
+      }
+    }
   }
 }
 

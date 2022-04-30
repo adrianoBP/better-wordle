@@ -62,9 +62,7 @@ const checkInput = async (input) => {
       // If we reached the end of the word, check if it is a valid word
       // If not enabled in the settings, don't validate
       if (settings.validateOnComplete && mainGame.boardElem.wordLengthReached()) {
-        isLoading = true;
         await isGuessValid(mainGame);
-        isLoading = false;
       }
     }
 
