@@ -37,7 +37,7 @@ const define = (template) => {
         const newSettings = {
           tileSelection: this.shadow.querySelector('#tile-selection').checked,
           validateOnComplete: this.shadow.querySelector('#validate-word').checked,
-          hapticFeedback: this.shadow.querySelector('#haptic-feedback').checked,
+          hapticFeedback: this.shadow.querySelector('#haptic-feedback')?.checked || false,
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
           wordLength: parseInt(this.shadow.querySelector('#word-length').value, 10),
           difficulty: parseInt(this.shadow.querySelector('#difficulty').value, 10),
@@ -53,7 +53,7 @@ const define = (template) => {
       this.shadow.querySelector('#validate-word')
         .setAttribute('checked', this.settings.validateOnComplete);
       this.shadow.querySelector('#haptic-feedback')
-        .setAttribute('checked', this.settings.hapticFeedback);
+        ?.setAttribute('checked', this.settings.hapticFeedback);
       this.shadow.querySelector('#word-length').value = this.settings.wordLength;
       this.shadow.querySelector('#difficulty').value = this.settings.difficulty;
     }
@@ -91,6 +91,11 @@ const define = (template) => {
         const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
         setTheme(newTheme, event.target);
       });
+
+      // Show haptic feedback option only if the user is on mobile
+      if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        this.shadow.querySelectorAll('.menu-item')[3]?.remove();
+      }
     }
 
     static get observedAttributes() {

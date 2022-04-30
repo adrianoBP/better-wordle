@@ -44,7 +44,7 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 - Light/dark mode switch
 - Tile selection
 - Validate word
-- Haptic feedback
+- Haptic feedback (mobile only)
 - Custom game
   - Word length
   - Word difficulty
