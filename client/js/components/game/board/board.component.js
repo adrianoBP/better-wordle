@@ -20,31 +20,23 @@ class BoardDetails extends HTMLElement {
     this._wordGuessed = false;
   }
 
-  get wordGuessed() {
-    return this._wordGuessed;
-  }
+  get wordGuessed() { return this._wordGuessed; }
 
   get wordIndex() {
     if (!this.hasAttribute('word-index')) { return 0; }
     return parseInt(this.getAttribute('word-index'));
   }
 
-  set wordIndex(value) {
-    this.setAttribute('word-index', value);
-  }
+  set wordIndex(value) { this.setAttribute('word-index', value); }
 
   get letterIndex() {
     if (!this.hasAttribute('letter-index')) { return 0; }
     return parseInt(this.getAttribute('letter-index'));
   }
 
-  set letterIndex(value) {
-    this.setAttribute('letter-index', value);
-  }
+  set letterIndex(value) { this.setAttribute('letter-index', value); }
 
-  get guess() {
-    return this.words[this.wordIndex].map((tile) => tile.letter);
-  }
+  get guess() { return this.words[this.wordIndex].map((tile) => tile.letter); }
 
   get details() {
     const details = [];
@@ -140,15 +132,15 @@ class BoardDetails extends HTMLElement {
 
     if (validationResult) {
       for (let i = 0; i < guess.length; i++) {
-        let classResult = '';
+        let type = '';
 
-        if (validationResult[i] === 1) classResult = 'success';
-        else if (validationResult[i] === 0) classResult = 'warn';
-        else classResult = 'fail';
+        if (validationResult[i] === 1) type = 'success';
+        else if (validationResult[i] === 0) type = 'warn';
+        else type = 'fail';
 
-        keysToReload.push({ letter: guess[i], classResult });
+        keysToReload.push({ letter: guess[i], type });
 
-        this.words[wordToUpdateIndex][i].flip(classResult);
+        this.words[wordToUpdateIndex][i].flip(type);
 
         await sleep(350);
       }

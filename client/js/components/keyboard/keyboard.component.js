@@ -1,4 +1,4 @@
-// import Key from '../key/Key.js';
+'use strict';
 import './key/key.component.js';
 
 class Keyboard extends HTMLElement {
@@ -15,7 +15,29 @@ class Keyboard extends HTMLElement {
     this.keyboard = {};
   }
 
-  init() {
+  update(letterResults) {
+    letterResults.forEach(result => {
+      this.keyboard[result.letter].type = result.type;
+    });
+  }
+
+  reset() {
+    Object.keys(this.keyboard).forEach(letter => {
+      this.keyboard[letter].reset();
+    });
+  }
+
+  selectKey(letter) {
+    if (!this.keyboard[letter]) return;
+    this.keyboard[letter].select();
+  }
+
+  unselectKey(letter) {
+    if (!this.keyboard[letter]) return;
+    this.keyboard[letter].unselect();
+  }
+
+  connectedCallback() {
     const keyRows = [
       ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
       ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
@@ -35,33 +57,6 @@ class Keyboard extends HTMLElement {
 
       this.shadow.querySelector('section').appendChild(rowElement);
     });
-  }
-
-  update(letterResults) {
-    // TODO: check if this can be optimized
-
-    letterResults.forEach(element => {
-      this.keyboard[element.letter].type = element.classResult;
-    });
-  }
-
-  reset() {
-    this.shadow.querySelector('section').replaceChildren([]);
-    this.init();
-  }
-
-  selectKey(letter) {
-    if (!this.keyboard[letter]) return;
-    this.keyboard[letter].select();
-  }
-
-  unselectKey(letter) {
-    if (!this.keyboard[letter]) return;
-    this.keyboard[letter].unselect();
-  }
-
-  connectedCallback() {
-    this.init();
   }
 }
 

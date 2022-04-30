@@ -1,11 +1,10 @@
 'use strict';
+import { setTheme } from '../../../services/common.service.js';
+import { applySettings } from '../../../services/game.service.js';
+import { settings, saveSettings } from '../../../services/settings.service.js';
+import '../../toggle/toggle.component.js';
 
-import { setTheme } from '../../services/common.service.js';
-import { applySettings } from '../../services/game.service.js';
-import { settings, saveSettings } from '../../services/settings.service.js';
-import '../toggle/toggle.component.js';
-
-fetch('js/components/menu/menu.component.html')
+fetch('js/components/navbar/menu/menu.component.html')
   .then(stream => stream.text())
   .then(text => define(text));
 
@@ -16,11 +15,10 @@ const define = (template) => {
 
       this.shadow = this.attachShadow({ mode: 'open' });
       this.shadow.innerHTML = template;
-
-      setTheme(
-        settings.theme,
-        this.shadow.querySelector('#theme-switch'));
     }
+
+    get active() { return this.getAttribute('active') === 'true'; }
+    set active(value) { this.setAttribute('active', value); }
 
     async onActiveChange() {
       const menuToggle = this.shadow.querySelector('#menu-toggle');
@@ -47,46 +45,34 @@ const define = (template) => {
       }
     }
 
-    onSettingsChange() {
-      this.shadow.querySelector('#tile-selection')
-        .setAttribute('checked', this.settings.tileSelection);
-      this.shadow.querySelector('#validate-word')
-        .setAttribute('checked', this.settings.validateOnComplete);
-      this.shadow.querySelector('#haptic-feedback')
-        ?.setAttribute('checked', this.settings.hapticFeedback);
-      this.shadow.querySelector('#word-length').value = this.settings.wordLength;
-      this.shadow.querySelector('#difficulty').value = this.settings.difficulty;
-    }
-
-    get active() {
-      return this.getAttribute('active') === 'true';
-    }
-
-    set active(value) {
-      this.setAttribute('active', value);
-    }
-
-    get settings() {
-      // TODO: change for something else
-      const settings = this.getAttribute('settings');
-      return settings ? JSON.parse(settings) : {};
-    }
-
     connectedCallback() {
-      const menuToggle = this.shadow.querySelector('#menu-toggle');
+      setTheme(
+        settings.theme,
+        this.shadow.querySelector('#theme-switch'));
 
-      menuToggle.addEventListener('click', () => {
+      // Init settings
+      this.shadow.querySelector('#tile-selection')
+        .setAttribute('checked', settings.tileSelection);
+      this.shadow.querySelector('#validate-word')
+        .setAttribute('checked', settings.validateOnComplete);
+      this.shadow.querySelector('#haptic-feedback')
+        ?.setAttribute('checked', settings.hapticFeedback);
+      this.shadow.querySelector('#word-length').value = settings.wordLength;
+      this.shadow.querySelector('#difficulty').value = settings.difficulty;
+
+      // Menu toggle
+      this.shadow.querySelector('#menu-toggle').addEventListener('click', () => {
         this.active = !this.active;
       });
 
-
-      // Toggle menu on escape
+      // Register menu toggle on escape
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           this.active = !this.active;
         }
       });
 
+      // Update theme as soon as the icon is clicked instead of waiting for the menu to close
       this.shadow.querySelector('#theme-switch').addEventListener('click', (event) => {
         const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
         setTheme(newTheme, event.target);
@@ -99,16 +85,13 @@ const define = (template) => {
     }
 
     static get observedAttributes() {
-      return ['active', 'settings'];
+      return ['active'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'active' &&
         oldValue != null &&
         oldValue !== newValue) { this.onActiveChange(); }
-      if (name === 'settings' &&
-        (oldValue == null &&
-        oldValue !== newValue)) { this.onSettingsChange(); }
     }
   }
 

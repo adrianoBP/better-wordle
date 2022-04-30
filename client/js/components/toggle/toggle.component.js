@@ -1,3 +1,4 @@
+'use strict';
 class FancyToggle extends HTMLElement {
   constructor() {
     super();
@@ -16,13 +17,8 @@ class FancyToggle extends HTMLElement {
     `;
   }
 
-  get checked() {
-    return this.getAttribute('checked') === 'true';
-  }
-
-  set checked(value) {
-    this.setAttribute('checked', value);
-  }
+  get checked() { return this.getAttribute('checked') === 'true'; }
+  set checked(value) { this.setAttribute('checked', value); }
 
   toggle() {
     const toggle = this.shadow.querySelector('#toggle');

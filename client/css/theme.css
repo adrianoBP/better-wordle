@@ -1,59 +1,59 @@
 :root {
-    --text-light: #e5e5e5;
-    --text-dark: #000;
+  --text-light: #e5e5e5;
+  --text-dark: #000;
 
-    --nav-bg: #000;
-    --body-bg: #fff;
+  --nav-bg: #000;
+  --body-bg: #fff;
 
-    --text-colour: #fff;
-    --text-colour-opp: #000;
+  --text-colour: #fff;
+  --text-colour-opp: #000;
 
-    --cell-bg: #000;
-    --cell-border: #000;
-    --cell-border-selected: #fff;
-    --cell-success: #ddd;
-    --cell-warn: #999;
-    --cell-fail: #555;
+  --cell-bg: #000;
+  --cell-border: #000;
+  --cell-border-selected: #fff;
+  --cell-success: #ddd;
+  --cell-warn: #999;
+  --cell-fail: #555;
 
-    --keyboard-bg: #fff;
+  --keyboard-bg: #fff;
 
-    --result-bg: #fff;
+  --result-bg: #fff;
 }
 
 .dark {
-    --nav-bg: #1d1421;
-    --body-bg: #35263d;
+  --nav-bg: #1d1421;
+  --body-bg: #35263d;
 
-    --text-colour: #e5e5e5;
-    --text-colour-opp: #000;
+  --text-colour: #e5e5e5;
+  --text-colour-opp: #000;
 
-    --cell-bg: #1d1421;
-    --cell-border: #180023;
-    --cell-border-selected: #C2A2C5;
-    --cell-success: #328b13;
-    --cell-warn: #c7971b;
-    --cell-fail: #2b252e;
+  --cell-bg: #1d1421;
+  --cell-border: #180023;
+  --cell-border-selected: #C2A2C5;
+  --cell-success: #328b13;
+  --cell-warn: #c7971b;
+  --cell-fail: #2b252e;
 
-    --keyboard-bg: #C2A2C5;
+  --keyboard-bg: #C2A2C5;
 
-    --result-bg: #C2A2C5;
+  --result-bg: #C2A2C5;
 }
 
 .light {
-    --nav-bg: #35263d;
-    --body-bg: #FFF1D6;
+  --nav-bg: #35263d;
+  --body-bg: #FFF1D6;
 
-    --text-colour: #000;
-    --text-colour-opp: #e5e5e5;
+  --text-colour: #000;
+  --text-colour-opp: #e5e5e5;
 
-    --cell-bg: #C2A2C5;
-    --cell-border: #654774;
-    --cell-border-selected: #edc4ff;
-    --cell-success: #48C81B;
-    --cell-warn: #FFD15A;
-    --cell-fail: #696769;
+  --cell-bg: #C2A2C5;
+  --cell-border: #654774;
+  --cell-border-selected: #edc4ff;
+  --cell-success: #48C81B;
+  --cell-warn: #FFD15A;
+  --cell-fail: #696769;
 
-    --keyboard-bg: #6f2e8b;
+  --keyboard-bg: #6f2e8b;
 
-    --result-bg: #654774;
+  --result-bg: #654774;
 }

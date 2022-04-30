@@ -31,9 +31,8 @@ div.icon {
 @media (hover: hover) {
   div:hover {
     transform: translateY(-0.2em);
-    /* Subtle: on hover, don't move the shadow, instead, make it a tiny bit bigger with more blur
-   ** Mainly noticeable on light backgrounds
-   */
+    /* Don't move the shadow and make it slightly bigger and blurrier
+    ** for a subtle raise effect - mainly noticeable in light mode */
     box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
   }
 }

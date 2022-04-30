@@ -1,13 +1,10 @@
 'use strict';
-import * as logService from './log.service.js';
 import { settings } from './settings.service.js';
 
 // Since we are serving the client, we don't need to specify the full path (and will prevent issues with CORS)
 const SERVICE_URL = '/api';
 
 const makeRequest = async (url, method = 'GET', body = null, headers = {}) => {
-  // All requests will be done using JSON
-
   headers = {
     ...headers,
     'Content-Type': 'application/json',
@@ -46,14 +43,14 @@ const validateGuess = async (guess) => {
 };
 
 const getWord = async () => {
-  // We get the word by code - if no has is specified, we get the word using the current settings
+  // If no code is provided, today's word is returned
   const response = await makeRequestParse(
         `${SERVICE_URL}/words/by-code?code=${settings.code ? settings.code : ''}`,
         'GET',
   );
 
   if (response.error) {
-    logService.error(response.error);
+    console.error(response.error);
     return;
   }
 
@@ -67,7 +64,7 @@ const getNewGameCode = async () => {
   );
 
   if (response.error) {
-    logService.error(response.error);
+    console.error(response.error);
     return;
   }
 

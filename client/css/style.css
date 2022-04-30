@@ -35,18 +35,10 @@ body {
   flex-flow: column;
 }
 
-/* GENERIC */
-
 .center-items {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-/* ICONS */
-
-img {
-  user-select: none;
 }
 
 main {
@@ -56,10 +48,6 @@ main {
   flex: 1 1 auto;
   display: flex;
   flex-flow: column;
-}
-
-sliding-menu {
-  z-index: 998;
 }
 
 keyboard-component {

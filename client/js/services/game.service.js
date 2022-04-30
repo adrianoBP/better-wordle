@@ -1,5 +1,4 @@
 'use strict';
-import * as logService from './log.service.js';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
 import { getItem, setItem, getDayFromMillisec } from './common.service.js';
@@ -8,7 +7,8 @@ import { settings, saveSettings } from './settings.service.js';
 import '../components/game/game.component.js';
 
 let mainGame = null;
-let isLoading = false;
+let isLoading = false; // Used to prevent multiple calls to the API
+const guesses = {}; // Dictionary of words and their validity to reduce API calls
 
 const startGame = async () => {
   isLoading = true;
@@ -16,7 +16,7 @@ const startGame = async () => {
   mainGame = document.createElement('game-component');
   mainGame.setAttribute('is-guess-valid', true);
 
-  // Append at the top of the main element
+  // Append the new game at the top of the main element
   document.querySelector('main').prepend(mainGame);
 
   await loadGame();
@@ -95,13 +95,13 @@ const checkInput = async (input) => {
       if (!mainGame.isGuessValid) {
         // Wiggle the word so that the user is aware that the word is invalid
         mainGame.boardElem.wiggleWord();
-        logService.error('Word is not valid');
+        console.error('Word is not valid');
         return;
       }
 
       const validationResponse = await validateGuess(guess);
       if (validationResponse.error) {
-        logService.error(validationResponse.error);
+        console.error(validationResponse.error);
         return;
       }
 
@@ -114,9 +114,6 @@ const checkInput = async (input) => {
     }
   }
 };
-
-// Dictionary of words and their validity to reduce API calls
-const guesses = {};
 
 const isGuessValid = async (game) => {
   const guess = game.boardElem.guess.join('');
@@ -136,17 +133,21 @@ const saveGame = (reset) => {
 const loadGame = async () => {
   const savedGame = getItem('game-save');
 
-  // If there are no settings, don't load
+  // If there are no saved game, don't load
   if (!savedGame) return;
+
+  // If we have a code, don't load (custom game)
+  if (settings.code != null) return;
 
   // If the game day changed, don't load
   if (getDayFromMillisec(settings.gameTime) !== getDayFromMillisec()) {
-    clearGameSettings();
+    // Save the game and specify that we want to reset ('true')
+    saveGame(true);
+    // Reset the game time
+    settings.gameTime = Date.now();
+    saveSettings();
     return;
   }
-
-  // If we have a code in the URL, don't load
-  if (settings.code != null) return;
 
   isLoading = true;
   await mainGame.load(savedGame);
@@ -160,6 +161,7 @@ const applySettings = async (newSettings) => {
   // Tile selection change
   mainGame.boardElem.tileSelection = newSettings.tileSelection;
 
+  // If the game options change, reset the game with the new settings
   if (settings.wordLength !== newSettings.wordLength || settings.difficulty !== newSettings.difficulty) {
     settings.wordLength = newSettings.wordLength;
     settings.difficulty = newSettings.difficulty;
@@ -169,14 +171,6 @@ const applySettings = async (newSettings) => {
     resetGame(settings.code);
     mainGame.boardElem.initBoard();
   }
-};
-
-const clearGameSettings = () => {
-  // Save the game and specify that we want to reset ('true')
-  saveGame(true);
-  // Reset the game time
-  settings.gameTime = Date.now();
-  saveSettings();
 };
 
 export {

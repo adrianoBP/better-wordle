@@ -18,21 +18,12 @@ class GameDetails extends HTMLElement {
       `;
   }
 
-  get boardElem() {
-    return this.shadow.querySelector('board-details');
-  }
+  get boardElem() { return this.shadow.querySelector('board-details'); }
 
-  get resultElem() {
-    return this.shadow.querySelector('result-details');
-  }
+  get resultElem() { return this.shadow.querySelector('result-details'); }
 
-  get isGuessValid() {
-    return this.getAttribute('is-guess-valid') === 'true';
-  }
-
-  set isGuessValid(value) {
-    this.setAttribute('is-guess-valid', value ? 'true' : 'false');
-  }
+  get isGuessValid() { return this.getAttribute('is-guess-valid') === 'true'; }
+  set isGuessValid(value) { this.setAttribute('is-guess-valid', value ? 'true' : 'false'); }
 
   async applyValidationResult(guess, validationResult, incrementWordIndex) {
     await this.boardElem.applyValidationResult(validationResult, incrementWordIndex);

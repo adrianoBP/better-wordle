@@ -6,16 +6,14 @@ class TileComponent extends HTMLElement {
     this.shadow = this.attachShadow({ mode: 'closed' });
   }
 
-  render() {
-    this.shadow.innerHTML = `
-      <style>
-        @import url('js/components/game/board/tile/tile.component.css');
-      </style>
-      <div>${this.letter}</div>
-    `;
+  get letter() { return this.getAttribute('letter'); }
+  set letter(letter) { this.setAttribute('letter', letter); }
 
-    this.renderComplete = true;
-  }
+  get type() { return this.getAttribute('type'); }
+  set type(type) { this.setAttribute('type', type); }
+
+  get isSelected() { return this.hasAttribute('selected'); }
+  set isSelected(isSelected) { this.setAttribute('type', isSelected ? 'selected' : ''); }
 
   clearType() {
     const tile = this.shadow.querySelector('div');
@@ -24,36 +22,8 @@ class TileComponent extends HTMLElement {
     });
   }
 
-  get letter() {
-    return this.getAttribute('letter');
-  }
-
-  set letter(letter) {
-    this.setAttribute('letter', letter);
-  }
-
-  get type() {
-    return this.getAttribute('type');
-  }
-
-  set type(type) {
-    this.setAttribute('type', type);
-  }
-
-  get isSelected() {
-    return this.hasAttribute('selected');
-  }
-
-  set isSelected(isSelected) {
-    this.setAttribute('type', isSelected ? 'selected' : '');
-  }
-
   toggleSelection() {
     this.isSelected = !this.isSelected;
-  }
-
-  connectedCallback() {
-    this.render();
   }
 
   static get observedAttributes() {
@@ -70,13 +40,6 @@ class TileComponent extends HTMLElement {
 
     // Add class ony if the type is not empty - It can be empty when resetting the tile
     if (this.type) { tile.classList.add(this.type); }
-  }
-
-  // No need to get old and new values as we are storing the data against the attribute
-  attributeChangedCallback(name) {
-    if (!this.renderComplete) { return; }
-    if (name === 'letter') { this.onLetterChange(); }
-    if (name === 'type') { this.onTypeChange(); }
   }
 
   flip(newType) {
@@ -112,6 +75,21 @@ class TileComponent extends HTMLElement {
       duration: 200,
       iterations: 2,
     });
+  }
+
+  connectedCallback() {
+    this.shadow.innerHTML = `
+      <style>
+        @import url('js/components/game/board/tile/tile.component.css');
+      </style>
+      <div>${this.letter}</div>
+    `;
+  }
+
+  // No need to get old and new values as we are storing the data against the attribute
+  attributeChangedCallback(name, oldValue) {
+    if (name === 'letter' && oldValue != null) { this.onLetterChange(); }
+    if (name === 'type' && oldValue != null) { this.onTypeChange(); }
   }
 }
 

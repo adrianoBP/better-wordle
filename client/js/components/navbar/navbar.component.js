@@ -2,7 +2,7 @@
 import { resetGame, isLoading } from '../../services/game.service.js';
 import { settings } from '../../services/settings.service.js';
 import { getNewGameCode, getWord } from '../../services/api.service.js';
-import '../menu/menu.component.js';
+import './menu/menu.component.js';
 
 fetch('js/components/navbar/navbar.component.html')
   .then(stream => stream.text())
@@ -24,7 +24,6 @@ const define = (template) => {
     connectedCallback() {
       const menu = this.shadow.querySelector('sliding-menu');
       menu.setAttribute('active', false);
-      menu.setAttribute('settings', JSON.stringify(settings));
 
       this.shadow.querySelector('#random-game').addEventListener('click', async () => {
         if (isLoading) return;

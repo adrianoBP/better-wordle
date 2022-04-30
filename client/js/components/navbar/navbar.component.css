@@ -35,15 +35,16 @@ nav #title {
   }
 }
 
-nav img {
+img {
   cursor: pointer;
   margin: 1vmin 0;
   width: 2rem;
   padding: 0 0.5rem;
+  user-select: none;
 }
 
 @media (hover: hover) {
-  nav img:hover {
+  img:hover {
     transform: scale(1.1);
     opacity: 0.5;
   }

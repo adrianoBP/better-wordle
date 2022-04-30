@@ -14,12 +14,12 @@ function prepareElements() {
 }
 
 function addEventListeners() {
+  // Global input check
   document.addEventListener('keydown', (e) => { checkInput(e.key); });
-
 
   // Close menu on backdrop click
   document.querySelector('main').addEventListener('click', () => {
-    document.querySelector('navbar-component').setAttribute('active', false);
+    document.querySelector('navbar-component').hideMenu();
   });
 }
 

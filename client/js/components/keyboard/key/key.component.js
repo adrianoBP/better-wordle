@@ -1,3 +1,4 @@
+'use strict';
 import { backspaceSVG, enterSVG } from '../../../svg/index.js';
 import { checkInput } from '../../../services/game.service.js';
 
@@ -14,23 +15,14 @@ class Key extends HTMLElement {
       `;
   }
 
-  get letter() {
-    return this.getAttribute('letter');
-  }
+  get letter() { return this.getAttribute('letter'); }
+  set letter(letter) { this.setAttribute('letter', letter); }
 
-  set letter(letter) {
-    this.setAttribute('letter', letter);
-  }
+  get type() { return this.getAttribute('type'); }
+  set type(type) { this.setAttribute('type', type); }
 
-  get type() {
-    return this.getAttribute('type');
-  }
-
-  set type(type) {
-    this.setAttribute('type', type);
-  }
-
-  onTypeChange(newType) {
+  onTypeChange(oldType, newType) {
+    this.unselect();
     const keyElem = this.shadow.querySelector('div');
 
     if (newType === 'success') {
@@ -40,12 +32,12 @@ class Key extends HTMLElement {
       return;
     }
 
-    if (newType === 'warn' && this.type !== 'success') {
+    if (newType === 'warn' && oldType !== 'success') {
       keyElem.classList.add('warn');
       return;
     }
 
-    if (newType === 'fail' && this.type !== 'success' && this.type !== 'warn') {
+    if (newType === 'fail' && oldType !== 'success' && oldType !== 'warn') {
       keyElem.classList.add('fail');
     }
   }
@@ -80,6 +72,12 @@ class Key extends HTMLElement {
     this.shadow.querySelector('div').classList.remove('selected');
   }
 
+  reset() {
+    // Don't remove all classes because we may have additional classes (i.e. 'icon')
+    this.shadow.querySelector('div').classList
+      .remove('selected', 'success', 'warn', 'fail');
+  }
+
   connectedCallback() {
     this.shadow.addEventListener('click', () => checkInput(this.letter));
   }
@@ -90,12 +88,7 @@ class Key extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'letter' && oldValue == null) { this.onLetterInit(newValue); }
-    if (name === 'type') {
-      this.unselect();
-      if (oldValue !== newValue) {
-        this.onTypeChange(newValue);
-      }
-    }
+    if (name === 'type') { this.onTypeChange(oldValue, newValue); }
   }
 }
 

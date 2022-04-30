@@ -16,33 +16,17 @@ const define = (template) => {
       this.shadow.innerHTML = template;
     }
 
-    get wordElem() {
-      return this.shadow.querySelector('#result-word-text');
-    }
+    get wordElem() { return this.shadow.querySelector('#result-word-text'); }
 
-    get statsHeaderElem() {
-      return this.shadow.querySelector('#stats-header');
-    }
+    get statsHeaderElem() { return this.shadow.querySelector('#stats-header'); }
 
-    get statsContentElem() {
-      return this.shadow.querySelector('#stats-content');
-    }
+    get statsContentElem() { return this.shadow.querySelector('#stats-content'); }
 
-    get isShowing() {
-      return this.getAttribute('is-showing') === 'true';
-    }
+    get isShowing() { return this.getAttribute('is-showing') === 'true'; }
+    set isShowing(value) { this.setAttribute('is-showing', value); }
 
-    set isShowing(value) {
-      this.setAttribute('is-showing', value);
-    }
-
-    get word() {
-      return this.getAttribute('word');
-    }
-
-    set word(value) {
-      this.setAttribute('word', value);
-    }
+    get word() { return this.getAttribute('word'); }
+    set word(value) { this.setAttribute('word', value); }
 
     show(guess, gameWon, showStats) {
       this.shadow.querySelector('#result-text').textContent = gameWon ? 'You won!' : 'You lost!';
@@ -85,6 +69,7 @@ const define = (template) => {
       const elementTemplate = this.shadow.querySelector('#stat-element-template');
       const maxCount = settings.stats.results.reduce((max, stat) => Math.max(max, stat), 0);
 
+      // Create stats bar chart
       for (let i = 0; i < settings.stats.results.length; i++) {
         const value = settings.stats.results[i];
 

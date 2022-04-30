@@ -1,3 +1,4 @@
+'use strict';
 import { getItem, setItem, setTheme } from './common.service.js';
 
 let settings = {
