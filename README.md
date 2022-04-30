@@ -44,6 +44,7 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 - Light/dark mode switch
 - Tile selection
 - Validate word
+- Haptic feedback
 - Custom game
   - Word length
   - Word difficulty
@@ -69,6 +70,10 @@ By default, the URL will not specify the word length, allowing a minimalist appr
 ### Classes
 
 <!-- TODO: discuss classes being used -->
+
+### Mobile
+
+- Elements that had an `hover` effect have been wrapped with `@media (hover: hover) {}` media selector to prevent sticky statuses on mobile.
 
 ### SVG icons
 

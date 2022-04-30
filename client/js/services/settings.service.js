@@ -6,7 +6,6 @@ let settings = {
   wordLength: 5,
   allowedGuessesCount: 6,
   gameTime: Date.now(),
-  // used to restart the game with a different word for the same day - code is generated on the server
   code: null,
   tileSelection: true,
   validateOnComplete: true,
@@ -15,6 +14,7 @@ let settings = {
     won: 0,
     results: [0, 0, 0, 0, 0, 0],
   },
+  hapticFeedback: true,
 };
 
 const loadSettings = () => {
@@ -46,6 +46,7 @@ const saveSettings = (newSettings) => {
     stats: settings.stats,
     theme: settings.theme,
     gameTime: settings.gameTime,
+    hapticFeedback: settings.hapticFeedback,
   });
 };
 

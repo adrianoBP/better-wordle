@@ -37,6 +37,7 @@ const define = (template) => {
         const newSettings = {
           tileSelection: this.shadow.querySelector('#tile-selection').checked,
           validateOnComplete: this.shadow.querySelector('#validate-word').checked,
+          hapticFeedback: this.shadow.querySelector('#haptic-feedback').checked,
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
           wordLength: parseInt(this.shadow.querySelector('#word-length').value, 10),
           difficulty: parseInt(this.shadow.querySelector('#difficulty').value, 10),
@@ -51,6 +52,8 @@ const define = (template) => {
         .setAttribute('checked', this.settings.tileSelection);
       this.shadow.querySelector('#validate-word')
         .setAttribute('checked', this.settings.validateOnComplete);
+      this.shadow.querySelector('#haptic-feedback')
+        .setAttribute('checked', this.settings.hapticFeedback);
       this.shadow.querySelector('#word-length').value = this.settings.wordLength;
       this.shadow.querySelector('#difficulty').value = this.settings.difficulty;
     }

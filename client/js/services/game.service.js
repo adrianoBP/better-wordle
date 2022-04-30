@@ -51,6 +51,9 @@ const checkInput = async (input) => {
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
   if (!mainGame.boardElem.canInsert() || isLoading) return;
 
+  // Give the user some haptic feedback
+  if (settings.hapticFeedback) { window.navigator.vibrate(50); }
+
   input = input.toLowerCase();
 
   // LETTER

@@ -28,12 +28,14 @@ div.icon {
   aspect-ratio: 3 / 2;
 }
 
-div:hover {
-  transform: translateY(-0.2em);
-  /* Subtle: on hover, don't move the shadow, instead, make it a tiny bit bigger with more blur
+@media (hover: hover) {
+  div:hover {
+    transform: translateY(-0.2em);
+    /* Subtle: on hover, don't move the shadow, instead, make it a tiny bit bigger with more blur
    ** Mainly noticeable on light backgrounds
    */
-  box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
+    box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
+  }
 }
 
 svg {

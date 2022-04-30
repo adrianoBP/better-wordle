@@ -7,8 +7,10 @@
   align-items: center;
 }
 
-#toggle:hover {
-  cursor: pointer;
+@media (hover: hover) {
+  #toggle:hover {
+    cursor: pointer;
+  }
 }
 
 #toggle #checkbox {
