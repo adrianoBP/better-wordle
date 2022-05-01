@@ -49,6 +49,8 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 - Edit app settings
 - Open using Escape key
 
+- How to play
+
 - Light/dark mode switch
 - Tile selection
 - Validate word

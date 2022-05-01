@@ -3,6 +3,7 @@ div {
   border: 3px solid var(--cell-border);
   border-radius: 40%;
   background-color: var(--cell-bg);
+  color: var(--text-colour);
   display: flex;
   user-select: none;
   align-items: center;

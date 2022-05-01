@@ -2,38 +2,63 @@
   @import url('js/components/navbar/menu/menu.component.css');
 </style>
 
-<section>
-  <div id="menu-content">
-    <div class="menu-item">
+<main>
+  <section id="settings">
+    <div class="item">
       <p>Theme:</p>
       <img src="resources/icons/sun.svg" id="theme-switch">
     </div>
 
-    <div class="menu-item">
+    <div class="item">
       <p>Tile selection:</p>
       <fancy-toggle checked="true" id="tile-selection"></fancy-toggle>
     </div>
 
-    <div class="menu-item">
+    <div class="item">
       <p>Word validation:</p>
       <fancy-toggle checked="true" id="validate-word"></fancy-toggle>
     </div>
 
-    <div class="menu-item">
+    <div class="item">
       <p>Haptic feedback:</p>
       <fancy-toggle checked="true" id="haptic-feedback"></fancy-toggle>
     </div>
 
-    <div class="menu-item">
+    <div class="item">
       <p>Word length:</p>
       <input id="word-length" type="range" id="volume" name="volume" min="4" max="8">
     </div>
 
-    <div class="menu-item">
+    <div class="item">
       <p>Difficulty:</p>
       <input id="difficulty" type="range" id="volume" name="volume" min="1" max="3">
     </div>
-  </div>
-</section>
+  </section>
+
+  <section id="tutorial" class="out">
+    <div style="display:flex">
+      <board-tile letter="a" type="warn"></board-tile>
+      <board-tile letter="i" type="fail"></board-tile>
+      <board-tile letter="d" type="fail"></board-tile>
+    </div>
+    <p>The letter <strong>A</strong> is in the word but not in the correct position</p>
+
+    <div style="display:flex">
+      <board-tile letter="h" type="fail"></board-tile>
+      <board-tile letter="a" type="success"></board-tile>
+      <board-tile letter="t" type="success"></board-tile>
+    </div>
+    <p>The letter <strong>H</strong> is not in the word</p>
+
+    <div style="display:flex">
+      <board-tile letter="c" type="success"></board-tile>
+      <board-tile letter="a" type="success"></board-tile>
+      <board-tile letter="t" type="success"></board-tile>
+    </div>
+    <p>The letter <strong>T</strong> is in the word and in the correct position</p>
+  </section>
+
+  <p id="switch">How to play</p>
+</main>
 
 <div id="menu-toggle"><span></span></div>

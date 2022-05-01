@@ -4,9 +4,18 @@ class TileComponent extends HTMLElement {
     super();
 
     this.shadow = this.attachShadow({ mode: 'closed' });
+    this.shadow.innerHTML = `
+    <style>
+      @import url('js/components/game/board/tile/tile.component.css');
+    </style>
+    <div>${this.letter}</div>
+  `;
   }
 
-  get letter() { return this.getAttribute('letter'); }
+  get letter() {
+    return this.hasAttribute('letter') ? this.getAttribute('letter') : '';
+  }
+
   set letter(letter) { this.setAttribute('letter', letter); }
 
   get type() { return this.getAttribute('type'); }
@@ -77,19 +86,12 @@ class TileComponent extends HTMLElement {
     });
   }
 
-  connectedCallback() {
-    this.shadow.innerHTML = `
-      <style>
-        @import url('js/components/game/board/tile/tile.component.css');
-      </style>
-      <div>${this.letter}</div>
-    `;
-  }
-
   // No need to get old and new values as we are storing the data against the attribute
-  attributeChangedCallback(name, oldValue) {
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (!oldValue && !newValue) { return; }
+
     if (name === 'letter' && oldValue != null) { this.onLetterChange(); }
-    if (name === 'type' && oldValue != null) { this.onTypeChange(); }
+    if (name === 'type') { this.onTypeChange(); }
   }
 }
 

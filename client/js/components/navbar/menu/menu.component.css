@@ -1,6 +1,7 @@
 @media (min-width: 900px) {
-  section {
+  main {
     clip-path: polygon(100% 0, 100% 10%, 80% 100%, 0 100%, 0 0);
+    transform: translateZ(0)
   }
 }
 
@@ -59,7 +60,7 @@
   transform: rotate(-45deg);
 }
 
-section {
+main {
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -81,44 +82,86 @@ section {
     background-color 200ms linear;
 }
 
-section.active {
+main.active {
   left: 0;
   display: flex;
 }
 
-section p {
+main p {
   font-size: 1.4rem;
 }
 
-/* MENU CONTENT */
-#menu-content {
+/* SETTINGS CONTENT */
+#settings {
   width: min(100vw, 500px);
   display: grid;
   row-gap: 1rem;
 }
 
-#menu-content>*:not(.menu-item) {
+#settings>*:not(.item) {
   width: min(85%, 20rem);
   justify-self: center;
 }
 
-/* MENU ITEMS */
-.menu-item {
+/* SETTINGS ITEMS */
+#settings .item {
   display: grid;
   grid-template-columns: 1fr 1fr;
   font-size: 150%;
   align-items: center;
 }
 
-.menu-item>img {
+#settings .item>img {
   cursor: pointer;
   width: 2rem;
 }
 
-.menu-item>*:first-child {
+#settings .item>*:first-child {
   justify-self: end;
 }
 
-.menu-item>*:last-child {
+#settings .item>*:last-child {
   justify-self: center;
+}
+
+.out {
+  /* transform: translateX(-100vw); */
+  transform: scale(0);
+  opacity: 0;
+}
+
+#settings,
+#tutorial {
+  position: absolute;
+  transition: 0.3s ease-in-out
+}
+
+#tutorial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#tutorial p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  margin-inline: 1rem;
+}
+
+board-tile {
+  width: 4rem;
+  margin: 0.2rem;
+}
+
+#switch {
+  position: absolute;
+  bottom: 20%;
+  cursor: pointer;
+  transition-duration: 0.2s;
+}
+
+@media (hover: hover) {
+  #switch:hover {
+    transform: scale(1.1);
+  }
 }

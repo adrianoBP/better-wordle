@@ -1,8 +1,9 @@
 'use strict';
-import { setTheme } from '../../../utils.js';
+import { setTheme, sleep } from '../../../utils.js';
 import { applySettings } from '../../../services/game.service.js';
 import { settings, saveSettings } from '../../../services/settings.service.js';
 import '../../toggle/toggle.component.js';
+import '../../game/board/tile/tile.component.js';
 
 fetch('js/components/navbar/menu/menu.component.html')
   .then(stream => stream.text())
@@ -20,9 +21,81 @@ const define = (template) => {
     get active() { return this.getAttribute('active') === 'true'; }
     set active(value) { this.setAttribute('active', value); }
 
+    initSettings() {
+      this.shadow.querySelector('#tile-selection')
+        .setAttribute('checked', settings.tileSelection);
+      this.shadow.querySelector('#validate-word')
+        .setAttribute('checked', settings.validateOnComplete);
+      this.shadow.querySelector('#haptic-feedback')
+        ?.setAttribute('checked', settings.hapticFeedback);
+      this.shadow.querySelector('#word-length').value = settings.wordLength;
+      this.shadow.querySelector('#difficulty').value = settings.difficulty;
+    }
+
+    switchMenu(event) {
+      const settingsElem = this.shadow.querySelector('#settings');
+      const tutorialElem = this.shadow.querySelector('#tutorial');
+
+      if (settingsElem.classList.contains('out')) {
+        settingsElem.classList.remove('out');
+        tutorialElem.classList.add('out');
+        event.target.textContent = 'How to play';
+      } else {
+        settingsElem.classList.add('out');
+        tutorialElem.classList.remove('out');
+        event.target.textContent = 'Settings';
+
+        sleep(200).then(() => {
+          tutorialElem.querySelectorAll('board-tile').forEach((tile) => {
+            tile.flip(tile.type);
+          });
+        });
+      }
+    }
+
+    connectedCallback() {
+      this.initSettings();
+
+      setTheme(
+        settings.theme,
+        this.shadow.querySelector('#theme-switch'));
+
+      // Update theme as soon as the icon is clicked instead of waiting for the menu to close
+      this.shadow.querySelector('#theme-switch').addEventListener('click', (event) => {
+        const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+        setTheme(newTheme, event.target);
+      });
+
+      // Menu toggle
+      this.shadow.querySelector('#menu-toggle').addEventListener('click', () => {
+        this.active = !this.active;
+      });
+
+      // Register menu toggle on escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          this.active = !this.active;
+        }
+      });
+
+      // Register screen switch
+      this.shadow.querySelector('#switch')
+        .addEventListener('click', this.switchMenu.bind(this));
+
+
+      // Show haptic feedback option only if the user is on mobile
+      if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        this.shadow.querySelectorAll('#settings .item')[3]?.remove();
+      }
+    }
+
+    static get observedAttributes() {
+      return ['active'];
+    }
+
     async onActiveChange() {
       const menuToggle = this.shadow.querySelector('#menu-toggle');
-      const menuElem = this.shadow.querySelector('section');
+      const menuElem = this.shadow.querySelector('main');
 
       if (this.active) {
         menuToggle.classList.add('active');
@@ -43,49 +116,6 @@ const define = (template) => {
         await applySettings(newSettings);
         saveSettings(newSettings);
       }
-    }
-
-    connectedCallback() {
-      setTheme(
-        settings.theme,
-        this.shadow.querySelector('#theme-switch'));
-
-      // Init settings
-      this.shadow.querySelector('#tile-selection')
-        .setAttribute('checked', settings.tileSelection);
-      this.shadow.querySelector('#validate-word')
-        .setAttribute('checked', settings.validateOnComplete);
-      this.shadow.querySelector('#haptic-feedback')
-        ?.setAttribute('checked', settings.hapticFeedback);
-      this.shadow.querySelector('#word-length').value = settings.wordLength;
-      this.shadow.querySelector('#difficulty').value = settings.difficulty;
-
-      // Menu toggle
-      this.shadow.querySelector('#menu-toggle').addEventListener('click', () => {
-        this.active = !this.active;
-      });
-
-      // Register menu toggle on escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          this.active = !this.active;
-        }
-      });
-
-      // Update theme as soon as the icon is clicked instead of waiting for the menu to close
-      this.shadow.querySelector('#theme-switch').addEventListener('click', (event) => {
-        const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
-        setTheme(newTheme, event.target);
-      });
-
-      // Show haptic feedback option only if the user is on mobile
-      if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        this.shadow.querySelectorAll('.menu-item')[3]?.remove();
-      }
-    }
-
-    static get observedAttributes() {
-      return ['active'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
