@@ -1,3 +1,8 @@
+* {
+  transition-duration: 0.2s;
+  transition-property: background-color, transform, opacity;
+}
+
 nav {
   text-align: center;
   background-color: var(--nav-bg);

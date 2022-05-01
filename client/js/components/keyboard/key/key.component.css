@@ -46,27 +46,27 @@ svg * {
 }
 
 /* Colours should be defined from lowest to highest as failsafe in case they overlap */
-div.fail:not(.selected) {
-  background-color: var(--cell-fail);
-  color: #626262;
-}
-
-.light div.fail:not(.selected) {
-  color: #3e3e3e;
+div.fail {
+  background-color: var(--tile-fail);
 }
 
 div.warn {
-  background-color: var(--cell-warn);
+  background-color: var(--tile-warn);
 }
 
 div.success {
-  background-color: var(--cell-success);
+  background-color: var(--tile-success);
 }
 
-.light div.success:not(.selected),
-.light div.warn:not(.selected) {
-  color: var(--text-colour);
-  fill: var(--text-colour);
+div.success:not(.selected),
+div.warn:not(.selected) {
+  color: var(--key-colour);
+  fill: var(--key-colour);
+}
+
+div.fail:not(.selected) {
+  color: var(--key-colour-contrast);
+  fill: var(--key-colour-contrast);
 }
 
 div.selected {

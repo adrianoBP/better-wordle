@@ -17,15 +17,15 @@ div {
 }
 
 div.success {
-  background-color: var(--cell-success);
+  background-color: var(--tile-success);
 }
 
 div.warn {
-  background-color: var(--cell-warn);
+  background-color: var(--tile-warn);
 }
 
 div.fail {
-  background-color: var(--cell-fail);
+  background-color: var(--tile-fail);
 }
 
 div.error {
