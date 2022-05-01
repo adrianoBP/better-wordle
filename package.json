@@ -2,6 +2,7 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
+    "setup": "node misc/setup.js",
     "dev": "nodemon app.js --dev"
   },
   "dependencies": {

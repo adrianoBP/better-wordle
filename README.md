@@ -2,6 +2,14 @@
 
 Coursework for Web Programming module (M30237) at University of Portsmouth
 
+## Install and run
+
+```sh
+npm install
+npm run setup
+npm start
+```
+
 ## Layout
 
 [Figma Prototype](https://www.figma.com/file/u0nTlcMm0l8TFa9kjbFQUP/Untitled?node-id=0%3A1)
@@ -63,9 +71,10 @@ By default, the URL will not specify the word length, allowing a minimalist appr
 
 - Regex: any word containing latin letters and word length between 4 and 8 characters (`/^[a-z]{4,8}$/`)
 - Words source: [http://wordlist.aspell.net/12dicts/](http://wordlist.aspell.net/12dicts/)
-  - 2of5core: easy (British and American English, ordinary words)
-  - 2of12: medium (American English, less common words)
-  - 5d+2a: hard (British and American English, uncommon words, Names, Acronyms)
+  - easy (from 2of5core): easy (British and American English, ordinary words)
+  - medium (from 2of12): medium (American English, less common words)
+  - hard (from 5d+2a): hard (British and American English, uncommon words, Names, Acronyms)
+- Words from one level are not included in the higher difficulty level
 
 ### Classes
 

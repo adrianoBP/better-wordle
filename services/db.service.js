@@ -7,8 +7,6 @@ const init = async () => {
     // sqlite3 is no longer a dependency of sqlite, hence, we need to explicitly use it
     driver: sqlite3.Database,
   });
-
-  await db.migrate({ migrationsPath: 'db/migrations' });
   return db;
 };
 
@@ -52,6 +50,8 @@ const setTodayWord = async (id) => {
 };
 
 export default {
+  init,
+
   getTodaysWord,
   getNewWordId,
   getWordById,
