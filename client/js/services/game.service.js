@@ -1,7 +1,7 @@
 'use strict';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
-import { getItem, setItem, getDayFromMillisec } from './common.service.js';
+import { getItem, setItem, getDayFromMillisec } from '../utils.js';
 import { settings, saveSettings } from './settings.service.js';
 
 import '../components/game/game.component.js';

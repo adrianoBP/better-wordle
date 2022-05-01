@@ -1,5 +1,5 @@
 'use strict';
-import { getItem, setItem, setTheme } from './common.service.js';
+import { getItem, setItem, setTheme } from '../utils.js';
 
 let settings = {
   theme: 'dark',

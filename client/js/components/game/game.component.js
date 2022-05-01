@@ -1,7 +1,7 @@
 'use strict';
 import { settings, saveSettings } from '../../services/settings.service.js';
 import { getWord } from '../../services/api.service.js';
-import { sleep } from '../../services/common.service.js';
+import { sleep } from '../../utils.js';
 import './board/board.component.js';
 import './result/result.component.js';
 

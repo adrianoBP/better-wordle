@@ -1,6 +1,6 @@
 'use strict';
 import { settings } from '../../../services/settings.service.js';
-import { getItem } from '../../../services/common.service.js';
+import { getItem } from '../../../utils.js';
 import { shareSVG, tickSVG } from '../../../svg/index.js';
 
 fetch('js/components/game/result/result.component.html')

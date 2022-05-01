@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import wordsService from '../services/words.service.js';
-import { fromBase64 } from '../services/common.service.js';
+import { fromBase64 } from '../utils.js';
 
 const router = new Router();
 

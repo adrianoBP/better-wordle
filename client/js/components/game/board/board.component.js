@@ -1,7 +1,7 @@
 'use strict';
 import { settings } from '../../../services/settings.service.js';
 import { updateKeyboard } from '../../../services/keyboard.service.js';
-import { sleep } from '../../../services/common.service.js';
+import { sleep } from '../../../utils.js';
 import '../board/tile/tile.component.js';
 
 class BoardDetails extends HTMLElement {

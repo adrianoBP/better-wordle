@@ -1,18 +1,11 @@
 import { Router } from 'express';
 import gameService from '../services/game.service.js';
 import dbService from '../services/db.service.js';
-import { getDayFromMillisec, fromBase64, toBase64 } from '../services/common.service.js';
+import { getDayFromMillisec, fromBase64, toBase64 } from '../utils.js';
 
 const router = new Router();
 
 const validateGuess = async (req, res) => {
-  if (!req.is('application/json')) {
-    res.status(400).json({
-      error: 'Invalid request type. Please send a JSON request.',
-    });
-    return;
-  }
-
   const { settings, guess } = req.body;
 
   if (!guess) {
