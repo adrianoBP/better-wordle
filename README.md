@@ -58,6 +58,8 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 - Custom game
   - Word length
   - Word difficulty
+- Game modes
+  - Icons
 
 ### Multiplayer
 

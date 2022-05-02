@@ -43,9 +43,8 @@ svg {
 }
 
 /* SHARE BUTTON */
-
 #share {
-  margin-top: 2rem;
+  margin: 2rem 0;
   color: var(--text-colour-opp);
   fill: var(--text-colour-opp);
   background-color: var(--keyboard-bg);

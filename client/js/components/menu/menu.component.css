@@ -111,7 +111,7 @@ main p {
   align-items: center;
 }
 
-#settings .item>img {
+#settings img {
   cursor: pointer;
   width: 2rem;
 }
@@ -122,6 +122,24 @@ main p {
 
 #settings .item>*:last-child {
   justify-self: center;
+}
+
+#game-modes {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+#game-modes>img {
+  width: 3rem;
+  margin-inline: 1rem;
+  transition-duration: 0.2s;
+}
+
+@media (hover: hover) {
+  img:hover {
+    transform: scale(1.1);
+  }
 }
 
 .out {

@@ -8,12 +8,16 @@
 
   --cell-size-multiplier: 0.9;
   --cell-size: 4rem;
+
+  --page-height: 100%;
 }
 
 @media (min-width: 500px) {
   :root {
     --keyboard-width: 100%;
     --keyboard-ratio: 1;
+
+    --page-height: 100vh;
   }
 }
 
@@ -27,10 +31,8 @@
 
 html,
 body {
-  height: 100%;
+  height: var(--page-height);
   width: 100vw;
-  background: var(--body-bg);
-  color: var(--text-colour);
   display: flex;
   flex-flow: column;
 }
@@ -48,6 +50,9 @@ main {
   flex: 1 1 auto;
   display: flex;
   flex-flow: column;
+  background: var(--body-bg);
+  color: var(--text-colour);
+  fill: var(--text-colour);
 }
 
 keyboard-component {

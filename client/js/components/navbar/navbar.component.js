@@ -1,8 +1,8 @@
 'use strict';
-import { newRandomGame, isLoading, newMultiplayerGame } from '../../services/game.service.js';
+import { newRandomGame, isLoading } from '../../services/game.service.js';
 import { settings } from '../../services/settings.service.js';
-import { getNewGameCode, getWord } from '../../services/api.service.js';
-import './menu/menu.component.js';
+import { getNewGameCode } from '../../services/api.service.js';
+import '../menu/menu.component.js';
 
 fetch('js/components/navbar/navbar.component.html')
   .then(stream => stream.text())
@@ -27,16 +27,8 @@ const define = (template) => {
 
       this.shadow.querySelector('#random-game').addEventListener('click', async () => {
         if (isLoading) return;
-        // Creates a new game - The game is not saved!
         settings.code = await getNewGameCode();
-
         newRandomGame(settings.code);
-      });
-
-      // ! #debug
-      this.shadow.querySelector('#debug').addEventListener('click', async () => {
-        console.log(await getWord(settings));
-        newMultiplayerGame(true);
       });
     }
   }
