@@ -71,12 +71,13 @@ const newRandomGame = async () => {
   const url = new URL(location.href);
   url.searchParams.set('code', settings.code);
   url.searchParams.delete('gameId');
-  history.pushState(null, '', url);
 
   // Set the game length - for base version (5), don't save length param to keep URL short
   if (settings.wordLength === 5) {
     url.searchParams.delete('length');
   } else { url.searchParams.set('length', settings.wordLength); }
+
+  history.pushState(null, '', url);
 
   isLoading = true;
   await mainGame.restart();

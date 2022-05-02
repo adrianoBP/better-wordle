@@ -76,6 +76,7 @@ class Key extends HTMLElement {
     // Don't remove all classes because we may have additional classes (i.e. 'icon')
     this.shadow.querySelector('div').classList
       .remove('selected', 'success', 'warn', 'fail');
+    this.type = null;
   }
 
   connectedCallback() {
