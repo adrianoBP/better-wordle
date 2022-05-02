@@ -2,7 +2,7 @@
   "name": "better-wordle",
   "description": "Coursework for Web Programming module (M30237) at University of Portsmouth",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/adrianoBP/better-wordle.git"
@@ -15,9 +15,9 @@
   "homepage": "https://github.com/adrianoBP/better-wordle#readme",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "setup": "node misc/setup.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "express": "^4.17.3",

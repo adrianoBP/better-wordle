@@ -4,10 +4,6 @@ class LobbyDetails extends HTMLElement {
     super();
 
     this.shadow = this.attachShadow({ mode: 'open' });
-    this.render();
-  }
-
-  render() {
     this.shadow.innerHTML = `
     <style>
       @import url('js/components/game/lobby/lobby.component.css');
@@ -15,60 +11,40 @@ class LobbyDetails extends HTMLElement {
     <section>
       <h2 id="players"></h2>
       <button id="start-game" style="display: none">Start Game</button>
-      <p id="countdown" style="display: none"></p>
+      <p id="additional-info"></p>
     </section>
     `;
   }
 
-  get playersElem() { return this.shadow.querySelector('#players'); }
-  get startGameElem() { return this.shadow.querySelector('#start-game'); }
-  get countdownElem() { return this.shadow.querySelector('#countdown'); }
+  get infoElem() { return this.shadow.querySelector('#additional-info'); }
 
-  get players() { return this.getAttribute('players'); }
-  set players(value) { this.setAttribute('players', value); }
+  updateCountdown(newValue) {
+    if (newValue) {
+      this.infoElem.textContent = newValue;
 
-  get gameStarted() { return this.getAttribute('game-started') === 'true'; }
-  set gameStarted(value) { this.setAttribute('game-started', value ? 'true' : 'false'); }
-
-  show() {
-    this.shadow.querySelector('section').style.display = 'flex';
+      // Countdown animation
+      this.infoElem.animate([
+        { transform: 'scale(2)' },
+        { transform: 'scale(0.2)' },
+      ], { duration: 1000 });
+    }
   }
 
-  hide() {
-    this.shadow.querySelector('section').style.display = 'none';
+  updatePlayersCount(value) {
+    this.shadow.querySelector('#players').textContent = `${value} player(s) connected`;
   }
 
   connectedCallback() {
     // If the user is allowed to start the game, show the start button
     if (this.startGame) {
-      this.startGameElem.style.display = 'block';
-      this.shadow.querySelector('#start-game').addEventListener('click', () => {
+      const startGameElem = this.shadow.querySelector('#start-game');
+      startGameElem.style.display = 'block';
+      startGameElem.addEventListener('click', () => {
         this.startGame();
-        this.countdownElem.style.display = 'block';
       });
-    }
-  }
-
-  static get observedAttributes() {
-    return ['players', 'game-started'];
-  }
-
-  onPlayerCountChange() {
-    this.playersElem.textContent = `${this.players} player(s)`;
-  }
-
-  updateCountdown(newValue) {
-    if (newValue) {
-      this.countdownElem.style.display = 'block';
-      this.countdownElem.textContent = newValue;
     } else {
-      this.countdownElem.style.display = 'none';
+      this.infoElem.textContent = 'Waiting for host ...';
     }
-  }
-
-
-  attributeChangedCallback(name) {
-    if (name === 'players') { this.onPlayerCountChange(); }
   }
 }
 

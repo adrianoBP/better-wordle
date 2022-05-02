@@ -28,6 +28,10 @@ class GameDetails extends HTMLElement {
   get isGuessValid() { return this.getAttribute('is-guess-valid') === 'true'; }
   set isGuessValid(value) { this.setAttribute('is-guess-valid', value ? 'true' : 'false'); }
 
+  get isMultiplayer() { return this.getAttribute('is-multiplayer') === 'true'; }
+  set isMultiplayer(value) { this.setAttribute('is-multiplayer', value ? 'true' : 'false'); }
+
+
   async applyValidationResult(guess, validationResult, incrementWordIndex) {
     await this.boardElem.applyValidationResult(validationResult, incrementWordIndex);
 
@@ -54,7 +58,7 @@ class GameDetails extends HTMLElement {
       // If the user guessed the word, notify all the other players (if playing in a lobby)
       if (this.boardElem.wordGuessed && settings.gameId != null) {
         socket.send(JSON.stringify({ event: 'game-end', gameId: settings.gameId, guess }));
-        this.lobbyElem.gameStarted = false;
+        this.isMultiplayer = false;
       }
     }
   }
@@ -80,6 +84,7 @@ class GameDetails extends HTMLElement {
 
   async restart() {
     this.boardElem.reset();
+    this.isMultiplayer = false;
     if (this.resultElem.isShowing) { this.resultElem.hide(); }
     if (this.lobbyElem) { this.lobbyElem.remove(); }
     await sleep(500);
@@ -100,15 +105,15 @@ class GameDetails extends HTMLElement {
     if (this.resultElem.isShowing) { this.resultElem.hide(); }
 
     const lobbyElem = document.createElement('game-lobby');
-    lobbyElem.setAttribute('is-showing', 'true');
-    lobbyElem.setAttribute('players', playerCount);
-
+    lobbyElem.updatePlayersCount(playerCount);
     if (isAdmin) {
       lobbyElem.startGame = () => {
         socket.send(JSON.stringify({ event: 'start-game', gameId: settings.gameId }));
       };
     }
 
+    // Make sure to append the element after defining the properties to ensure
+    // that the connectedCallback() is called with the updated properties value
     this.shadow.querySelector('section').appendChild(lobbyElem);
 
     socket.onmessage = (event) => {
@@ -116,19 +121,19 @@ class GameDetails extends HTMLElement {
 
       switch (data.event) {
         case 'game-settings':
-          lobbyElem.players = data.playerCount;
+          lobbyElem.updatePlayersCount(data.playerCount);
           break;
         case 'countdown':
           lobbyElem.updateCountdown(data.count);
           if (data.count === 0) {
-            this.lobbyElem.gameStarted = true;
-            this.lobbyElem.hide();
+            this.isMultiplayer = true;
+            this.lobbyElem.remove();
             this.boardElem.show();
           }
           break;
         case 'game-end':
           this.showResult(data.guess, settings.code == null);
-          this.lobbyElem.gameStarted = false;
+          this.isMultiplayer = false;
           break;
       }
     };

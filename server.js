@@ -18,7 +18,7 @@ const server = http.createServer(app);
 
 // Websocket for multiplayer games
 const socket = new WebSocketServer({ server });
-socket.on('connection', gameService.onSocketMessage);
+socket.on('connection', gameService.onGameMessage);
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

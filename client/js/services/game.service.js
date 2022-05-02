@@ -26,7 +26,7 @@ const startGame = async () => {
 };
 
 const newMultiplayerGame = (isAdmin) => {
-  if (mainGame.lobbyElem?.gameStarted) { return; }
+  if (mainGame.isMultiplayer) { return; }
 
   // If the user is admin, we want to start a new game
   if (isAdmin) { settings.gameId = null; }
@@ -77,7 +77,7 @@ const newRandomGame = async () => {
 
 const checkInput = async (input) => {
   // If we are playing multiplayer and the game didn't start, don't allow input
-  if (settings.gameId != null && !mainGame.lobbyElem?.gameStarted) {
+  if (settings.gameId != null && !mainGame.isMultiplayer) {
     return;
   }
 

@@ -52,8 +52,8 @@ const validateGuess = async (guess, settings) => {
 
 const runningGames = {};
 
-const onSocketMessage = (ws) => {
-  ws.on('message', async (message) => {
+const onGameMessage = (socket) => {
+  socket.on('message', async (message) => {
     const data = JSON.parse(message);
 
     switch (data.event) {
@@ -68,7 +68,7 @@ const onSocketMessage = (ws) => {
           };
         }
 
-        runningGames[gameId].players.push(ws);
+        runningGames[gameId].players.push(socket);
 
         dispatchToAll(gameId, 'game-settings', {
           playerCount: runningGames[gameId].players.length,
@@ -88,15 +88,15 @@ const onSocketMessage = (ws) => {
       case 'game-end': {
         dispatchToAll(data.gameId, 'game-end', {
           guess: data.guess,
-        }, ws);
+        }, socket);
       }
     }
   });
 };
 
-const dispatchToAll = (gameId, event, properties, ws) => {
+const dispatchToAll = (gameId, event, properties, socket) => {
   for (const client of runningGames[gameId].players) {
-    if (ws && client === ws) { continue; }
+    if (socket && client === socket) { continue; }
 
     client.send(JSON.stringify({
       event,
@@ -108,5 +108,5 @@ const dispatchToAll = (gameId, event, properties, ws) => {
 
 export default {
   validateGuess,
-  onSocketMessage,
+  onGameMessage,
 };
