@@ -59,6 +59,10 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
   - Word length
   - Word difficulty
 
+### Multiplayer
+
+- `uuid` package
+
 ### Share game
 
 When playing with random words (i.e. not today's word), the URL gets updated with a `code` code that identifies the word.

@@ -21,10 +21,16 @@ const fromBase64 = (content) => {
   return Buffer.from(content, 'base64').toString('utf8');
 };
 
+const sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};
+
 export {
   getDayFromMillisec,
   getFileContent,
 
   toBase64,
   fromBase64,
+
+  sleep,
 };

@@ -1,5 +1,5 @@
 'use strict';
-import { resetGame, isLoading } from '../../services/game.service.js';
+import { newRandomGame, isLoading, newMultiplayerGame } from '../../services/game.service.js';
 import { settings } from '../../services/settings.service.js';
 import { getNewGameCode, getWord } from '../../services/api.service.js';
 import './menu/menu.component.js';
@@ -30,12 +30,13 @@ const define = (template) => {
         // Creates a new game - The game is not saved!
         settings.code = await getNewGameCode();
 
-        resetGame(settings.code);
+        newRandomGame(settings.code);
       });
 
       // ! #debug
       this.shadow.querySelector('#debug').addEventListener('click', async () => {
         console.log(await getWord(settings));
+        newMultiplayerGame(true);
       });
     }
   }

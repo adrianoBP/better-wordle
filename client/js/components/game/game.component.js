@@ -2,8 +2,11 @@
 import { settings, saveSettings } from '../../services/settings.service.js';
 import { getWord } from '../../services/api.service.js';
 import { sleep } from '../../utils.js';
+import { socket } from '../../services/game.service.js';
+
 import './board/board.component.js';
 import './result/result.component.js';
+import './lobby/lobby.component.js';
 
 class GameDetails extends HTMLElement {
   constructor() {
@@ -11,16 +14,16 @@ class GameDetails extends HTMLElement {
 
     this.shadow = this.attachShadow({ mode: 'open' });
     this.shadow.innerHTML = `
-      <div>
+      <section>
         <board-details></board-details>
         <result-details is-showing="false"></result-details>
-      </div>
+      </section>
       `;
   }
 
   get boardElem() { return this.shadow.querySelector('board-details'); }
-
   get resultElem() { return this.shadow.querySelector('result-details'); }
+  get lobbyElem() { return this.shadow.querySelector('game-lobby'); }
 
   get isGuessValid() { return this.getAttribute('is-guess-valid') === 'true'; }
   set isGuessValid(value) { this.setAttribute('is-guess-valid', value ? 'true' : 'false'); }
@@ -47,6 +50,12 @@ class GameDetails extends HTMLElement {
 
       // Only show the result if it is the current day word and not a random game
       this.showResult(guess, settings.code == null);
+
+      // If the user guessed the word, notify all the other players (if playing in a lobby)
+      if (this.boardElem.wordGuessed && settings.gameId != null) {
+        socket.send(JSON.stringify({ event: 'game-end', gameId: settings.gameId, guess }));
+        this.lobbyElem.gameStarted = false;
+      }
     }
   }
 
@@ -71,13 +80,58 @@ class GameDetails extends HTMLElement {
 
   async restart() {
     this.boardElem.reset();
-    this.resultElem.hide();
+    if (this.resultElem.isShowing) { this.resultElem.hide(); }
+    if (this.lobbyElem) { this.lobbyElem.remove(); }
     await sleep(500);
   }
 
   showResult(guess, showStats) {
     this.boardElem.hide();
     this.resultElem.show(guess, this.boardElem.wordGuessed, showStats);
+  }
+
+  newLobby(playerCount, isAdmin) {
+    // If we played a game already, reset it
+    if (this.lobbyElem) {
+      this.lobbyElem.remove();
+    }
+
+    this.boardElem.hide();
+    if (this.resultElem.isShowing) { this.resultElem.hide(); }
+
+    const lobbyElem = document.createElement('game-lobby');
+    lobbyElem.setAttribute('is-showing', 'true');
+    lobbyElem.setAttribute('players', playerCount);
+
+    if (isAdmin) {
+      lobbyElem.startGame = () => {
+        socket.send(JSON.stringify({ event: 'start-game', gameId: settings.gameId }));
+      };
+    }
+
+    this.shadow.querySelector('section').appendChild(lobbyElem);
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      switch (data.event) {
+        case 'game-settings':
+          lobbyElem.players = data.playerCount;
+          break;
+        case 'countdown':
+          lobbyElem.updateCountdown(data.count);
+          if (data.count === 0) {
+            this.lobbyElem.gameStarted = true;
+            this.lobbyElem.hide();
+            this.boardElem.show();
+          }
+          break;
+        case 'game-end':
+          this.showResult(data.guess, settings.code == null);
+          this.lobbyElem.gameStarted = false;
+          break;
+      }
+    };
   }
 
   onIsGuessValidChange() {

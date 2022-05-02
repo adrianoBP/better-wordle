@@ -34,6 +34,9 @@ const loadSettings = () => {
   if (searchParams.has('length')) {
     settings.wordLength = parseInt(searchParams.get('length'));
   }
+  if (searchParams.has('gameId')) {
+    settings.gameId = searchParams.get('gameId');
+  }
 };
 
 const saveSettings = (newSettings) => {

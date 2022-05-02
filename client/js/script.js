@@ -4,13 +4,10 @@ import { loadSettings, settings } from './services/settings.service.js';
 import './components/navbar/navbar.component.js';
 import './components/keyboard/keyboard.component.js';
 
-let rootElement;
-
 function prepareElements() {
-  // Assign DOM elements
-  rootElement = document.querySelector(':root');
   // Init game properties
-  rootElement.style.setProperty('--cells-per-row', settings.wordLength);
+  document.querySelector(':root')
+    .style.setProperty('--cells-per-row', settings.wordLength);
 }
 
 function addEventListeners() {

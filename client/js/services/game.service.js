@@ -10,6 +10,8 @@ let mainGame = null;
 let isLoading = false; // Used to prevent multiple calls to the API
 const guesses = {}; // Dictionary of words and their validity to reduce API calls
 
+let socket;
+
 const startGame = async () => {
   isLoading = true;
 
@@ -23,21 +25,49 @@ const startGame = async () => {
   isLoading = false;
 };
 
+const newMultiplayerGame = (isAdmin) => {
+  if (mainGame.lobbyElem?.gameStarted) { return; }
+
+  // If the user is admin, we want to start a new game
+  if (isAdmin) { settings.gameId = null; }
+
+  // Initiate connection to the server
+  socket = new WebSocket('ws://' + window.location.hostname + ':' + (window.location.port || 80) + '/');
+  socket.onopen = () => {
+    socket.send(JSON.stringify({ event: 'new-game', gameId: settings.gameId }));
+  };
+
+  socket.onmessage = async (e) => {
+    isLoading = true;
+    const data = JSON.parse(e.data);
+    settings.gameId = data.gameId;
+    settings.code = data.code;
+
+    // Update URL with game parameters
+    const url = new URL(window.location.href);
+    url.searchParams.set('gameId', settings.gameId.toString());
+    url.searchParams.set('code', settings.code);
+    history.pushState(null, '', url);
+
+    await mainGame.restart();
+    mainGame.newLobby(data.playerCount, isAdmin);
+    resetKeyboard();
+    isLoading = false;
+  };
+};
+
 // Game is reset when the user changes the game settings (i.e. word length, difficulty, etc.)
 // or when the user starts a new game with a random word
-const resetGame = async (code) => {
-  if (code) {
-    // Update URL in case user wants to share the game
-    const url = new URL(location.href);
-    url.searchParams.set('code', settings.code);
+const newRandomGame = async () => {
+  // Update URL in case user wants to share the game
+  const url = new URL(location.href);
+  url.searchParams.set('code', settings.code);
+  history.pushState(null, '', url);
 
-    // Reset the length from the URL
-    if (url.searchParams.has('length')) { url.searchParams.delete('length'); }
-
-    // For base version, don't save length param to keep URL short
-    if (settings.wordLength !== 5) { url.searchParams.set('length', settings.wordLength); }
-    history.pushState(null, '', url);
-  }
+  // Set the game length - for base version (l=5), don't save length param to keep URL short
+  if (settings.wordLength === 5) {
+    url.searchParams.delete('length');
+  } else { url.searchParams.set('length', settings.wordLength); }
 
   isLoading = true;
   await mainGame.restart();
@@ -46,6 +76,11 @@ const resetGame = async (code) => {
 };
 
 const checkInput = async (input) => {
+  // If we are playing multiplayer and the game didn't start, don't allow input
+  if (settings.gameId != null && !mainGame.lobbyElem?.gameStarted) {
+    return;
+  }
+
   // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
@@ -133,11 +168,17 @@ const saveGame = (reset) => {
 const loadGame = async () => {
   const savedGame = getItem('game-save');
 
-  // If there are no saved game, don't load
-  if (!savedGame) return;
+  if (settings.gameId) {
+    newMultiplayerGame();
+    return;
+  }
 
   // If we have a code, don't load (custom game)
   if (settings.code != null) return;
+
+
+  // If there are no saved game, don't load
+  if (!savedGame) return;
 
   // If the game day changed, don't load
   if (getDayFromMillisec(settings.gameTime) !== getDayFromMillisec()) {
@@ -168,16 +209,18 @@ const applySettings = async (newSettings) => {
 
     settings.code = await getNewGameCode();
 
-    resetGame(settings.code);
+    newRandomGame(settings.code);
     mainGame.boardElem.initBoard();
   }
 };
 
 export {
   isLoading,
+  socket,
 
   startGame,
-  resetGame,
+  newMultiplayerGame,
+  newRandomGame,
 
   saveGame,
   applySettings,

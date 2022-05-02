@@ -1,5 +1,7 @@
 import wordsService from './words.service.js';
 import dbService from './db.service.js';
+import { toBase64, sleep } from '../utils.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const validateGuess = async (guess, settings) => {
   // Get the current word
@@ -48,6 +50,63 @@ const validateGuess = async (guess, settings) => {
   return result;
 };
 
+const runningGames = {};
+
+const onSocketMessage = (ws) => {
+  ws.on('message', async (message) => {
+    const data = JSON.parse(message);
+
+    switch (data.event) {
+      case 'new-game': {
+        const gameId = data.gameId || uuidv4();
+        console.log(`New game ${gameId}`);
+
+        if (!runningGames[gameId]) {
+          runningGames[gameId] = {
+            players: [],
+            code: toBase64((await dbService.getNewWordId(1, 5)).id),
+          };
+        }
+
+        runningGames[gameId].players.push(ws);
+
+        dispatchToAll(gameId, 'game-settings', {
+          playerCount: runningGames[gameId].players.length,
+          code: runningGames[gameId].code,
+          gameId,
+        });
+        break;
+      }
+      case 'start-game': {
+        for (let i = 3; i >= 0; i--) {
+          dispatchToAll(data.gameId, 'countdown', { count: i });
+          await sleep(1000);
+        }
+        break;
+      }
+
+      case 'game-end': {
+        dispatchToAll(data.gameId, 'game-end', {
+          guess: data.guess,
+        }, ws);
+      }
+    }
+  });
+};
+
+const dispatchToAll = (gameId, event, properties, ws) => {
+  for (const client of runningGames[gameId].players) {
+    if (ws && client === ws) { continue; }
+
+    client.send(JSON.stringify({
+      event,
+      ...properties,
+    }));
+  }
+};
+
+
 export default {
   validateGuess,
+  onSocketMessage,
 };
