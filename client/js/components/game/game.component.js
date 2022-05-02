@@ -122,6 +122,8 @@ class GameDetails extends HTMLElement {
       switch (data.event) {
         case 'game-settings':
           lobbyElem.updatePlayersCount(data.playerCount);
+          settings.difficulty = data.difficulty;
+          settings.wordLength = data.wordLength;
           break;
         case 'countdown':
           lobbyElem.updateCountdown(data.count);

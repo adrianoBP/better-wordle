@@ -64,7 +64,9 @@ const onGameMessage = (socket) => {
         if (!runningGames[gameId]) {
           runningGames[gameId] = {
             players: [],
-            code: toBase64((await dbService.getNewWordId(1, 5)).id),
+            code: toBase64((await dbService.getNewWordId(data.difficulty, data.wordLength)).id),
+            difficulty: data.difficulty,
+            wordLength: data.wordLength,
           };
         }
 
@@ -74,6 +76,8 @@ const onGameMessage = (socket) => {
           playerCount: runningGames[gameId].players.length,
           code: runningGames[gameId].code,
           gameId,
+          difficulty: runningGames[gameId].difficulty,
+          wordLength: runningGames[gameId].wordLength,
         });
         break;
       }

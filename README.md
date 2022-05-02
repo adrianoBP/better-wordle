@@ -62,6 +62,7 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 ### Multiplayer
 
 - `uuid` package
+- Current settings (difficulty & word length)
 
 ### Share game
 

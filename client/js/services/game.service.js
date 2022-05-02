@@ -34,14 +34,21 @@ const newMultiplayerGame = (isAdmin) => {
   // Initiate connection to the server
   socket = new WebSocket('ws://' + window.location.hostname + ':' + (window.location.port || 80) + '/');
   socket.onopen = () => {
-    socket.send(JSON.stringify({ event: 'new-game', gameId: settings.gameId }));
+    socket.send(JSON.stringify(
+      {
+        event: 'new-game',
+        gameId: settings.gameId,
+        difficulty: settings.difficulty,
+        wordLength: settings.wordLength,
+      }));
   };
 
-  socket.onmessage = async (e) => {
-    isLoading = true;
+  socket.onmessage = (e) => {
     const data = JSON.parse(e.data);
     settings.gameId = data.gameId;
     settings.code = data.code;
+    settings.difficulty = data.difficulty;
+    settings.wordLength = data.wordLength;
 
     // Update URL with game parameters
     const url = new URL(window.location.href);
@@ -49,10 +56,11 @@ const newMultiplayerGame = (isAdmin) => {
     url.searchParams.set('code', settings.code);
     history.pushState(null, '', url);
 
-    await mainGame.restart();
+    // We want to remake the board with multiplayer game settings
+    mainGame.boardElem.init();
+
     mainGame.newLobby(data.playerCount, isAdmin);
     resetKeyboard();
-    isLoading = false;
   };
 };
 
@@ -62,9 +70,10 @@ const newRandomGame = async () => {
   // Update URL in case user wants to share the game
   const url = new URL(location.href);
   url.searchParams.set('code', settings.code);
+  url.searchParams.delete('gameId');
   history.pushState(null, '', url);
 
-  // Set the game length - for base version (l=5), don't save length param to keep URL short
+  // Set the game length - for base version (5), don't save length param to keep URL short
   if (settings.wordLength === 5) {
     url.searchParams.delete('length');
   } else { url.searchParams.set('length', settings.wordLength); }
@@ -210,7 +219,7 @@ const applySettings = async (newSettings) => {
     settings.code = await getNewGameCode();
 
     newRandomGame(settings.code);
-    mainGame.boardElem.initBoard();
+    mainGame.boardElem.init();
   }
 };
 

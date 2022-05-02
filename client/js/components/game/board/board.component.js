@@ -213,7 +213,7 @@ class BoardDetails extends HTMLElement {
     });
   }
 
-  initBoard() {
+  init() {
     // Make sure that the correct word length is set
     document.querySelector(':root')
       .style.setProperty('--cells-per-row', settings.wordLength);
@@ -253,7 +253,7 @@ class BoardDetails extends HTMLElement {
     this.letterIndex = 0;
 
     // Add board to the DOM
-    this.initBoard();
+    this.init();
   }
 
   static get observedAttributes() {
