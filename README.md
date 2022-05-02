@@ -10,10 +10,6 @@ npm run setup
 npm start
 ```
 
-## Layout
-
-[Figma Prototype](https://www.figma.com/file/u0nTlcMm0l8TFa9kjbFQUP/Untitled?node-id=0%3A1)
-
 ## Core functionalities
 
 ### Basic five-letter game
@@ -30,7 +26,7 @@ npm start
 
 > See [cheating](#cheating)
 
-### Statistics
+### Stats
 
 ### Keyboard
 
@@ -65,6 +61,8 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 
 - `uuid` package
 - Current settings (difficulty & word length)
+
+### PWA
 
 ### Share game
 

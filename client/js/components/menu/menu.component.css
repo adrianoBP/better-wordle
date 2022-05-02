@@ -87,7 +87,8 @@ main.active {
   display: flex;
 }
 
-main p {
+main p,
+main label {
   font-size: 1.4rem;
 }
 
