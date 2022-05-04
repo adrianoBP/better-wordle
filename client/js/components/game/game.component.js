@@ -56,8 +56,8 @@ class GameDetails extends HTMLElement {
       this.showResult(guess, settings.id == null);
 
       // If the user guessed the word, notify all the other players (if playing in a lobby)
-      if (this.boardElem.wordGuessed && settings.gameId != null) {
-        socket.send(JSON.stringify({ event: 'game-end', gameId: settings.gameId, guess }));
+      if (this.boardElem.wordGuessed && settings.code != null) {
+        socket.send(JSON.stringify({ event: 'game-end', code: settings.code, guess }));
         this.isMultiplayer = false;
       }
     }
@@ -108,7 +108,7 @@ class GameDetails extends HTMLElement {
     lobbyElem.updatePlayersCount(playerCount);
     if (isAdmin) {
       lobbyElem.startGame = () => {
-        socket.send(JSON.stringify({ event: 'start-game', gameId: settings.gameId }));
+        socket.send(JSON.stringify({ event: 'start-game', code: settings.code }));
       };
     }
 

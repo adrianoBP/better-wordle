@@ -58,11 +58,11 @@ const onGameMessage = (socket) => {
 
     switch (data.event) {
       case 'new-game': {
-        const gameId = data.gameId || uuidv4();
-        console.log(`New game ${gameId}`);
+        const code = data.code || uuidv4();
+        console.log(`New game ${code}`);
 
-        if (!runningGames[gameId]) {
-          runningGames[gameId] = {
+        if (!runningGames[code]) {
+          runningGames[code] = {
             players: [],
             id: (await dbService.getNewWordId(data.difficulty, data.wordLength)).id,
             difficulty: data.difficulty,
@@ -70,27 +70,27 @@ const onGameMessage = (socket) => {
           };
         }
 
-        runningGames[gameId].players.push(socket);
+        runningGames[code].players.push(socket);
 
-        dispatchToAll(gameId, 'game-settings', {
-          playerCount: runningGames[gameId].players.length,
-          id: runningGames[gameId].id,
-          gameId,
-          difficulty: runningGames[gameId].difficulty,
-          wordLength: runningGames[gameId].wordLength,
+        dispatchToAll(code, 'game-settings', {
+          playerCount: runningGames[code].players.length,
+          id: runningGames[code].id,
+          code,
+          difficulty: runningGames[code].difficulty,
+          wordLength: runningGames[code].wordLength,
         });
         break;
       }
       case 'start-game': {
         for (let i = 3; i >= 0; i--) {
-          dispatchToAll(data.gameId, 'countdown', { count: i });
+          dispatchToAll(data.code, 'countdown', { count: i });
           await sleep(1000);
         }
         break;
       }
 
       case 'game-end': {
-        dispatchToAll(data.gameId, 'game-end', {
+        dispatchToAll(data.code, 'game-end', {
           guess: data.guess,
         }, socket);
       }
@@ -98,8 +98,8 @@ const onGameMessage = (socket) => {
   });
 };
 
-const dispatchToAll = (gameId, event, properties, socket) => {
-  for (const client of runningGames[gameId].players) {
+const dispatchToAll = (code, event, properties, socket) => {
+  for (const client of runningGames[code].players) {
     if (socket && client === socket) { continue; }
 
     client.send(JSON.stringify({

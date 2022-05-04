@@ -57,7 +57,7 @@ const getWord = async () => {
   return response.result;
 };
 
-const getNewGameId = async () => {
+const getNewGameCode = async () => {
   const response = await makeRequestParse(
     `${SERVICE_URL}/game/random?difficulty=${settings.difficulty}&wordLength=${settings.wordLength}`,
     'GET',
@@ -76,5 +76,5 @@ export {
   validateGuess,
   getWord,
 
-  getNewGameId,
+  getNewGameCode,
 };

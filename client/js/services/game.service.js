@@ -1,6 +1,6 @@
 'use strict';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
-import { validateGuess, isWordValid, getNewGameId } from './api.service.js';
+import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
 import { getItem, setItem, getDayFromMillisec } from '../utils.js';
 import { settings, saveSettings } from './settings.service.js';
 
@@ -29,7 +29,7 @@ const newMultiplayerGame = (isAdmin) => {
   if (mainGame.isMultiplayer) { return; }
 
   // If the user is admin, we want to start a new game
-  if (isAdmin) { settings.gameId = null; }
+  if (isAdmin) { settings.code = null; }
 
   // Initiate connection to the server
   socket = new WebSocket('ws://' + window.location.hostname + ':' + (window.location.port || 80) + '/');
@@ -37,7 +37,7 @@ const newMultiplayerGame = (isAdmin) => {
     socket.send(JSON.stringify(
       {
         event: 'new-game',
-        gameId: settings.gameId,
+        code: settings.code,
         difficulty: settings.difficulty,
         wordLength: settings.wordLength,
       }));
@@ -46,16 +46,14 @@ const newMultiplayerGame = (isAdmin) => {
   socket.onmessage = (e) => {
     const data = JSON.parse(e.data);
 
-    console.log(data);
-
-    settings.gameId = data.gameId;
+    settings.code = data.code;
     settings.id = data.id;
     settings.difficulty = data.difficulty;
     settings.wordLength = data.wordLength;
 
     // Update URL with game parameters
     const url = new URL(window.location.href);
-    url.searchParams.set('gameId', settings.gameId.toString());
+    url.searchParams.set('code', settings.code.toString());
     url.searchParams.set('id', settings.id);
     history.pushState(null, '', url);
 
@@ -70,12 +68,13 @@ const newMultiplayerGame = (isAdmin) => {
 // Game is reset when the user changes the game settings (i.e. word length, difficulty, etc.)
 // or when the user starts a new game with a random word
 const newRandomGame = async () => {
-  settings.id = await getNewGameId();
+  settings.id = await getNewGameCode();
+  settings.code = null;
 
   // Update URL in case user wants to share the game
   const url = new URL(location.href);
   url.searchParams.set('id', settings.id);
-  url.searchParams.delete('gameId');
+  url.searchParams.delete('code');
 
   // Set the game length - for base version (5), don't save length param to keep URL short
   if (settings.wordLength === 5) {
@@ -92,7 +91,7 @@ const newRandomGame = async () => {
 
 const checkInput = async (input) => {
   // If we are playing multiplayer and the game didn't start, don't allow input
-  if (settings.gameId != null && !mainGame.isMultiplayer) {
+  if (settings.code != null && !mainGame.isMultiplayer) {
     return;
   }
 
@@ -183,7 +182,7 @@ const saveGame = (reset) => {
 const loadGame = async () => {
   const savedGame = getItem('game-save');
 
-  if (settings.gameId) {
+  if (settings.code) {
     newMultiplayerGame();
     return;
   }

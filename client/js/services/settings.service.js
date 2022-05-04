@@ -34,8 +34,8 @@ const loadSettings = () => {
   if (searchParams.has('length')) {
     settings.wordLength = parseInt(searchParams.get('length'));
   }
-  if (searchParams.has('gameId')) {
-    settings.gameId = searchParams.get('gameId');
+  if (searchParams.has('code')) {
+    settings.code = searchParams.get('code');
   }
 };
 
