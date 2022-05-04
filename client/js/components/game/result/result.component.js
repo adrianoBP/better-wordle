@@ -33,7 +33,7 @@ const define = (template) => {
       this.word = guess;
 
       this.shadow.querySelector('#stats').style.display = showStats ? 'block' : 'none';
-      this.shadow.querySelector('#share').style.display = (showStats) ? 'flex' : 'none';
+      this.shadow.querySelector('#share').style.display = (showStats && !isMobile()) ? 'flex' : 'none';
 
       this.isShowing = true;
     }
@@ -114,17 +114,15 @@ attempts: ${savedGame.length}/${settings.allowedGuessesCount}
 
 ${emojiGame}`;
 
-        // On mobile we need to open the share window - in desktop we can just copy to clipboard
-        if (isMobile()) {
-          navigator.share({ text: copyText });
-        } else {
-          navigator.clipboard.writeText(copyText).then(() => {
-            this.updateIcon(shareButton, tickSVG);
-            setTimeout(() => {
-              this.updateIcon(shareButton, shareSVG);
-            }, 2000);
-          });
-        }
+        // Navigator.clipboard is not available in mobile devices.
+        // Document.execCommand is deprecated
+        // Navigator.share only available through HTTPS (out of scope for this project)
+        navigator.clipboard.writeText(copyText).then(() => {
+          this.updateIcon(shareButton, tickSVG);
+          setTimeout(() => {
+            this.updateIcon(shareButton, shareSVG);
+          }, 2000);
+        });
       });
     }
 

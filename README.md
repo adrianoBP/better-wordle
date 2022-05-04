@@ -40,6 +40,12 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 
 ### Share game result (emoji format)
 
+**Mobile only:**
+
+- `Navigator.clipboard()` is not available in mobile devices.
+- `Document.execCommand()` is deprecated.
+- `Navigator.share` only available through HTTPS (out of scope for this project)
+
 ### Settings / Menu
 
 - Edit app settings
