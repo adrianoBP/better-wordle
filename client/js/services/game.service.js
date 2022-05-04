@@ -186,26 +186,24 @@ const loadGame = async () => {
   // If we have a code, don't load (custom game)
   if (settings.code != null) return;
 
-
-  // If there are no saved game, don't load
-  if (!savedGame) return;
-
-  // If the game day changed, don't load
-  if (getDayFromMillisec(settings.gameTime) !== getDayFromMillisec()) {
+  try {
+    // If the game day changed, don't load
+    if (getDayFromMillisec(settings.gameTime) !== getDayFromMillisec()) {
     // Save the game and specify that we want to reset ('true')
-    saveGame(true);
-    // Reset the game time
+      saveGame(true);
+      return;
+    }
+
+    // If there are no saved game, don't load
+    if (!savedGame) return;
+
+    isLoading = true;
+    await mainGame.load(savedGame);
+    isLoading = false;
+  } finally {
     settings.gameTime = Date.now();
     saveSettings();
-    return;
   }
-
-  isLoading = true;
-  await mainGame.load(savedGame);
-  isLoading = false;
-
-  settings.gameTime = Date.now();
-  saveSettings();
 };
 
 const applySettings = async (newSettings) => {
