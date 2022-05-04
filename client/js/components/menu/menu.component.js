@@ -2,7 +2,7 @@
 import { setTheme, sleep, isMobile } from '../../utils.js';
 import { applySettings, newRandomGame, newMultiplayerGame } from '../../services/game.service.js';
 import { settings, saveSettings } from '../../services/settings.service.js';
-import { getWord } from '../../services/api.service.js';
+import { getWord, getNewGameCode } from '../../services/api.service.js';
 import '../toggle/toggle.component.js';
 import '../game/board/tile/tile.component.js';
 
@@ -89,9 +89,10 @@ const define = (template) => {
       }
 
       // Register game modes
-      this.shadow.querySelector('#random-game').addEventListener('click', () => {
-        this.active = false;
+      this.shadow.querySelector('#random-game').addEventListener('click', async () => {
+        settings.id = await getNewGameCode();
         newRandomGame();
+        this.active = false;
       });
 
       this.shadow.querySelector('#multiplayer-game').addEventListener('click', () => {

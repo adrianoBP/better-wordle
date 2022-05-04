@@ -1,5 +1,7 @@
 'use strict';
 import { newRandomGame, isLoading } from '../../services/game.service.js';
+import { settings } from '../../services/settings.service.js';
+import { getNewGameCode } from '../../services/api.service.js';
 import '../menu/menu.component.js';
 
 fetch('js/components/navbar/navbar.component.html')
@@ -23,8 +25,9 @@ const define = (template) => {
       const menu = this.shadow.querySelector('sliding-menu');
       menu.setAttribute('active', false);
 
-      this.shadow.querySelector('#random-game').addEventListener('click', () => {
+      this.shadow.querySelector('#random-game').addEventListener('click', async () => {
         if (isLoading) return;
+        settings.id = await getNewGameCode();
         newRandomGame();
       });
     }

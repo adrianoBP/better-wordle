@@ -2,6 +2,7 @@
 import { settings } from '../../../services/settings.service.js';
 import { getItem, isMobile } from '../../../utils.js';
 import { shareSVG, tickSVG } from '../../../svg/index.js';
+import { hideKeyboard, showKeyboard } from '../../../services/keyboard.service.js';
 
 fetch('js/components/game/result/result.component.html')
   .then(stream => stream.text())
@@ -35,11 +36,13 @@ const define = (template) => {
       this.shadow.querySelector('#stats').style.display = showStats ? 'block' : 'none';
       this.shadow.querySelector('#share').style.display = (showStats && !isMobile()) ? 'flex' : 'none';
 
+      hideKeyboard();
       this.isShowing = true;
     }
 
     hide() {
       this.isShowing = false;
+      showKeyboard();
     }
 
     buildStats() {

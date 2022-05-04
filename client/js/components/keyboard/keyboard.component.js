@@ -27,6 +27,14 @@ class Keyboard extends HTMLElement {
     });
   }
 
+  hide() {
+    this.shadow.querySelector('section').style.display = 'none';
+  }
+
+  show() {
+    this.shadow.querySelector('section').style.display = 'block';
+  }
+
   selectKey(letter) {
     if (!this.keyboard[letter]) return;
     this.keyboard[letter].select();

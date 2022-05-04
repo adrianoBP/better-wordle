@@ -68,7 +68,6 @@ const newMultiplayerGame = (isAdmin) => {
 // Game is reset when the user changes the game settings (i.e. word length, difficulty, etc.)
 // or when the user starts a new game with a random word
 const newRandomGame = async () => {
-  settings.id = await getNewGameCode();
   settings.code = null;
 
   // Update URL in case user wants to share the game
@@ -210,7 +209,7 @@ const loadGame = async () => {
   }
 };
 
-const applySettings = (newSettings) => {
+const applySettings = async (newSettings) => {
   // Tile selection change
   mainGame.boardElem.tileSelection = newSettings.tileSelection;
 
@@ -219,6 +218,7 @@ const applySettings = (newSettings) => {
     settings.wordLength = newSettings.wordLength;
     settings.difficulty = newSettings.difficulty;
 
+    settings.id = await getNewGameCode();
     newRandomGame();
 
     mainGame.boardElem.init();
