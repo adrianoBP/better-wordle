@@ -43,9 +43,9 @@ const validateGuess = async (guess) => {
 };
 
 const getWord = async () => {
-  // If no code is provided, today's word is returned
+  // If no id is provided, today's word is returned
   const response = await makeRequestParse(
-        `${SERVICE_URL}/words/by-code?code=${settings.code ? settings.code : ''}`,
+        `${SERVICE_URL}/words/by-id?id=${settings.id ? settings.id : ''}`,
         'GET',
   );
 
@@ -57,7 +57,7 @@ const getWord = async () => {
   return response.result;
 };
 
-const getNewGameCode = async () => {
+const getNewGameId = async () => {
   const response = await makeRequestParse(
     `${SERVICE_URL}/game/random?difficulty=${settings.difficulty}&wordLength=${settings.wordLength}`,
     'GET',
@@ -76,5 +76,5 @@ export {
   validateGuess,
   getWord,
 
-  getNewGameCode,
+  getNewGameId,
 };

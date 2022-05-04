@@ -42,7 +42,7 @@ class GameDetails extends HTMLElement {
       }
 
       // Don't save the stats if it is a custom game
-      if (!settings.code) {
+      if (!settings.id) {
         // TODO: Check if can be done better - i.e. as soon as the animation is complete
         await sleep(350);
 
@@ -53,7 +53,7 @@ class GameDetails extends HTMLElement {
       }
 
       // Only show the result if it is the current day word and not a random game
-      this.showResult(guess, settings.code == null);
+      this.showResult(guess, settings.id == null);
 
       // If the user guessed the word, notify all the other players (if playing in a lobby)
       if (this.boardElem.wordGuessed && settings.gameId != null) {
@@ -134,7 +134,7 @@ class GameDetails extends HTMLElement {
           }
           break;
         case 'game-end':
-          this.showResult(data.guess, settings.code == null);
+          this.showResult(data.guess, settings.id == null);
           this.isMultiplayer = false;
           break;
       }

@@ -72,8 +72,8 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 
 ### Share game
 
-When playing with random words (i.e. not today's word), the URL gets updated with a `code` code that identifies the word.
-Users can copy and share the URL with other users to see how many attempts it takes them. The `code` of a word is a base64 representation of the row index in the database.  
+When playing with random words (i.e. not today's word), the URL gets updated with an `id` that identifies the word.
+Users can copy and share the URL with other users to see how many attempts it takes them.  
 By default, the URL will not specify the word length, allowing a minimalist approach; however, if the word length is different from the default (5), it will be specified in the URL parameters.
 
 ## Considerations

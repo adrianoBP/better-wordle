@@ -7,7 +7,7 @@ let settings = {
   wordLength: 5,
   allowedGuessesCount: 6,
   gameTime: Date.now(),
-  code: null,
+  id: null,
   tileSelection: true,
   validateOnComplete: true,
   stats: {
@@ -28,9 +28,9 @@ const loadSettings = () => {
     saveSettings();
   }
 
-  // If we are starting a game with a code, override the code but don't save in memory
+  // If we are starting a game with an id, override the id but don't save in storage
   const searchParams = new URLSearchParams(window.location.search);
-  settings.code = searchParams.get('code');
+  settings.id = searchParams.get('id');
   if (searchParams.has('length')) {
     settings.wordLength = parseInt(searchParams.get('length'));
   }

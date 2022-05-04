@@ -1,11 +1,11 @@
 import wordsService from './words.service.js';
 import dbService from './db.service.js';
-import { toBase64, sleep } from '../utils.js';
+import { sleep } from '../utils.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const validateGuess = async (guess, settings) => {
   // Get the current word
-  let word = await wordsService.getWord(settings.code);
+  let word = await wordsService.getWord(settings.id);
 
   // If we don't a word, we need to pick a new one
   if (word == null) {
@@ -64,7 +64,7 @@ const onGameMessage = (socket) => {
         if (!runningGames[gameId]) {
           runningGames[gameId] = {
             players: [],
-            code: toBase64((await dbService.getNewWordId(data.difficulty, data.wordLength)).id),
+            id: (await dbService.getNewWordId(data.difficulty, data.wordLength)).id,
             difficulty: data.difficulty,
             wordLength: data.wordLength,
           };
@@ -74,7 +74,7 @@ const onGameMessage = (socket) => {
 
         dispatchToAll(gameId, 'game-settings', {
           playerCount: runningGames[gameId].players.length,
-          code: runningGames[gameId].code,
+          id: runningGames[gameId].id,
           gameId,
           difficulty: runningGames[gameId].difficulty,
           wordLength: runningGames[gameId].wordLength,

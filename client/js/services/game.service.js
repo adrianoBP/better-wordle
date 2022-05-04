@@ -1,6 +1,6 @@
 'use strict';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
-import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
+import { validateGuess, isWordValid, getNewGameId } from './api.service.js';
 import { getItem, setItem, getDayFromMillisec } from '../utils.js';
 import { settings, saveSettings } from './settings.service.js';
 
@@ -45,15 +45,18 @@ const newMultiplayerGame = (isAdmin) => {
 
   socket.onmessage = (e) => {
     const data = JSON.parse(e.data);
+
+    console.log(data);
+
     settings.gameId = data.gameId;
-    settings.code = data.code;
+    settings.id = data.id;
     settings.difficulty = data.difficulty;
     settings.wordLength = data.wordLength;
 
     // Update URL with game parameters
     const url = new URL(window.location.href);
     url.searchParams.set('gameId', settings.gameId.toString());
-    url.searchParams.set('code', settings.code);
+    url.searchParams.set('id', settings.id);
     history.pushState(null, '', url);
 
     // We want to remake the board with multiplayer game settings
@@ -67,9 +70,11 @@ const newMultiplayerGame = (isAdmin) => {
 // Game is reset when the user changes the game settings (i.e. word length, difficulty, etc.)
 // or when the user starts a new game with a random word
 const newRandomGame = async () => {
+  settings.id = await getNewGameId();
+
   // Update URL in case user wants to share the game
   const url = new URL(location.href);
-  url.searchParams.set('code', settings.code);
+  url.searchParams.set('id', settings.id);
   url.searchParams.delete('gameId');
 
   // Set the game length - for base version (5), don't save length param to keep URL short
@@ -152,8 +157,8 @@ const checkInput = async (input) => {
 
       await mainGame.applyValidationResult(guess.join(''), validationResponse.result, true);
 
-      // If we have a code, it means that we are playing a custom game, hence, we don't want to store the game
-      if (!settings.code) { saveGame(); }
+      // If we have an id, it means that we are playing a custom game, hence, we don't want to store the game
+      if (!settings.id) { saveGame(); }
     } finally {
       isLoading = false;
     }
@@ -172,7 +177,7 @@ const isGuessValid = async (game) => {
 };
 
 const saveGame = (reset) => {
-  if (!settings.code) { setItem('game-save', reset ? [] : mainGame.boardElem.details); }
+  if (!settings.id) { setItem('game-save', reset ? [] : mainGame.boardElem.details); }
 };
 
 const loadGame = async () => {
@@ -183,8 +188,8 @@ const loadGame = async () => {
     return;
   }
 
-  // If we have a code, don't load (custom game)
-  if (settings.code != null) return;
+  // If we have an id, don't load (custom game)
+  if (settings.id != null) return;
 
   try {
     // If the game day changed, don't load
@@ -206,7 +211,7 @@ const loadGame = async () => {
   }
 };
 
-const applySettings = async (newSettings) => {
+const applySettings = (newSettings) => {
   // Tile selection change
   mainGame.boardElem.tileSelection = newSettings.tileSelection;
 
@@ -215,9 +220,8 @@ const applySettings = async (newSettings) => {
     settings.wordLength = newSettings.wordLength;
     settings.difficulty = newSettings.difficulty;
 
-    settings.code = await getNewGameCode();
+    newRandomGame();
 
-    newRandomGame(settings.code);
     mainGame.boardElem.init();
   }
 };

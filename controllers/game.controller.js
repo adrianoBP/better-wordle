@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import gameService from '../services/game.service.js';
 import dbService from '../services/db.service.js';
-import { getDayFromMillisec, fromBase64, toBase64 } from '../utils.js';
+import { getDayFromMillisec } from '../utils.js';
 
 const router = new Router();
 
@@ -15,8 +15,8 @@ const validateGuess = async (req, res) => {
     return;
   }
 
-  // If we don't have a code (custom game) and the client time is out of sync with the server time
-  if (!settings.code && getDayFromMillisec(settings?.gameTime) !== getDayFromMillisec()) {
+  // If we don't have an id (custom game) and the client time is out of sync with the server time
+  if (!settings.id && getDayFromMillisec(settings?.gameTime) !== getDayFromMillisec()) {
     res.status(400).json({
       error: 'Invalid request. If you had the game open for too long, reload the page.',
     });
@@ -24,7 +24,7 @@ const validateGuess = async (req, res) => {
   }
 
   res.json({
-    result: await gameService.validateGuess(guess, { ...settings, code: fromBase64(settings.code) }),
+    result: await gameService.validateGuess(guess, { ...settings, id: settings.id }),
   });
 };
 
@@ -38,8 +38,9 @@ const random = async (req, res) => {
     return;
   }
 
+
   res.json({
-    result: toBase64((await dbService.getNewWordId(difficulty, wordLength)).id),
+    result: (await dbService.getNewWordId(difficulty, wordLength)).id,
   });
 };
 
