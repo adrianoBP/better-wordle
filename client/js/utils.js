@@ -35,6 +35,10 @@ const setTheme = (theme, element) => {
   }
 };
 
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
 export {
   sleep,
   getDayFromMillisec,
@@ -43,4 +47,5 @@ export {
   getItem,
 
   setTheme,
+  isMobile,
 };

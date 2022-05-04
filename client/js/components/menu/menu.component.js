@@ -1,5 +1,5 @@
 'use strict';
-import { setTheme, sleep } from '../../utils.js';
+import { setTheme, sleep, isMobile } from '../../utils.js';
 import { applySettings, newRandomGame, newMultiplayerGame } from '../../services/game.service.js';
 import { settings, saveSettings } from '../../services/settings.service.js';
 import { getNewGameCode, getWord } from '../../services/api.service.js';
@@ -84,7 +84,7 @@ const define = (template) => {
         .addEventListener('click', this.switchMenu.bind(this));
 
       // Show haptic feedback option only if the user is on mobile
-      if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      if (!isMobile()) {
         this.shadow.querySelectorAll('#settings .item')[3]?.remove();
       }
 

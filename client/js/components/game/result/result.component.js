@@ -1,6 +1,6 @@
 'use strict';
 import { settings } from '../../../services/settings.service.js';
-import { getItem } from '../../../utils.js';
+import { getItem, isMobile } from '../../../utils.js';
 import { shareSVG, tickSVG } from '../../../svg/index.js';
 
 fetch('js/components/game/result/result.component.html')
@@ -33,7 +33,7 @@ const define = (template) => {
       this.word = guess;
 
       this.shadow.querySelector('#stats').style.display = showStats ? 'block' : 'none';
-      this.shadow.querySelector('#share').style.display = showStats ? 'flex' : 'none';
+      this.shadow.querySelector('#share').style.display = (showStats) ? 'flex' : 'none';
 
       this.isShowing = true;
     }
@@ -114,12 +114,17 @@ attempts: ${savedGame.length}/${settings.allowedGuessesCount}
 
 ${emojiGame}`;
 
-        navigator.clipboard.writeText(copyText).then(() => {
-          this.updateIcon(shareButton, tickSVG);
-          setTimeout(() => {
-            this.updateIcon(shareButton, shareSVG);
-          }, 2000);
-        });
+        // On mobile we need to open the share window - in desktop we can just copy to clipboard
+        if (isMobile()) {
+          navigator.share({ text: copyText });
+        } else {
+          navigator.clipboard.writeText(copyText).then(() => {
+            this.updateIcon(shareButton, tickSVG);
+            setTimeout(() => {
+              this.updateIcon(shareButton, shareSVG);
+            }, 2000);
+          });
+        }
       });
     }
 

@@ -130,7 +130,7 @@ class GameDetails extends HTMLElement {
           if (data.count === 0) {
             this.isMultiplayer = true;
             this.lobbyElem.remove();
-            this.boardElem.show();
+            this.boardElem.reset();
           }
           break;
         case 'game-end':
