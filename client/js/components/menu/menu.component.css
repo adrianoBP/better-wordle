@@ -115,6 +115,7 @@ main label {
 #settings img {
   cursor: pointer;
   width: 2rem;
+  transition-duration: 0.2s;
 }
 
 #settings .item>*:first-child {
@@ -134,7 +135,6 @@ main label {
 #game-modes>img {
   width: 3rem;
   margin-inline: 1rem;
-  transition-duration: 0.2s;
 }
 
 @media (hover: hover) {

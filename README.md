@@ -46,22 +46,21 @@ Since we have multiple components using and talking to the keyboard, a keyboard 
 - `Document.execCommand()` is deprecated.
 - `Navigator.share` only available through HTTPS (out of scope for this project)
 
-### Settings / Menu
+### Menu
 
-- Edit app settings
-- Open using Escape key
+The menu can be opened by clicking on the icon on the top right corner, or, if a keyboard is attached to the device, using the `Escape` key.
+It contains a quick guide on **how to play** as well as list of **settings** that the user can edit:
 
-- How to play
-
-- Light/dark mode switch
+- Light/dark mode switch (default on system theme)
 - Tile selection
 - Validate word
 - Haptic feedback (mobile only)
-- Custom game
+- Custom properties
   - Word length
   - Word difficulty
 - Game modes
-  - Icons
+  - Random word
+  - Multiplayer
 
 ### Multiplayer
 
