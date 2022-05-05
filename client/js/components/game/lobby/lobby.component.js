@@ -10,7 +10,7 @@ class LobbyDetails extends HTMLElement {
     </style>
     <section>
       <h2 id="players"></h2>
-      <button id="start-game" style="display: none">Start Game</button>
+      <button id="start-game" style="display: none" disabled>Start Game</button>
       <p id="additional-info"></p>
     </section>
     `;
@@ -32,6 +32,10 @@ class LobbyDetails extends HTMLElement {
 
   updatePlayersCount(value) {
     this.shadow.querySelector('#players').textContent = `${value} player(s) connected`;
+
+    if (value >= 2 && this.startGame) {
+      this.shadow.querySelector('#start-game').disabled = false;
+    }
   }
 
   connectedCallback() {

@@ -109,11 +109,11 @@ const define = (template) => {
         }).join('\n');
 
         const date = new Date(settings.gameTime);
+
         const copyText = `
 better-wordle
 
 date: ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}
-attempts: ${savedGame.length}/${settings.allowedGuessesCount}
 
 ${emojiGame}`;
 
