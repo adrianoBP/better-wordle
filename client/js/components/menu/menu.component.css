@@ -76,7 +76,9 @@ main {
   align-items: center;
 
   z-index: 999;
+}
 
+main:not(.no-animations) {
   transition:
     300ms left cubic-bezier(0.7, 0, 0.3, 1),
     background-color 200ms linear;
@@ -138,21 +140,24 @@ main label {
 }
 
 @media (hover: hover) {
-  img:hover {
+  :not(.no-animations) img:hover {
     transform: scale(1.1);
   }
 }
 
 .out {
-  /* transform: translateX(-100vw); */
-  transform: scale(0);
   opacity: 0;
+  transform: scale(0);
 }
 
 #settings,
 #tutorial {
   position: absolute;
-  transition: 0.3s ease-in-out
+}
+
+:not(.no-animations) #settings,
+:not(.no-animations) #tutorial {
+  transition-duration: 0.3s;
 }
 
 #tutorial {

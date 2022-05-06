@@ -88,7 +88,7 @@ class BoardDetails extends HTMLElement {
       this.addLetter(letter);
     });
 
-    if (validationResult) this.applyValidationResult(validationResult);
+    if (validationResult) this.applyValidationResult(validationResult, false, 100);
     this.wordIndex++;
     this.letterIndex = 0;
 
@@ -122,7 +122,7 @@ class BoardDetails extends HTMLElement {
     return letterToRemove;
   }
 
-  async applyValidationResult(validationResult, incrementWordIndex) {
+  async applyValidationResult(validationResult, incrementWordIndex, stepDuration = 350) {
     // List of keyboard keys that need to be updated according to the validation result
     const keysToReload = [];
     const guess = this.guess;
@@ -142,7 +142,7 @@ class BoardDetails extends HTMLElement {
 
         this.words[wordToUpdateIndex][i].flip(type);
 
-        await sleep(350);
+        await sleep(stepDuration);
       }
 
       // Wait for the last flip animation to fully finish

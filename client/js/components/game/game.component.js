@@ -75,7 +75,7 @@ class GameDetails extends HTMLElement {
     }
 
     // TODO: Check if can be done better - i.e. as soon as the animation is complete
-    await sleep(450 * settings.wordLength);
+    await sleep(300 * settings.wordLength);
 
     if (this.boardElem.wordGuessed || !this.boardElem.canInsert()) {
       this.showResult(await getWord(settings), true);

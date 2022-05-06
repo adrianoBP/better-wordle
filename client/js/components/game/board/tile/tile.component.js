@@ -1,4 +1,5 @@
 'use strict';
+import { settings } from '../../../../services/settings.service.js';
 class TileComponent extends HTMLElement {
   constructor() {
     super();
@@ -51,7 +52,22 @@ class TileComponent extends HTMLElement {
     if (this.type) { tile.classList.add(this.type); }
   }
 
+  updateType(newType) {
+    if (newType) {
+      this.type = newType;
+    } else {
+      // If we don't pass a resultClass, we want to reset the tile
+      this.type = '';
+      this.letter = '';
+    }
+  }
+
   flip(newType) {
+    if (!settings.playAnimations) {
+      this.updateType(newType);
+      return;
+    }
+
     const tile = this.shadow.querySelector('div');
     tile.classList.add('flip');
 
@@ -63,13 +79,7 @@ class TileComponent extends HTMLElement {
 
     // Animations lasts .5s, half way through the animation, change the colour
     setTimeout(() => {
-      if (newType) {
-        this.type = newType;
-      } else {
-        // If we don't pass a resultClass, we want to reset the tile
-        this.type = '';
-        this.letter = '';
-      }
+      this.updateType(newType);
     }, 250);
   }
 

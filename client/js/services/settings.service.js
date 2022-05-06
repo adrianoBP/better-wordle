@@ -16,6 +16,7 @@ let settings = {
     results: [0, 0, 0, 0, 0, 0],
   },
   hapticFeedback: true,
+  playAnimations: false,
 };
 
 const loadSettings = () => {
@@ -51,6 +52,7 @@ const saveSettings = (newSettings) => {
     theme: settings.theme,
     gameTime: settings.gameTime,
     hapticFeedback: settings.hapticFeedback,
+    playAnimations: settings.playAnimations,
   });
 };
 

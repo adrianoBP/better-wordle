@@ -29,6 +29,8 @@ const define = (template) => {
         .setAttribute('checked', settings.validateOnComplete);
       this.shadow.querySelector('#haptic-feedback')
         ?.setAttribute('checked', settings.hapticFeedback);
+      this.shadow.querySelector('#play-animations')
+        ?.setAttribute('checked', settings.playAnimations);
       this.shadow.querySelector('#word-length').value = settings.wordLength;
       this.shadow.querySelector('#difficulty').value = settings.difficulty;
     }
@@ -60,6 +62,9 @@ const define = (template) => {
       setTheme(
         settings.theme,
         this.shadow.querySelector('#theme-switch'));
+      this.onPlayAnimationChange(
+        this.shadow.querySelector('main'),
+        this.shadow.querySelector('#play-animations'));
 
       // Update theme as soon as the icon is clicked instead of waiting for the menu to close
       this.shadow.querySelector('#theme-switch').addEventListener('click', (event) => {
@@ -88,6 +93,11 @@ const define = (template) => {
         this.shadow.querySelectorAll('#settings .item')[3]?.remove();
       }
 
+      // Register animations style change
+      this.shadow.querySelector('#play-animations').toggleCallback = () => {
+        this.onPlayAnimationChange(this.shadow.querySelector('main'), this.shadow.querySelector('#play-animations'));
+      };
+
       // Register game modes
       this.shadow.querySelector('#random-game').addEventListener('click', async () => {
         settings.id = await getNewGameCode();
@@ -104,6 +114,15 @@ const define = (template) => {
       this.shadow.querySelector('#debug').addEventListener('click', async () => {
         console.log(await getWord(settings));
       });
+    }
+
+    onPlayAnimationChange(menuElem, toggleElem) {
+      if (!toggleElem.checked && !menuElem.classList.contains('no-animations')) {
+        menuElem.classList.add('no-animations');
+      } else {
+        menuElem.classList.remove('no-animations');
+      }
+      settings.playAnimations = toggleElem.checked;
     }
 
     static get observedAttributes() {
@@ -126,6 +145,7 @@ const define = (template) => {
           tileSelection: this.shadow.querySelector('#tile-selection').checked,
           validateOnComplete: this.shadow.querySelector('#validate-word').checked,
           hapticFeedback: this.shadow.querySelector('#haptic-feedback')?.checked || false,
+          playAnimations: this.shadow.querySelector('#play-animations')?.checked || false,
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
           wordLength: parseInt(this.shadow.querySelector('#word-length').value, 10),
           difficulty: parseInt(this.shadow.querySelector('#difficulty').value, 10),

@@ -32,7 +32,7 @@ class Keyboard extends HTMLElement {
   }
 
   show() {
-    this.shadow.querySelector('section').style.display = 'block';
+    this.shadow.querySelector('section').style.display = 'flex';
   }
 
   selectKey(letter) {

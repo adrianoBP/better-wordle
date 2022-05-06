@@ -28,6 +28,9 @@ class FancyToggle extends HTMLElement {
     } else {
       toggle.classList.remove('checked');
     }
+
+    // Dispatch callback event
+    if (this.toggleCallback) { this.toggleCallback(); }
   }
 
   connectedCallback() {
