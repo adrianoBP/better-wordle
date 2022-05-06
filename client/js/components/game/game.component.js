@@ -33,6 +33,8 @@ class GameDetails extends HTMLElement {
 
 
   async applyValidationResult(guess, validationResult, incrementWordIndex) {
+    this.applyingValidation = true;
+
     await this.boardElem.applyValidationResult(validationResult, incrementWordIndex);
 
     if (this.boardElem.wordGuessed || !this.boardElem.canInsert()) {
@@ -53,7 +55,10 @@ class GameDetails extends HTMLElement {
       }
 
       // Only show the result if it is the current day word and not a random game
-      this.showResult(guess, settings.id == null);
+      if (!this.preventValidationResult) {
+        this.showResult(guess, settings.id == null);
+        this.preventValidationResult = false;
+      }
 
       // If the user guessed the word, notify all the other players (if playing in a lobby)
       if (this.boardElem.wordGuessed && settings.code != null) {
@@ -61,6 +66,8 @@ class GameDetails extends HTMLElement {
         this.isMultiplayer = false;
       }
     }
+
+    this.applyingValidation = false;
   }
 
   async load(savedGame) {
@@ -134,6 +141,10 @@ class GameDetails extends HTMLElement {
           }
           break;
         case 'game-end':
+
+          // If we are applying a validation result and someone else has already guessed the word, don't show the result
+          if (this.applyingValidation) { this.preventValidationResult = true; }
+
           this.showResult(data.guess, settings.id == null);
           this.isMultiplayer = false;
           break;
