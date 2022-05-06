@@ -34,7 +34,7 @@ const define = (template) => {
       this.word = guess;
 
       this.shadow.querySelector('#stats').style.display = showStats ? 'block' : 'none';
-      this.shadow.querySelector('#share').style.display = (showStats && !isMobile()) ? 'flex' : 'none';
+      this.shadow.querySelector('#share').style.display = (showStats && navigator.clipboard && !isMobile()) ? 'flex' : 'none';
 
       hideKeyboard();
       this.isShowing = true;

@@ -144,7 +144,7 @@ class GameDetails extends HTMLElement {
   onIsGuessValidChange() {
     if (!this.isGuessValid) {
       this.boardElem.markCurrentWordInvalid();
-      if (settings.hapticFeedback) { window.navigator.vibrate(200); }
+      if (settings.hapticFeedback && window.navigator) { window.navigator.vibrate(200); }
     }
   }
 

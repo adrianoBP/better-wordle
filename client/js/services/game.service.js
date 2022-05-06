@@ -100,7 +100,7 @@ const checkInput = async (input) => {
   if (!mainGame.boardElem.canInsert() || isLoading) return;
 
   // Give the user some haptic feedback
-  if (settings.hapticFeedback) { window.navigator.vibrate(50); }
+  if (settings.hapticFeedback && navigator.clipboard) { window.navigator.vibrate(50); }
 
   input = input.toLowerCase();
 
