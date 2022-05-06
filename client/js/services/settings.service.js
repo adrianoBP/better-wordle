@@ -1,5 +1,6 @@
 'use strict';
-import { getItem, setItem, setTheme } from '../utils.js';
+import { getItem, setItem, setTheme, deleteUrlParams } from '../utils.js';
+import { verifyWordData } from './api.service.js';
 
 let settings = {
   theme: 'dark',
@@ -16,10 +17,10 @@ let settings = {
     results: [0, 0, 0, 0, 0, 0],
   },
   hapticFeedback: true,
-  playAnimations: false,
+  playAnimations: true,
 };
 
-const loadSettings = () => {
+const loadSettings = async () => {
   const savedSettings = getItem('settings');
   if (savedSettings) {
     settings = { ...settings, ...savedSettings };
@@ -31,12 +32,30 @@ const loadSettings = () => {
 
   // If we are starting a game with an id, override the id but don't save in storage
   const searchParams = new URLSearchParams(window.location.search);
-  settings.id = searchParams.get('id');
-  if (searchParams.has('length')) {
-    settings.wordLength = parseInt(searchParams.get('length'));
-  }
-  if (searchParams.has('code')) {
-    settings.code = searchParams.get('code');
+
+  if (searchParams.has('id') && searchParams.get('id') != null) {
+    settings.id = searchParams.get('id');
+
+    // Word length can only be specified with a valid id
+    if (searchParams.has('length') && searchParams.get('length') != null) {
+      settings.wordLength = parseInt(searchParams.get('length'), 10);
+    }
+
+    // Verify that the provided id is for the provided length
+    if (settings.id && settings.wordLength) {
+      const isValid = await verifyWordData(settings.id, settings.wordLength);
+      if (!isValid) {
+        deleteUrlParams();
+        settings.id = null;
+        settings.wordLength = 5;
+        return;
+      }
+    }
+
+    // Multiplayer code can only be present with a valid id
+    if (searchParams.has('code')) {
+      settings.code = searchParams.get('code');
+    }
   }
 };
 

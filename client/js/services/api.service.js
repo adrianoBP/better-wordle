@@ -71,10 +71,24 @@ const getNewGameCode = async () => {
   return response.result;
 };
 
+const verifyWordData = async (id, wordLength) => {
+  const response = await makeRequestParse(
+    `${SERVICE_URL}/words/verify?id=${id}&wordLength=${wordLength}`,
+    'GET',
+  );
+
+  if (response.error) {
+    console.error(response.error);
+    return;
+  }
+
+  return response.result;
+};
+
 export {
   isWordValid,
   validateGuess,
   getWord,
-
   getNewGameCode,
+  verifyWordData,
 };

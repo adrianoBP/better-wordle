@@ -20,8 +20,8 @@ function addEventListeners() {
   });
 }
 
-function onInit() {
-  loadSettings();
+async function onInit() {
+  await loadSettings();
 
   prepareElements();
   addEventListeners();

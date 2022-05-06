@@ -1,7 +1,7 @@
 'use strict';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
-import { getItem, setItem, getDayFromMillisec } from '../utils.js';
+import { getItem, setItem, getDayFromMillisec, setUrlParams, deleteUrlParams } from '../utils.js';
 import { settings, saveSettings } from './settings.service.js';
 
 import '../components/game/game.component.js';
@@ -52,10 +52,10 @@ const newMultiplayerGame = (isAdmin) => {
     settings.wordLength = data.wordLength;
 
     // Update URL with game parameters
-    const url = new URL(window.location.href);
-    url.searchParams.set('code', settings.code.toString());
-    url.searchParams.set('id', settings.id);
-    history.pushState(null, '', url);
+    setUrlParams({
+      id: settings.id,
+      code: settings.code,
+    });
 
     // We want to remake the board with multiplayer game settings
     mainGame.boardElem.init();
@@ -71,16 +71,13 @@ const newRandomGame = async () => {
   settings.code = null;
 
   // Update URL in case user wants to share the game
-  const url = new URL(location.href);
-  url.searchParams.set('id', settings.id);
-  url.searchParams.delete('code');
+  setUrlParams({ id: settings.id });
+  deleteUrlParams(['code']);
 
   // Set the game length - for base version (5), don't save length param to keep URL short
   if (settings.wordLength === 5) {
-    url.searchParams.delete('length');
-  } else { url.searchParams.set('length', settings.wordLength); }
-
-  history.pushState(null, '', url);
+    deleteUrlParams(['length']);
+  } else { setUrlParams({ length: settings.wordLength }); }
 
   isLoading = true;
   await mainGame.restart();

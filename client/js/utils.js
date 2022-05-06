@@ -35,6 +35,20 @@ const setTheme = (theme, element) => {
   }
 };
 
+const setUrlParams = (params) => {
+  const url = new URL(window.location.href);
+  Object.keys(params).forEach(key => url.searchParams.set(key, params[key]));
+  window.history.replaceState({}, '', url.href);
+};
+
+const deleteUrlParams = (params) => {
+  const url = new URL(window.location.href);
+  if (params == null || params === []) { url.search = ''; } else {
+    params.forEach(param => url.searchParams.delete(param));
+  }
+  window.history.replaceState({}, '', url.href);
+};
+
 const isMobile = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 };
@@ -48,4 +62,7 @@ export {
 
   setTheme,
   isMobile,
+
+  setUrlParams,
+  deleteUrlParams,
 };

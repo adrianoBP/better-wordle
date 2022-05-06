@@ -4,15 +4,14 @@ const getTodaysWord = async () => {
   return await dbService.getTodaysWord();
 };
 
-const getWord = (code) => {
-  // If the code is null, return today's word
-  if (code) {
-    return dbService.getWordById(code);
+const getWord = (id) => {
+  // If the id is null, return today's word
+  if (id) {
+    return dbService.getWordById(id);
   } else {
     return getTodaysWord();
   }
 };
-
 
 export default {
   getTodaysWord,

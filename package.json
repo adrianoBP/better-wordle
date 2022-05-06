@@ -23,7 +23,6 @@
     "express": "^4.17.3",
     "sqlite": "^4.0.25",
     "sqlite3": "^5.0.3",
-    "uuid": "^8.3.2",
     "ws": "^8.6.0"
   },
   "devDependencies": {

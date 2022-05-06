@@ -1,7 +1,6 @@
 import wordsService from './words.service.js';
 import dbService from './db.service.js';
 import { sleep } from '../utils.js';
-import { v4 as uuidv4 } from 'uuid';
 
 const validateGuess = async (guess, settings) => {
   // Get the current word
@@ -58,8 +57,8 @@ const onGameMessage = (socket) => {
 
     switch (data.event) {
       case 'new-game': {
-        const code = data.code || uuidv4();
-        console.log(`New game ${code}`);
+        const code = data.code || Math.random().toString(36).slice(2, 7);
+        console.log(`New game - ${code}`);
 
         if (!runningGames[code]) {
           runningGames[code] = {
