@@ -15,7 +15,7 @@ const validateGuess = async (req, res) => {
     return;
   }
 
-  // If we don't have an id (custom game) and the client time is out of sync with the server time
+  // If the client time is out of sync and it is not a custom game (missing id), reject the guess
   if (!settings.id && getDayFromMillisec(settings?.gameTime) !== getDayFromMillisec()) {
     res.status(400).json({
       error: 'Invalid request. If you had the game open for too long, reload the page.',
@@ -24,7 +24,7 @@ const validateGuess = async (req, res) => {
   }
 
   res.json({
-    result: await gameService.validateGuess(guess, { ...settings, id: settings.id }),
+    result: await gameService.validateGuess(guess, settings.id),
   });
 };
 

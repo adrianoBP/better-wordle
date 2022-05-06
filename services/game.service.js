@@ -2,16 +2,9 @@ import wordsService from './words.service.js';
 import dbService from './db.service.js';
 import { sleep } from '../utils.js';
 
-const validateGuess = async (guess, settings) => {
+const validateGuess = async (guess, id) => {
   // Get the current word
-  let word = await wordsService.getWord(settings.id);
-
-  // If we don't a word, we need to pick a new one
-  if (word == null) {
-    const { id, word: newWord } = await dbService.getNewWordId(settings.difficulty, settings.wordLength);
-    await dbService.setTodayWord(id);
-    word = newWord;
-  }
+  const word = await wordsService.getWord(id);
 
   const result = [];
   const checkedLetters = [];
