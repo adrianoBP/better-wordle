@@ -142,6 +142,9 @@ class GameDetails extends HTMLElement {
           break;
         case 'game-end':
 
+          // Make sure that the user is still playing
+          if (!this.isMultiplayer) return;
+
           // If we are applying a validation result and someone else has already guessed the word, don't show the result
           if (this.applyingValidation) { this.preventValidationResult = true; }
 

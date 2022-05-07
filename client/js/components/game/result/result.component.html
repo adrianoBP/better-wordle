@@ -3,9 +3,11 @@
   @import url('css/style.css');
 </style>
 
-<section class="hidden">
-  <div id="result-text"></div>
-  <div id="result-word" class="shadow">
+<main class="hidden">
+
+  <p id="result-text"></p>
+
+  <button id="result-word" class="shadow" title="Search on Google">
     <div id="result-word-text"></div>
     <!-- Search icon -->
     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
@@ -14,27 +16,27 @@
           c45.2,0,86.8-15.5,119.8-41.4l140.5,140.5c8.2,8.2,20.4,8.2,28.6,0C490,473.4,490,461.2,481.8,453z M41,191.4
           c0-82.8,68.2-150.1,151.9-150.1s151.9,67.3,151.9,150.1s-68.2,150.1-151.9,150.1S41,274.1,41,191.4z" />
     </svg>
-  </div>
+  </button>
 
-  <div id="stats">
-    <div id="stats-header"></div>
-    <div id="stats-content"></div>
-  </div>
+  <section id="stats">
+    <div id="legend"></div>
+    <div id="chart"></div>
+  </section>
 
-  <button id="share"></button>
-</section>
+  <button id="share" aria-label="Share result" title="Share result"></button>
 
+</main>
 
-<template id="stat-element-template">
-  <div class="stat-element">
-    <span class="element-label"></span>
-    <span class="element-value"></span>
-  </div>
+<template id="legend-item-template">
+  <span class="legend-item">
+    <p class="value"></p>
+    <p class="label"></p>
+  </span>
 </template>
 
-<template id="stat-total-template">
-  <div class="total-element">
-    <span class="total-value"></span>
-    <span class="total-label"></span>
-  </div>
+<template id="chart-item-template">
+  <span class="chart-item">
+    <p class="label"></p>
+    <p class="value"></p>
+  </span>
 </template>

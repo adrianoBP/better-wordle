@@ -49,10 +49,14 @@ class Key extends HTMLElement {
     switch (letter) {
       case 'backspace':
         this.keyElem.appendChild(backspaceSVG);
+        this.keyElem.setAttribute('aria-label', 'Backspace');
+        this.keyElem.setAttribute('title', 'Backspace');
         this.keyElem.classList.add('icon');
         break;
       case 'enter':
         this.keyElem.appendChild(enterSVG);
+        this.keyElem.setAttribute('aria-label', 'Enter');
+        this.keyElem.setAttribute('title', 'Enter');
         this.keyElem.classList.add('icon');
         break;
       default:

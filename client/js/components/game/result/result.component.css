@@ -1,16 +1,26 @@
-section {
+main {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: min(100vw - 2rem, 500px);
 }
 
+#result-text {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 200%;
+  font-weight: bold;
+}
+
 #result-word {
   background-color: var(--result-bg);
   color: var(--text-colour-opp);
+  fill: var(--text-colour-opp);
+  border-radius: 1rem;
+
   padding: 1rem 2rem;
   font-size: 200%;
-  border-radius: 1rem;
+
   animation: 0.7s ease-in-out infinite alternate-reverse bounce;
   cursor: pointer;
   text-align: center;
@@ -18,7 +28,6 @@ section {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  fill: var(--text-colour-opp);
 }
 
 svg {
@@ -33,13 +42,6 @@ svg {
   #result-word:hover {
     opacity: 0.8;
   }
-}
-
-#result-text {
-  text-align: center;
-  margin: 2rem 0;
-  font-size: 200%;
-  font-weight: bold;
 }
 
 /* SHARE BUTTON */
@@ -78,15 +80,15 @@ svg {
   color: var(--text-colour);
 }
 
-/* STATS HEADER */
-#stats-header {
+/* LEGEND */
+#legend {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem 0;
 }
 
-.total-element {
+.legend-item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,37 +96,42 @@ svg {
   margin-inline: 1rem;
 }
 
-.total-label {
+.legend-item .label {
   font-size: 75%;
   font-weight: bold;
 }
 
-.total-value {
+.legend-item .value {
   font-size: 200%;
   font-weight: bold;
 }
 
-/* STATS ELEMENT */
-.stat-element {
+/* CHART */
+#chart {
   display: flex;
-  width: 100%;
-  margin-top: 0.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.element-label,
-.element-value {
+.chart-item {
+  display: flex;
+  width: 100%;
+}
+
+.chart-item .label,
+.chart-item .value {
   display: flex;
   align-items: center;
   font-weight: bold;
   height: 1.5rem;
 }
 
-.element-label {
+.chart-item .label {
   margin-inline: 1rem;
   color: var(--text-colour);
 }
 
-.element-value {
+.chart-item .value {
   min-width: 0.5em;
   justify-content: end;
   padding: 0 0.5em;
@@ -134,21 +141,4 @@ svg {
   box-shadow: 0px 5px 5px 0px rgb(0 0 0 / 25%);
 
   border-radius: 0.3em
-}
-
-@keyframes bounce {
-  0% {
-    transform: translateY(0);
-    box-shadow: 0px 5px 5px 0px rgb(0 0 0 / 25%);
-  }
-
-  50% {
-    transform: translateY(-5px);
-    box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
-  }
-
-  100% {
-    transform: translateY(0);
-    box-shadow: 0px 5px 5px 0px rgb(0 0 0 / 25%);
-  }
 }

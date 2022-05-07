@@ -12,7 +12,7 @@ class LobbyDetails extends HTMLElement {
       @import url('css/style.css');
     </style>
     <section>
-      <h2 id="players"></h2>
+      <p id="players"></p>
       <button id="start-game" class="hidden" disabled>Start Game</button>
       <p id="additional-info"></p>
     </section>

@@ -17,12 +17,11 @@ const define = (template) => {
       this.shadow.innerHTML = template;
     }
 
-
     get wordElem() { return this.shadow.querySelector('#result-word-text'); }
 
     get statsElem() { return this.shadow.querySelector('#stats'); }
-    get statsHeaderElem() { return this.shadow.querySelector('#stats-header'); }
-    get statsContentElem() { return this.shadow.querySelector('#stats-content'); }
+    get legendElem() { return this.shadow.querySelector('#legend'); }
+    get chartElem() { return this.shadow.querySelector('#chart'); }
 
     get shareElem() { return this.shadow.querySelector('#share'); }
 
@@ -53,11 +52,11 @@ const define = (template) => {
     }
 
     buildStats() {
-      this.statsHeaderElem.replaceChildren([]);
-      this.statsContentElem.replaceChildren([]);
+      this.legendElem.replaceChildren([]);
+      this.chartElem.replaceChildren([]);
 
-      // Add totals
-      const totalTemplate = this.shadow.querySelector('#stat-total-template');
+      // Add legend
+      const legendItemTemplate = this.shadow.querySelector('#legend-item-template');
       const statHeaders = [
         {
           label: 'Played',
@@ -70,29 +69,29 @@ const define = (template) => {
       ];
 
       for (const statHeader of statHeaders) {
-        const stat = totalTemplate.content.cloneNode(true);
-        stat.querySelector('.total-label').textContent = statHeader.label;
-        stat.querySelector('.total-value').textContent = statHeader.value;
-        this.statsHeaderElem.appendChild(stat);
+        const legendItem = legendItemTemplate.content.cloneNode(true);
+        legendItem.querySelector('.label').textContent = statHeader.label;
+        legendItem.querySelector('.value').textContent = statHeader.value;
+        this.legendElem.appendChild(legendItem);
       }
 
-      const elementTemplate = this.shadow.querySelector('#stat-element-template');
+      const chartElemTemplate = this.shadow.querySelector('#chart-item-template');
       const maxCount = settings.stats.results.reduce((max, stat) => Math.max(max, stat), 0);
 
       // Create stats bar chart
       for (let i = 0; i < settings.stats.results.length; i++) {
         const value = settings.stats.results[i];
 
-        const statRow = elementTemplate.content.cloneNode(true);
-        const statLabel = statRow.querySelector('.element-label');
-        const statValue = statRow.querySelector('.element-value');
+        const statRow = chartElemTemplate.content.cloneNode(true);
+        const statLabel = statRow.querySelector('.label');
+        const statValue = statRow.querySelector('.value');
 
         statLabel.textContent = `${i + 1}`;
         statValue.textContent = value;
 
         statValue.style.width = `${(value / maxCount) * 100}%`;
 
-        this.statsContentElem.appendChild(statRow);
+        this.chartElem.appendChild(statRow);
       }
     }
 
@@ -141,9 +140,9 @@ ${emojiGame}`;
 
     onVisibilityChange() {
       if (this.isShowing) {
-        showElement(this.shadow.querySelector('section'));
+        showElement(this.shadow.querySelector('main'));
       } else {
-        hideElement(this.shadow.querySelector('section'));
+        hideElement(this.shadow.querySelector('main'));
       }
 
       if (this.isShowing) {
