@@ -17,11 +17,14 @@ const define = (template) => {
       this.shadow.innerHTML = template;
     }
 
+
     get wordElem() { return this.shadow.querySelector('#result-word-text'); }
 
+    get statsElem() { return this.shadow.querySelector('#stats'); }
     get statsHeaderElem() { return this.shadow.querySelector('#stats-header'); }
-
     get statsContentElem() { return this.shadow.querySelector('#stats-content'); }
+
+    get shareElem() { return this.shadow.querySelector('#share'); }
 
     get isShowing() { return this.getAttribute('is-showing') === 'true'; }
     set isShowing(value) { this.setAttribute('is-showing', value); }
@@ -33,14 +36,11 @@ const define = (template) => {
       this.shadow.querySelector('#result-text').textContent = gameWon ? 'You won!' : 'You lost!';
       this.word = guess;
 
-      const statsElem = this.shadow.querySelector('#stats');
-      const shareElem = this.shadow.querySelector('#share');
-
       if (showStats) {
-        showElement(statsElem);
-        if (navigator.clipboard && !isMobile()) { showElement(shareElem); }
+        showElement(this.statsElem);
+        if (navigator.clipboard && !isMobile()) { showElement(this.shareElem); }
       } else {
-        hideElements([statsElem, shareElem]);
+        hideElements([this.statsElem, this.shareElem]);
       }
 
       hideKeyboard();
@@ -103,10 +103,8 @@ const define = (template) => {
         });
 
       // Share button
-      const shareButton = this.shadow.querySelector('#share');
-      this.updateIcon(shareButton, shareSVG);
-
-      shareButton.addEventListener('click', () => {
+      this.updateIcon(this.shareElem, shareSVG);
+      this.shareElem.addEventListener('click', () => {
         const savedGame = getItem('game-save');
 
         const emojiGame = savedGame.map(word => {
@@ -128,9 +126,9 @@ ${emojiGame}`;
         // Document.execCommand is deprecated
         // Navigator.share only available through HTTPS (out of scope for this project)
         navigator.clipboard.writeText(copyText).then(() => {
-          this.updateIcon(shareButton, tickSVG);
+          this.updateIcon(this.shareElem, tickSVG);
           setTimeout(() => {
-            this.updateIcon(shareButton, shareSVG);
+            this.updateIcon(this.shareElem, shareSVG);
           }, 2000);
         });
       });

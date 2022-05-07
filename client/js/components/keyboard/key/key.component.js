@@ -11,9 +11,11 @@ class Key extends HTMLElement {
       <style>
         @import url('js/components/keyboard/key/key.component.css');
       </style>
-      <div></div>
+      <button></button>
       `;
   }
+
+  get keyElem() { return this.shadow.querySelector('button'); }
 
   get letter() { return this.getAttribute('letter'); }
   set letter(letter) { this.setAttribute('letter', letter); }
@@ -23,59 +25,54 @@ class Key extends HTMLElement {
 
   onTypeChange(oldType, newType) {
     this.unselect();
-    const keyElem = this.shadow.querySelector('div');
 
     if (newType === 'success') {
       // Remove warn in case the letter was already guessed but in the wrong position
-      keyElem.classList.remove('warn');
-      keyElem.classList.add('success');
+      this.keyElem.classList.remove('warn');
+      this.keyElem.classList.add('success');
       return;
     }
 
     if (newType === 'warn' && oldType !== 'success') {
-      keyElem.classList.add('warn');
+      this.keyElem.classList.add('warn');
       return;
     }
 
     if (newType === 'fail' && oldType !== 'success' && oldType !== 'warn') {
-      keyElem.classList.add('fail');
+      this.keyElem.classList.add('fail');
     }
   }
 
   onLetterInit(letter) {
-    const keyElem = this.shadow.querySelector('div');
-
-    keyElem.dataset.keyref = letter;
+    this.keyElem.dataset.keyref = letter;
 
     switch (letter) {
       case 'backspace':
-        keyElem.appendChild(backspaceSVG);
-        keyElem.classList.add('icon');
+        this.keyElem.appendChild(backspaceSVG);
+        this.keyElem.classList.add('icon');
         break;
       case 'enter':
-        keyElem.appendChild(enterSVG);
-        keyElem.classList.add('icon');
+        this.keyElem.appendChild(enterSVG);
+        this.keyElem.classList.add('icon');
         break;
       default:
-        keyElem.textContent = letter.toUpperCase();
+        this.keyElem.textContent = letter.toUpperCase();
     }
   }
 
   select() {
-    const keyElem = this.shadow.querySelector('div');
-    if (!keyElem.classList.contains('selected')) {
-      keyElem.classList.add('selected');
+    if (!this.keyElem.classList.contains('selected')) {
+      this.keyElem.classList.add('selected');
     }
   }
 
   unselect() {
-    this.shadow.querySelector('div').classList.remove('selected');
+    this.keyElem.classList.remove('selected');
   }
 
   reset() {
     // Don't remove all classes because we may have additional classes (i.e. 'icon')
-    this.shadow.querySelector('div').classList
-      .remove('selected', 'success', 'warn', 'fail');
+    this.keyElem.classList.remove('selected', 'success', 'warn', 'fail');
     this.type = null;
   }
 

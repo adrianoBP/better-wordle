@@ -1,4 +1,4 @@
-div {
+button {
   width: 100%;
   height: 100%;
   aspect-ratio: var(--keyboard-ratio);
@@ -24,12 +24,12 @@ div {
   transition-duration: 0.2s;
 }
 
-div.icon {
+button.icon {
   aspect-ratio: 3 / 2;
 }
 
 @media (hover: hover) {
-  div:hover {
+  button:hover {
     transform: translateY(-0.2em);
     /* Don't move the shadow and make it slightly bigger and blurrier
     ** for a subtle raise effect - mainly noticeable in light mode */
@@ -46,30 +46,30 @@ svg * {
 }
 
 /* Colours should be defined from lowest to highest as failsafe in case they overlap */
-div.fail {
+button.fail {
   background-color: var(--tile-fail);
 }
 
-div.warn {
+button.warn {
   background-color: var(--tile-warn);
 }
 
-div.success {
+button.success {
   background-color: var(--tile-success);
 }
 
-div.success:not(.selected),
-div.warn:not(.selected) {
+button.success:not(.selected),
+button.warn:not(.selected) {
   color: var(--key-colour);
   fill: var(--key-colour);
 }
 
-div.fail:not(.selected) {
+button.fail:not(.selected) {
   color: var(--key-colour-contrast);
   fill: var(--key-colour-contrast);
 }
 
-div.selected {
+button.selected {
   background-color: #180023;
   color: var(--text-light);
   fill: var(--text-light);
