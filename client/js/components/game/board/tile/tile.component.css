@@ -1,8 +1,8 @@
 div {
   aspect-ratio: 1;
-  border: 3px solid var(--cell-border);
+  border: 3px solid var(--tile-border);
   border-radius: 40%;
-  background-color: var(--cell-bg);
+  background-color: var(--tile-bg);
   color: var(--text-colour);
   display: flex;
   user-select: none;
@@ -33,7 +33,7 @@ div.error {
 }
 
 div.selected {
-  border-bottom: 3px solid var(--cell-border-selected);
+  border-bottom: 3px solid var(--tile-border-selected);
 }
 
 .flip {

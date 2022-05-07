@@ -34,7 +34,8 @@ button:not(:disabled) {
 }
 
 button:disabled {
-  background: #999;
+  background: #afafaf;
+  color: #727272;
 }
 
 @media (hover: hover) {

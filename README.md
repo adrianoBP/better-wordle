@@ -28,6 +28,9 @@ npm start
 
 ### Stats
 
+- daily
+- multiplayer
+
 ### Keyboard
 
 Since we have multiple components using and talking to the keyboard, a keyboard service was created to be injected in the components.
