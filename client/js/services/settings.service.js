@@ -12,9 +12,16 @@ let settings = {
   tileSelection: true,
   validateOnComplete: true,
   stats: {
-    played: 0,
-    won: 0,
-    results: [0, 0, 0, 0, 0, 0],
+    daily: {
+      played: 0,
+      won: 0,
+      results: [0, 0, 0, 0, 0, 0],
+    },
+    multiplayer: {
+      played: 0,
+      won: 0,
+      results: [0, 0, 0, 0, 0, 0],
+    },
   },
   hapticFeedback: true,
   playAnimations: true,

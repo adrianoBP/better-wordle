@@ -48,15 +48,23 @@ class GameDetails extends HTMLElement {
         // TODO: Check if can be done better - i.e. as soon as the animation is complete
         await sleep(350);
 
-        settings.stats.played++;
-        settings.stats.won += this.boardElem.wordGuessed ? 1 : 0;
-        settings.stats.results[this.boardElem.wordIndex - 1] += this.boardElem.wordGuessed ? 1 : 0;
-        saveSettings();
+        settings.stats.daily.played++;
+        settings.stats.daily.won += this.boardElem.wordGuessed ? 1 : 0;
+        settings.stats.daily.results[this.boardElem.wordIndex - 1] += this.boardElem.wordGuessed ? 1 : 0;
+      } else {
+        // Make sure to update the multiplayer stats
+        if (this.isMultiplayer) {
+          settings.stats.multiplayer.played++;
+          settings.stats.multiplayer.won += this.boardElem.wordGuessed ? 1 : 0;
+          settings.stats.multiplayer.results[this.boardElem.wordIndex - 1] += this.boardElem.wordGuessed ? 1 : 0;
+        }
       }
+
+      saveSettings();
 
       // Only show the result if it is the current day word and not a random game
       if (!this.preventValidationResult) {
-        this.showResult(guess, settings.id == null);
+        this.showResult(guess, settings.id == null || this.isMultiplayer, this.isMultiplayer);
         this.preventValidationResult = false;
       }
 
@@ -97,9 +105,9 @@ class GameDetails extends HTMLElement {
     await sleep(500);
   }
 
-  showResult(guess, showStats) {
+  showResult(guess, showStats = true, isMultiplayer = false) {
     this.boardElem.hide();
-    this.resultElem.show(guess, this.boardElem.wordGuessed, showStats);
+    this.resultElem.show(guess, this.boardElem.wordGuessed, showStats, isMultiplayer);
   }
 
   newLobby(playerCount, isAdmin) {
@@ -141,14 +149,17 @@ class GameDetails extends HTMLElement {
           }
           break;
         case 'game-end':
-
           // Make sure that the user is still playing
           if (!this.isMultiplayer) return;
 
           // If we are applying a validation result and someone else has already guessed the word, don't show the result
           if (this.applyingValidation) { this.preventValidationResult = true; }
 
-          this.showResult(data.guess, settings.id == null);
+          // If we reached this point, it means that we lost
+          settings.stats.multiplayer.played++;
+          saveSettings();
+
+          this.showResult(data.guess, true, this.isMultiplayer);
           this.isMultiplayer = false;
           break;
       }

@@ -1,6 +1,6 @@
 'use strict';
 import { setTheme, sleep, isMobile } from '../../utils.js';
-import { applySettings, newRandomGame, newMultiplayerGame } from '../../services/game.service.js';
+import { applySettings, newRandomGame, newMultiplayerGame, isLoading } from '../../services/game.service.js';
 import { settings, saveSettings } from '../../services/settings.service.js';
 import { getWord, getNewGameCode } from '../../services/api.service.js';
 import '../toggle/toggle.component.js';
@@ -100,14 +100,18 @@ const define = (template) => {
 
       // Register game modes
       this.shadow.querySelector('#random-game').addEventListener('click', async () => {
-        settings.id = await getNewGameCode();
-        newRandomGame();
-        this.active = false;
+        if (!isLoading) {
+          settings.id = await getNewGameCode();
+          newRandomGame();
+          this.active = false;
+        }
       });
 
       this.shadow.querySelector('#multiplayer-game').addEventListener('click', () => {
-        this.active = false;
-        newMultiplayerGame(true);
+        if (!isLoading) {
+          this.active = false;
+          newMultiplayerGame(true);
+        }
       });
 
       // ! #debug

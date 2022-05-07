@@ -15,6 +15,8 @@ const define = (template) => {
 
       this.shadow = this.attachShadow({ mode: 'open' });
       this.shadow.innerHTML = template;
+
+      this.isMultiplayer = false;
     }
 
     get wordElem() { return this.shadow.querySelector('#result-word-text'); }
@@ -31,13 +33,21 @@ const define = (template) => {
     get word() { return this.getAttribute('word'); }
     set word(value) { this.setAttribute('word', value); }
 
-    show(guess, gameWon, showStats) {
+    show(guess, gameWon, showStats, isMultiplayer) {
+      this.isMultiplayer = isMultiplayer;
+
       this.shadow.querySelector('#result-text').textContent = gameWon ? 'You won!' : 'You lost!';
       this.word = guess;
 
       if (showStats) {
+        // Show share element only when playing daily game
+        if (navigator.clipboard && !isMobile() && !isMultiplayer) {
+          showElement(this.shareElem);
+        } else {
+          hideElement(this.shareElem);
+        }
+
         showElement(this.statsElem);
-        if (navigator.clipboard && !isMobile()) { showElement(this.shareElem); }
       } else {
         hideElements([this.statsElem, this.shareElem]);
       }
@@ -49,6 +59,7 @@ const define = (template) => {
     hide() {
       this.isShowing = false;
       showKeyboard();
+      hideElements([this.statsElem, this.shareElem]);
     }
 
     buildStats() {
@@ -57,14 +68,17 @@ const define = (template) => {
 
       // Add legend
       const legendItemTemplate = this.shadow.querySelector('#legend-item-template');
+
+      const stats = this.isMultiplayer ? settings.stats.multiplayer : settings.stats.daily;
+
       const statHeaders = [
         {
-          label: 'Played',
-          value: settings.stats.played,
+          label: 'Played' + (this.isMultiplayer ? ' (multiplayer)' : ''),
+          value: stats.played,
         },
         {
           label: 'Win %',
-          value: (settings.stats.won * 100 / settings.stats.played).toFixed(1),
+          value: stats.played === 0 ? 0 : (stats.won * 100 / stats.played).toFixed(1),
         },
       ];
 
@@ -76,11 +90,11 @@ const define = (template) => {
       }
 
       const chartElemTemplate = this.shadow.querySelector('#chart-item-template');
-      const maxCount = settings.stats.results.reduce((max, stat) => Math.max(max, stat), 0);
+      const maxCount = stats.results.reduce((max, stat) => Math.max(max, stat), 0);
 
       // Create stats bar chart
-      for (let i = 0; i < settings.stats.results.length; i++) {
-        const value = settings.stats.results[i];
+      for (let i = 0; i < stats.results.length; i++) {
+        const value = stats.results[i];
 
         const statRow = chartElemTemplate.content.cloneNode(true);
         const statLabel = statRow.querySelector('.label');

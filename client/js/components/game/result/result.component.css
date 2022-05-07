@@ -12,6 +12,10 @@ main {
   font-weight: bold;
 }
 
+button {
+  border: none;
+}
+
 #result-word {
   background-color: var(--result-bg);
   color: var(--text-colour-opp);
