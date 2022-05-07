@@ -1,7 +1,7 @@
 'use strict';
 import { settings } from '../../../services/settings.service.js';
 import { updateKeyboard } from '../../../services/keyboard.service.js';
-import { sleep } from '../../../utils.js';
+import { hideElement, showElement, sleep } from '../../../utils.js';
 import '../board/tile/tile.component.js';
 
 class BoardDetails extends HTMLElement {
@@ -19,6 +19,8 @@ class BoardDetails extends HTMLElement {
     this.words = [];
     this._wordGuessed = false;
   }
+
+  get boardElem() { return this.shadow.querySelector('div'); }
 
   get wordGuessed() { return this._wordGuessed; }
 
@@ -199,13 +201,8 @@ class BoardDetails extends HTMLElement {
     this.toggleNextTile();
   }
 
-  show() {
-    this.shadow.querySelector('div').style.display = 'grid';
-  }
-
-  hide() {
-    this.shadow.querySelector('div').style.display = 'none';
-  }
+  show() { showElement(this.boardElem); }
+  hide() { hideElement(this.boardElem); }
 
   wiggleWord() {
     this.words[this.wordIndex].forEach((tile) => {
@@ -219,7 +216,7 @@ class BoardDetails extends HTMLElement {
       .style.setProperty('--cells-per-row', settings.wordLength);
 
     this.words = [];
-    this.shadow.querySelector('div').innerHTML = '';
+    this.boardElem.innerHTML = '';
 
     // Create rows of words
     for (let i = 0; i < settings.allowedGuessesCount; i++) {
@@ -237,7 +234,7 @@ class BoardDetails extends HTMLElement {
     const tile = document.createElement('board-tile');
     tile.setAttribute('letter', '');
     tile.setAttribute('type', '');
-    this.shadow.querySelector('div').appendChild(tile);
+    this.boardElem.appendChild(tile);
     return tile;
   }
 

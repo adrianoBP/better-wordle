@@ -1,4 +1,5 @@
 'use strict';
+import { hideElement, showElement } from '../../utils.js';
 import './key/key.component.js';
 
 class Keyboard extends HTMLElement {
@@ -9,11 +10,14 @@ class Keyboard extends HTMLElement {
     this.shadow.innerHTML = `
       <style>
         @import url('js/components/keyboard/keyboard.component.css');
+        @import url('css/style.css');
       </style>
       <section></section>
       `;
     this.keyboard = {};
   }
+
+  get keyboardElem() { return this.shadow.querySelector('section'); }
 
   update(letterResults) {
     letterResults.forEach(result => {
@@ -27,13 +31,9 @@ class Keyboard extends HTMLElement {
     });
   }
 
-  hide() {
-    this.shadow.querySelector('section').style.display = 'none';
-  }
+  show() { showElement(this.keyboardElem); }
+  hide() { hideElement(this.keyboardElem); }
 
-  show() {
-    this.shadow.querySelector('section').style.display = 'flex';
-  }
 
   selectKey(letter) {
     if (!this.keyboard[letter]) return;

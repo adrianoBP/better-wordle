@@ -53,6 +53,21 @@ const isMobile = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 };
 
+const showElement = (element) => {
+  element.classList.remove('hidden');
+};
+
+const hideElement = (element) => {
+  if (element == null) return;
+  if (!element.classList.contains('hidden')) { element.classList.add('hidden'); }
+};
+
+const hideElements = (elements) => {
+  if (elements == null || elements.length === 0) return;
+  elements.forEach(element => hideElement(element));
+};
+
+
 export {
   sleep,
   getDayFromMillisec,
@@ -65,4 +80,8 @@ export {
 
   setUrlParams,
   deleteUrlParams,
+
+  showElement,
+  hideElement,
+  hideElements,
 };

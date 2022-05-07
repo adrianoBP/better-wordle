@@ -1,6 +1,6 @@
 'use strict';
 import { settings } from '../../../services/settings.service.js';
-import { getItem, isMobile } from '../../../utils.js';
+import { getItem, isMobile, showElement, hideElement, hideElements } from '../../../utils.js';
 import { shareSVG, tickSVG } from '../../../svg/index.js';
 import { hideKeyboard, showKeyboard } from '../../../services/keyboard.service.js';
 
@@ -33,8 +33,15 @@ const define = (template) => {
       this.shadow.querySelector('#result-text').textContent = gameWon ? 'You won!' : 'You lost!';
       this.word = guess;
 
-      this.shadow.querySelector('#stats').style.display = showStats ? 'block' : 'none';
-      this.shadow.querySelector('#share').style.display = (showStats && navigator.clipboard && !isMobile()) ? 'flex' : 'none';
+      const statsElem = this.shadow.querySelector('#stats');
+      const shareElem = this.shadow.querySelector('#share');
+
+      if (showStats) {
+        showElement(statsElem);
+        if (navigator.clipboard && !isMobile()) { showElement(shareElem); }
+      } else {
+        hideElements([statsElem, shareElem]);
+      }
 
       hideKeyboard();
       this.isShowing = true;
@@ -135,7 +142,11 @@ ${emojiGame}`;
     }
 
     onVisibilityChange() {
-      this.shadow.querySelector('section').style.display = this.isShowing ? 'flex' : 'none';
+      if (this.isShowing) {
+        showElement(this.shadow.querySelector('section'));
+      } else {
+        hideElement(this.shadow.querySelector('section'));
+      }
 
       if (this.isShowing) {
         this.buildStats();

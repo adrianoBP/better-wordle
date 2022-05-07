@@ -37,12 +37,6 @@ body {
   flex-flow: column;
 }
 
-.center-items {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 main {
   justify-content: space-between;
   align-items: center;
@@ -53,6 +47,11 @@ main {
   background: var(--body-bg);
   color: var(--text-colour);
   fill: var(--text-colour);
+}
+
+.hidden {
+  /* TODO: Consider removing !important -> remove the display property where not needed */
+  display: none !important;
 }
 
 keyboard-component {

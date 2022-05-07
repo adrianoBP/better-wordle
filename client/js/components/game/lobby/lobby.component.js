@@ -1,4 +1,6 @@
 'use strict';
+import { showElement } from '../../../utils.js';
+
 class LobbyDetails extends HTMLElement {
   constructor() {
     super();
@@ -7,10 +9,11 @@ class LobbyDetails extends HTMLElement {
     this.shadow.innerHTML = `
     <style>
       @import url('js/components/game/lobby/lobby.component.css');
+      @import url('css/style.css');
     </style>
     <section>
       <h2 id="players"></h2>
-      <button id="start-game" style="display: none" disabled>Start Game</button>
+      <button id="start-game" class="hidden" disabled>Start Game</button>
       <p id="additional-info"></p>
     </section>
     `;
@@ -42,7 +45,7 @@ class LobbyDetails extends HTMLElement {
     // If the user is allowed to start the game, show the start button
     if (this.startGame) {
       const startGameElem = this.shadow.querySelector('#start-game');
-      startGameElem.style.display = 'block';
+      showElement(startGameElem);
       startGameElem.addEventListener('click', () => {
         this.startGame();
       });

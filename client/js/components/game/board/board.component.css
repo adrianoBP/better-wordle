@@ -1,3 +1,5 @@
+@import url('../../../../css/style.css');
+
 div {
   display: grid;
   grid-template-columns: repeat(var(--cells-per-row), minmax(1rem, 4.5rem));
