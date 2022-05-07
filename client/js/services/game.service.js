@@ -107,8 +107,7 @@ const checkInput = async (input) => {
       mainGame.boardElem.addLetter(input);
       selectKey(input);
 
-      // If we reached the end of the word, check if it is a valid word
-      // If not enabled in the settings, don't validate
+      // If option is enabled and we reached the end of the word, check if it is a valid word
       if (settings.validateOnComplete && mainGame.boardElem.wordLengthReached()) {
         await isGuessValid(mainGame);
       }
@@ -134,10 +133,7 @@ const checkInput = async (input) => {
     const guess = mainGame.boardElem.guess;
 
     try {
-      // If we don't validate on complete, validate on enter
-      if (!settings.validateOnComplete) { await isGuessValid(mainGame); }
-
-      if (!mainGame.isGuessValid) {
+      if (!await isGuessValid(mainGame)) {
         // Wiggle the word so that the user is aware that the word is invalid
         mainGame.boardElem.wiggleWord();
         console.error('Word is not valid');
@@ -163,12 +159,13 @@ const checkInput = async (input) => {
 const isGuessValid = async (game) => {
   const guess = game.boardElem.guess.join('');
 
-  // If we don't know if the word is valid yet, check it
+  // Check the cached words before calling the API
   if (guesses[guess] == null) {
     guesses[guess] = await isWordValid(guess);
   }
 
   game.isGuessValid = guesses[guess];
+  return game.isGuessValid;
 };
 
 const saveGame = (reset) => {
