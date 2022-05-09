@@ -2,42 +2,90 @@
 
 Coursework for Web Programming module (M30237) at University of Portsmouth
 
-## Install and run
+## Installation
 
 ```sh
 npm install
 npm run setup
+```
+
+## Execution
+
+For the release version:
+
+```sh
 npm start
+```
+
+For the test version (includes reload on save):
+
+```sh
+npm run dev
 ```
 
 ## Core functionalities
 
-### Basic five-letter game
-
-- Underline
-- Red word on fail
+The base version of the game allows the user to play with a five letter word.  
+The word is chosen by the server, limiting the user from being able to identify the word of the day by opening the browser developer tools and see the answer.  
+Finally, the application offers statistics to thrive user engagement.
 
 ### Different word each day
 
-- Resets at 12am UTC
-- Selected randomly (how?)
+The word of the day is selected by the server. Once the application is first configured, the first word is manually selected and will always be the same.  
+
+When the server receives a request for the validation of an user's guess, it will first check if the day word is stored in memory to minimise the database lookups.  
+If the word is not stored in the memory, then a request will be done to the database to retrieve today's word, identified by having the value for the `last_picked` column set to today's date.
+
+In case the word is not found, the server will pick a random word from the pool of five-letter words and assign the `last_picked` value to the current date.  
+When picking the random word, the database service will not pick a word which has been picked in the past 365 days.
+
+This process ensures the word to changes at 12 am UTC.
 
 ### Non discoverable word
 
-> See [cheating](#cheating)
+Users are not able to see what is the word of the day nor all the possible words by just opening the browser developer tools.  
+Instead, the word submitted by the user is sent to the server, which, after performing the validation, replies with a simple array.  
+Each element in the array contains the correctness of the letter in the word at a specific index:
+
+- '**-1**' that the letter is not present in the word
+- '**0**' that the letter is in the wrong position
+- '**1**' indicates that the letter is in the correct position
 
 ### Stats
 
-- daily
-- multiplayer
+At the end of a game, users are provided with their progress on the game, indicating:
 
-### Keyboard
+- how many games have been played
+- what percentages of games have been won
+- how many words the user had to use to guess the word
 
-Since we have multiple components using and talking to the keyboard, a keyboard service was created to be injected in the components.
+This statistics are also available for the multiplayer game mode and, alongside the single player stats, are saved in the browser storage.
+
+### Virtual keyboard
+
+A virtual keyboard is provided to the user to make the game more accessible, but more importantly it prevents the user on mobile devices from trying to insert unwanted characters.  
+To prevent users with keyboard from inserting unsupported characters, a regular expression (`/^[a-z]{1,1}$/`) is used to filter out characters that could cause the application to fail.
+
+Due to the fact that the virtual keyboard is being accessed by multiple components across the application, it was deemed appropriate to create a service to handle the keyboard instead of passing the DOM element.
 
 ## Non-core functionalities
 
 ### Play with random word
+
+It was noticed during the investigation and development phase, that, after guessing the word of the day, users want to play the game again.  
+
+To facilitate this, users can play again with a random word, which is selected by the server.  
+When the server choses a word, it will pass the word `id` to the client; the word id represents the index of the word in the database.  
+When the user submits a word whilst playing a random game, the word id will also be passed to the server which will be used to verify the word.
+
+Users can also edit the word length (between 4 and 8 letters) as well as specify the word difficulty:
+
+- Level 1, composed by ordinary British and American English words
+- Level 2, composed by less common American English words
+- Level 3, composed by uncommon British and American English, Names and Acronyms
+
+When a new random game is started, the settings are added as URL parameters, allowing the users to send the link to a friend or colleague.  
+Once the URL is opened, the application will recognize the parameters and start a new random game with the parameters in the URL.
 
 ### Word meaning search
 

@@ -14,9 +14,16 @@ const getWordById = async (req, res) => {
 const verifyWordData = async (req, res) => {
   const { id, wordLength } = req.query;
   const word = await wordsService.getWord(id);
-  res.json({
-    result: word.length === parseInt(wordLength, 10),
-  });
+
+  if (word == null) {
+    res.json({
+      error: 'Word not found',
+    });
+  } else {
+    res.json({
+      result: word.length === parseInt(wordLength, 10),
+    });
+  }
 };
 
 router.get('/by-id', getWordById);
