@@ -51,7 +51,6 @@ const onGameMessage = (socket) => {
     switch (data.event) {
       case 'new-game': {
         const code = data.code || Math.random().toString(36).slice(2, 7);
-        console.log(`New game - ${code}`);
 
         if (!runningGames[code]) {
           runningGames[code] = {
@@ -64,7 +63,7 @@ const onGameMessage = (socket) => {
 
         runningGames[code].players.push(socket);
 
-        dispatchToAll(code, 'game-settings', {
+        despatchAll(code, 'game-settings', {
           playerCount: runningGames[code].players.length,
           id: runningGames[code].id,
           code,
@@ -75,14 +74,14 @@ const onGameMessage = (socket) => {
       }
       case 'start-game': {
         for (let i = 3; i >= 0; i--) {
-          dispatchToAll(data.code, 'countdown', { count: i });
+          despatchAll(data.code, 'countdown', { count: i });
           await sleep(1000);
         }
         break;
       }
 
       case 'game-end': {
-        dispatchToAll(data.code, 'game-end', {
+        despatchAll(data.code, 'game-end', {
           guess: data.guess,
         }, socket);
       }
@@ -90,9 +89,9 @@ const onGameMessage = (socket) => {
   });
 };
 
-const dispatchToAll = (code, event, properties, socket) => {
+const despatchAll = (code, event, properties, skipSocket) => {
   for (const client of runningGames[code].players) {
-    if (socket && client === socket) { continue; }
+    if (skipSocket && client === skipSocket) { continue; }
 
     client.send(JSON.stringify({
       event,

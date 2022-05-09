@@ -1,19 +1,10 @@
 {
   "name": "better-wordle",
   "description": "Coursework for Web Programming module (M30237) at University of Portsmouth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/adrianoBP/better-wordle.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/adrianoBP/better-wordle/issues"
-  },
-  "homepage": "https://github.com/adrianoBP/better-wordle#readme",
   "type": "module",
+  "author": "UP2037954",
   "scripts": {
     "start": "node server.js",
     "setup": "node misc/setup.js",

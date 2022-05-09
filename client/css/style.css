@@ -1,14 +1,9 @@
+/* Default style: mobile */
 :root {
-  --cells-per-row: 0;
+  --cells-per-row: 5;
 
-  --keyboard-font-size: 5vmin;
   --keyboard-width: 98%;
   --keyboard-ratio: 1 / 1.2;
-  --key-padding: 3vmin 1vmin;
-
-  --cell-size-multiplier: 0.9;
-  --cell-size: 4rem;
-
   --page-height: 100%;
 }
 
@@ -16,7 +11,6 @@
   :root {
     --keyboard-width: 100%;
     --keyboard-ratio: 1;
-
     --page-height: 100vh;
   }
 }
@@ -67,12 +61,10 @@ main {
 }
 
 .hidden {
-  /* TODO: Consider removing !important -> remove the display property where not needed */
   display: none !important;
 }
 
 keyboard-component {
-  max-width: 500px;
-  width: var(--keyboard-width);
+  width: min(500px, var(--keyboard-width));
   padding-bottom: 2vmin;
 }

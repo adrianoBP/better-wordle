@@ -67,7 +67,6 @@ const hideElements = (elements) => {
   elements.forEach(element => hideElement(element));
 };
 
-
 export {
   sleep,
   getDayFromMillisec,

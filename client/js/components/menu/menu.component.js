@@ -2,7 +2,7 @@
 import { setTheme, sleep, isMobile } from '../../utils.js';
 import { applySettings, newRandomGame, newMultiplayerGame, isLoading } from '../../services/game.service.js';
 import { settings, saveSettings } from '../../services/settings.service.js';
-import { getWord, getNewGameCode } from '../../services/api.service.js';
+import { getNewGameCode } from '../../services/api.service.js';
 import '../toggle/toggle.component.js';
 import '../game/board/tile/tile.component.js';
 
@@ -112,11 +112,6 @@ const define = (template) => {
           this.active = false;
           newMultiplayerGame(true);
         }
-      });
-
-      // ! #debug
-      this.shadow.querySelector('#debug').addEventListener('click', async () => {
-        console.log(await getWord(settings));
       });
     }
 

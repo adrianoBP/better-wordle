@@ -19,13 +19,6 @@ nav>*:last-child {
   padding: 0 1rem;
 }
 
-/* ! #debug */
-nav>.nav-right {
-  display: flex;
-  float: right;
-  flex-direction: row;
-}
-
 nav #title {
   color: var(--text-light);
   text-decoration: none;

@@ -1,14 +1,8 @@
 'use strict';
 import { checkInput, startGame } from './services/game.service.js';
-import { loadSettings, settings } from './services/settings.service.js';
+import { loadSettings } from './services/settings.service.js';
 import './components/navbar/navbar.component.js';
 import './components/keyboard/keyboard.component.js';
-
-function prepareElements() {
-  // Init game properties
-  document.querySelector(':root')
-    .style.setProperty('--cells-per-row', settings.wordLength);
-}
 
 function addEventListeners() {
   // Global input check
@@ -22,10 +16,7 @@ function addEventListeners() {
 
 async function onInit() {
   await loadSettings();
-
-  prepareElements();
   addEventListeners();
-
   startGame();
 }
 

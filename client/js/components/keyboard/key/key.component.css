@@ -31,8 +31,7 @@ button.icon {
 @media (hover: hover) {
   button:hover {
     transform: translateY(-0.2em);
-    /* Don't move the shadow and make it slightly bigger and blurrier
-    ** for a subtle raise effect - mainly noticeable in light mode */
+    /* Make it look like the object is getting closer to the light source; mainly noticeable in light mode */
     box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
   }
 }
