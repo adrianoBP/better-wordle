@@ -61,6 +61,7 @@ class Key extends HTMLElement {
         break;
       default:
         this.keyElem.textContent = letter.toUpperCase();
+        this.keyElem.setAttribute('aria-label', letter.toUpperCase());
     }
   }
 

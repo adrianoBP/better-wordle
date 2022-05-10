@@ -89,34 +89,46 @@ Once the URL is opened, the application will recognize the parameters and start 
 
 ### Word meaning search
 
+It was also noticed during testing and play through that on higher difficulties, the user does not what a word mean and, the default behavior is to open the browser, open Google and search the word meaning.  
+To speed this process up, a "word search" feature has been added to allow the user to search the meaning of a word right after the game ends by clicking on the bouncing button. Once clicked, a new page will be opened in the browser redirecting to a Google search with the word and the "meaning" text attached to it, already populated.
+
 ### Share game result (emoji format)
 
-**Mobile only:**
+One of the reasons the original Wordle being so popular was the ease of sharing, where the user was able to copy its result in "emoji format".  
+It was deemed appropriate to include this feature in a better Wordle, however, this feature is only available on the desktop version of the game due to the fact no suitable ways to implement it on mobile were found:
 
-- `Navigator.clipboard()` is not available in mobile devices.
-- `Document.execCommand()` is deprecated.
-- `Navigator.share` only available through HTTPS (out of scope for this project)
+- `Navigator.clipboard` is only available in secure contexts (localhost or HTTPS)
+- `Document.execCommand` is considered deprecated
+- `Navigator.share` is only available in secure contexts - deploying a website and adding SSL is out of the scope of this coursework
 
 ### Menu
 
-The menu can be opened by clicking on the icon on the top right corner, or, if a keyboard is attached to the device, using the `Escape` key.
-It contains a quick guide on **how to play** as well as list of **settings** that the user can edit:
+To allow the user to configure the game settings and enable/disable its feature, a menu panel was added.  
+The menu can be accessed by clicking on icon located at the top left corner of the screen, or, if a physical keyboard is attached to the device, by pressing the `Escape` key.  
+The menu contains a quick guide on **how to play** as well as list of **settings** that the user can edit:
 
-- Light/dark mode switch (default on system theme)
-- Tile selection
-- Validate word
-- Haptic feedback (mobile only)
-- Custom properties
-  - Word length
-  - Word difficulty
+- **App theme**: Light/dark mode switch
+- **Tile selection**: enables/disables the highlight of the cell to be typed into
+- **Word validation**: enables/disables the validation of the guess as soon as the all the tiles in a row are populated
+- **Haptic feedback**: enables/disables the haptic feedback (only available on mobile devices)
+- **Play animations**: enables/disables any major animations in the application
+- Custom game properties
+  - **Word length**
+  - **Word difficulty**
 - Game modes
-  - Random word
-  - Multiplayer
+  - **Random word game**
+  - **Multiplayer**
 
 ### Multiplayer
 
-- `uuid` package
-- Current settings (difficulty & word length)
+To add competitiveness to the game, a multiplayer feature has been created.  
+It allows 2 or more player to play together using the same word settings (length and difficulty)
+
+The game can be shared by copying and pasting the URL - it contains a `code` URL parameter indicating the game session.
+
+Once the game is started by the user who created the session, all connected users will be able to start typing answers. The first user to correctly guess the word will win, and a losing message will be sent to all other users.
+
+At the completion of the game ended, multiplayer stats will be displayed.
 
 ### PWA
 
@@ -130,14 +142,13 @@ By default, the URL will not specify the word length, allowing a minimalist appr
 
 ### Words
 
-**Notes**: originally going for different languages ([gwicks.net](http://www.gwicks.net/dictionaries.htm)), but focus on words instead
+The list of available words is a subset of the words in the 12Dicts Package by Alan Beale:
 
-- Regex: any word containing latin letters and word length between 4 and 8 characters (`/^[a-z]{4,8}$/`)
-- Words source: [http://wordlist.aspell.net/12dicts/](http://wordlist.aspell.net/12dicts/)
-  - easy (from 2of5core): easy (British and American English, ordinary words)
-  - medium (from 2of12): medium (American English, less common words)
-  - hard (from 5d+2a): hard (British and American English, uncommon words, Names, Acronyms)
-- Words from one level are not included in the higher difficulty level
+- Level 1 is a subset of 2of5core
+- Level 2 is a subset of 2of12
+- Level 3 is a subset of 5d+2a
+
+Words from a lower level are not included in the higher level (e.g. words from Level 1 are not included in Level 2)
 
 ### Classes
 
@@ -171,5 +182,6 @@ During testing, the only way to cheat that was found was by manually calling the
 
 ## References
 
-- Icons: all icons used are under CC0 or PD licensing:  
-SVG Repo - Free SVG Vectors and Icons. (n.d.). www.svgrepo.com. <https://www.svgrepo.com/>
+- SVG Repo - Free SVG Vectors and Icons. (n.d.). <https://www.svgrepo.com>
+- MDN Web Docs. (2022, February 18). Secure context. <https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts>
+- Beale, A. (2016, June 20). The 12dicts Word Lists. Wyrdplay.org. <http://www.wyrdplay.org/12dicts.html>
