@@ -25,26 +25,27 @@ npm run dev
 
 ## Core functionalities
 
-The base version of the game allows the user to play with a five letter word.  
-The word is chosen by the server, limiting the user from being able to identify the word of the day by opening the browser developer tools and see the answer.  
+The base version of the game allows the user to play with a *five letter* word which is *chosen by the server*.  
+This limits the user from being able to identify the word of the day by opening the browser developer tools.  
 Finally, the application offers statistics to thrive user engagement.
 
 ### Different word each day
 
-The word of the day is selected by the server. Once the application is first configured, the first word is manually selected and will always be the same.  
+Once the application is first configured, the first word is manually selected and will always be the same.  
 
 When the server receives a request for the validation of an user's guess, it will first check if the day word is stored in memory to minimise the database lookups.  
-If the word is not stored in the memory, then a request will be done to the database to retrieve today's word, identified by having the value for the `last_picked` column set to today's date.
+If the word is not stored in memory, a request will be done to the database to retrieve the word of the day.  
+The word is identified by having the value for the `last_picked` column set to today's date.
 
 In case the word is not found, the server will pick a random word from the pool of five-letter words and assign the `last_picked` value to the current date.  
-When picking the random word, the database service will not pick a word which has been picked in the past 365 days.
+When picking the new word, the database service will not pick a word which has been picked in the past 365 days.
 
-This process ensures the word to changes at 12 am UTC.
+This process ensures the word to changes at **12 am UTC**.
 
 ### Non discoverable word
 
 Users are not able to see what is the word of the day nor all the possible words by just opening the browser developer tools.  
-Instead, the word submitted by the user is sent to the server, which, after performing the validation, replies with a simple array.  
+Instead, the word submitted is sent to the server, which, after performing the validation, replies with an array.  
 Each element in the array contains the correctness of the letter in the word at a specific index:
 
 - '**-1**' that the letter is not present in the word
@@ -59,24 +60,29 @@ At the end of a game, users are provided with their progress on the game, indica
 - what percentages of games have been won
 - how many words the user had to use to guess the word
 
-This statistics are also available for the multiplayer game mode and, alongside the single player stats, are saved in the browser storage.
+This stats are saved in the browser's `localStorage`.
+
+Stats are also available for the *multiplayer* game mode and, are also saved in the browser storage.
 
 ### Virtual keyboard
 
-A virtual keyboard is provided to the user to make the game more accessible, but more importantly it prevents the user on mobile devices from trying to insert unwanted characters.  
-To prevent users with keyboard from inserting unsupported characters, a regular expression (`/^[a-z]{1,1}$/`) is used to filter out characters that could cause the application to fail.
+A virtual keyboard is provided to the user to make the game more accessible.  
+More importantly it prevents the user on mobile devices from trying to insert unwanted characters.  
 
-Due to the fact that the virtual keyboard is being accessed by multiple components across the application, it was deemed appropriate to create a service to handle the keyboard instead of passing the DOM element.
+A regular expression (`/^[a-z]{1,1}$/`) is used to filter out characters that could cause the application to fail.  
+This has been put in place to prevent users with a physical keyboard from inserting unsupported characters.
+
+Since the virtual keyboard is being accessed by multiple components across the system, it was deemed appropriate to create a service to handle the keyboard instead of passing the DOM element.
 
 ## Non-core functionalities
 
-### Play with random word
+### Random word game mode
 
-It was noticed during the investigation and development phase, that, after guessing the word of the day, users want to play the game again.  
+It was noticed during the investigation and development phases, that, after guessing the word of the day, users want to play the game again.  
 
 To facilitate this, users can play again with a random word, which is selected by the server.  
-When the server choses a word, it will pass the word `id` to the client; the word id represents the index of the word in the database.  
-When the user submits a word whilst playing a random game, the word id will also be passed to the server which will be used to verify the word.
+When the server choses a word, it will provide the client with an `id` represents the index of the word in the database.  
+When the user tries to guess a word, the ID will also be passed to the server which will be used to verify the word.
 
 Users can also edit the word length (between 4 and 8 letters) as well as specify the word difficulty:
 
@@ -89,8 +95,12 @@ Once the URL is opened, the application will recognize the parameters and start 
 
 ### Word meaning search
 
-It was also noticed during testing and play through that on higher difficulties, the user does not what a word mean and, the default behavior is to open the browser, open Google and search the word meaning.  
-To speed this process up, a "word search" feature has been added to allow the user to search the meaning of a word right after the game ends by clicking on the bouncing button. Once clicked, a new page will be opened in the browser redirecting to a Google search with the word and the "meaning" text attached to it, already populated.
+It was also noticed during testing and play through that, on higher difficulties, the user does not always know the meaning of a word.  
+The default behavior is to open the browser, open Google and search the word meaning.
+
+To speed this process up, a "word search" feature has been included to allow the user to search the meaning of a word.  
+This option is available right after the game ends by clicking on the bouncing button.  
+Once clicked, a new browser page will be opened redirecting the user to Google Search with the word and the "meaning" text attached to it.
 
 ### Share game result (emoji format)
 
@@ -103,8 +113,11 @@ It was deemed appropriate to include this feature in a better Wordle, however, t
 
 ### Menu
 
-To allow the user to configure the game settings and enable/disable its feature, a menu panel was added.  
-The menu can be accessed by clicking on icon located at the top left corner of the screen, or, if a physical keyboard is attached to the device, by pressing the `Escape` key.  
+To allow the user to configure the game settings and enable/disable its feature, a menu panel was added.
+
+The menu can be accessed by clicking on icon located at the top left corner of the screen.  
+Alternatively, if a physical keyboard is attached to the device, by pressing the `Escape` key.
+
 The menu contains a quick guide on **how to play** as well as list of **settings** that the user can edit:
 
 - **App theme**: Light/dark mode switch
@@ -116,8 +129,8 @@ The menu contains a quick guide on **how to play** as well as list of **settings
   - **Word length**
   - **Word difficulty**
 - Game modes
-  - **Random word game**
-  - **Multiplayer**
+  - **Random word game** (dice icon)
+  - **Multiplayer** (controller icon)
 
 ### Multiplayer
 
@@ -126,31 +139,33 @@ It allows 2 or more player to play together using the same word settings (length
 
 The game can be shared by copying and pasting the URL - it contains a `code` URL parameter indicating the game session.
 
-Once the game is started by the user who created the session, all connected users will be able to start typing answers. The first user to correctly guess the word will win, and a losing message will be sent to all other users.
+Once the game is started by the user who created the session, all connected users will be able to start typing answers.  
+The first user to correctly guess the word will win, and a losing message will be sent to all other users.
 
 At the completion of the game ended, multiplayer stats will be displayed.
 
 ### PWA
 
-The game can also be installed to the device as it has been made available as a Progressive Web App. This allows the user to install the application on the device instead of having to open the browser every time and search for the game.  
+The game can be installed to the device as it has been made available as a Progressive Web App.  
+This offers a quicker accessibility instead of having to open the browser every time and search for the game.
 
-Additionally, thanks to the fact that PWA requires a `ServiceWorker`, the load times of the site have been reduced as they are served directly from the service worker cache instead of a round trip to the server.
+Additionally, thanks to the fact that PWA requires a `ServiceWorker`, load times of the app have been reduced as some files are served directly from the service worker cache.
 
 ### Share game
 
-When playing with random words (i.e. not today's word), the URL gets updated with an `id` that identifies the word.
+When playing one of the extra game modes, the URL gets updated with an `id` that identifies the word.
 Users can copy and share the URL with other users to see how many attempts it takes them.  
-By default, the URL will not specify the word length, allowing a minimalist approach; however, if the word length is different from the default (5), it will be specified in the URL parameters.
+The word length parameter will only be added if the word length differs from the default value (5).
 
 ## Endpoints structure
 
 - `/api`
   - `/words`
-    - `/by-id` (GET): provides the user with the correct word in case they were not able to guess the word. When no id is provided, the word of the day will be returned.
+    - `/by-id` (GET): provides the user with the correct word in case they were not able to guess the word. When no ID is provided, the word of the day will be returned.
     - `/verify` (GET): checks if the provided word ID and length match. Used to prevent players from playing with incorrect data
   - `/game`
     - `/validate-guess` (POST): validates the user's guess and returns an array indicating the correctness of a letter at the index.
-    - `/random` (GET): returns a new random word id used when playing with the "Random Game" feature.
+    - `/random` (GET): returns a new random word ID used when playing with the "Random Game" feature.
 
 ## Considerations
 
@@ -158,9 +173,9 @@ By default, the URL will not specify the word length, allowing a minimalist appr
 
 The list of available words is a subset of the words in the 12Dicts Package by Alan Beale:
 
-- Level 1 is a subset of 2of5core
-- Level 2 is a subset of 2of12
-- Level 3 is a subset of 5d+2a
+- Level 1 is a subset of *2of5core*
+- Level 2 is a subset of *2of12*
+- Level 3 is a subset of *5d+2a*
 
 Words from a lower level are not included in the higher level (e.g. words from Level 1 are not included in Level 2)
 
@@ -174,7 +189,8 @@ SVG icons were loaded in multiple ways according to their necessity:
 
 - `<svg>` tag (i.e. [`result.component.html`](client/js/components/game/result/result.component.html)) when the icon is static and only its basic properties need to change (i.e. `fill` CSS property)
 - `<img>` tag (i.e. [`index.html`](client/index.html)) when basic transitions need to be applied (e.g. `scale` or `translate`) or when the icon needs to change (by changing the `src` attribute)
-- Created in JS (i.e. [`enter.js`](client/js/svg/enter.js)) when the image needs to be added dynamically within a component for better code readability. Icons are referenced by an [index file](client/js/svg/index.js) that can be imported into the requiring component.
+- Created in JS (i.e. [`enter.js`](client/js/svg/enter.js)) when the image needs to be added dynamically within a component for better code readability.  
+Icons are referenced by an [index file](client/js/svg/index.js) that can be imported into the requiring component.
 
 ## Acknowledgments
 
@@ -189,8 +205,10 @@ Many elements of the project could be considered excessive, however, this has be
 
 ### Cheating
 
-Cheating by checking the word has been reduced to the minium.
-During testing, the only way to cheat that was found was by manually calling the `words/by-code` endpoint that is needed to provide the word to the user in case they cannot find the correct word. However, this would require the user to first acquire the `code` of the word, which can be done by setting breakpoints in the browser developer tools.
+During testing, the only way to cheat that was found was by **manually** calling the `/api/words/by-id` from an API debugging tool.  
+However, this would require the user to first acquire the `id` of the word, which can be done by setting breakpoints in the browser developer tools.
+
+For the purpose of this project, it is not considered a critical issue due the the fact that the base user is not expected to have the this knowledge.
 
 ## Future works
 
