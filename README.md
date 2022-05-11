@@ -132,11 +132,25 @@ At the completion of the game ended, multiplayer stats will be displayed.
 
 ### PWA
 
+The game can also be installed to the device as it has been made available as a Progressive Web App. This allows the user to install the application on the device instead of having to open the browser every time and search for the game.  
+
+Additionally, thanks to the fact that PWA requires a `ServiceWorker`, the load times of the site have been reduced as they are served directly from the service worker cache instead of a round trip to the server.
+
 ### Share game
 
 When playing with random words (i.e. not today's word), the URL gets updated with an `id` that identifies the word.
 Users can copy and share the URL with other users to see how many attempts it takes them.  
 By default, the URL will not specify the word length, allowing a minimalist approach; however, if the word length is different from the default (5), it will be specified in the URL parameters.
+
+## Endpoints structure
+
+- `/api`
+  - `/words`
+    - `/by-id` (GET): provides the user with the correct word in case they were not able to guess the word. When no id is provided, the word of the day will be returned.
+    - `/verify` (GET): checks if the provided word ID and length match. Used to prevent players from playing with incorrect data
+  - `/game`
+    - `/validate-guess` (POST): validates the user's guess and returns an array indicating the correctness of a letter at the index.
+    - `/random` (GET): returns a new random word id used when playing with the "Random Game" feature.
 
 ## Considerations
 
@@ -150,35 +164,40 @@ The list of available words is a subset of the words in the 12Dicts Package by A
 
 Words from a lower level are not included in the higher level (e.g. words from Level 1 are not included in Level 2)
 
-### Classes
-
-<!-- TODO: discuss classes being used -->
-
 ### Mobile
 
-- Elements that had an `hover` effect have been wrapped with `@media (hover: hover) {}` media selector to prevent sticky statuses on mobile.
+Elements that had an `hover` effect have been wrapped with `@media (hover: hover) {}` media selector to prevent sticky statuses on mobile.
 
 ### SVG icons
 
-SVGs are loaded in three different ways:
+SVG icons were loaded in multiple ways according to their necessity:
 
-- `<svg>` tag (i.e. [`result.component.html`](client/js/components/game/result/result.component.html))  
-This is done when the icon is static and does not need to change
-- `<img>` tag (i.e. [`index.html`](client/index.html))  
-This is done when basic transitions need to be applied (e.g. `scale` or `translate`) or when the icon needs to change (done by swapping the `src` attribute)
-- Created in JS (i.e. [`enter.js`](client/js/svg/enter.js))  
-This is done when the image needs to be added dynamically within a component for better code readability. All these images are referenced by an [index file](client/js/svg/index.js) that can be imported.
+- `<svg>` tag (i.e. [`result.component.html`](client/js/components/game/result/result.component.html)) when the icon is static and only its basic properties need to change (i.e. `fill` CSS property)
+- `<img>` tag (i.e. [`index.html`](client/index.html)) when basic transitions need to be applied (e.g. `scale` or `translate`) or when the icon needs to change (by changing the `src` attribute)
+- Created in JS (i.e. [`enter.js`](client/js/svg/enter.js)) when the image needs to be added dynamically within a component for better code readability. Icons are referenced by an [index file](client/js/svg/index.js) that can be imported into the requiring component.
 
 ## Acknowledgments
 
 ### Overkill
 
-Many elements of the projects are way more complicated of what this kind of project (i.e. components, split all files, validation, etc.), however, since this project has to be a testament of our knowledge of Javascript, HTML and CSS, I believe that it is appropriate to include them.
+(i.e. components, split all files, validation, etc.)
+
+Many elements of the project could be considered excessive, however, this has been done on purpose as, we were advised that this project has to be a testament of our knowledge of Javascript, HTML and CSS. Some of the elements that can be considered excessive are:
+
+- Componentisation of the elements, for example, having a keyboard component that contains a key component
+- Controllers / Services separation: due to the simplicity of the project, it may have not been needed to separate the backend, however, this has been done to build a solid structure for any future developments.
 
 ### Cheating
 
 Cheating by checking the word has been reduced to the minium.
 During testing, the only way to cheat that was found was by manually calling the `words/by-code` endpoint that is needed to provide the word to the user in case they cannot find the correct word. However, this would require the user to first acquire the `code` of the word, which can be done by setting breakpoints in the browser developer tools.
+
+## Future works
+
+- **Multiplayer**: thanks to how the application has been structured, should be simple to add a co-op mode where two or more players can work together to guess the same word.  
+Alternative, a "battle" mode can be implemented where many users can play on the same sessions and other's players boards are visible (hidden letters). This was not implemented in this version of the application due to the fact that the mobile layout limits this feature.
+- **PWA (offline)**: having the application PWA-ready, allows a simple implementation of an offline version of the game. This mode could hold a subset of the words locally to allow the user to keep playing whilst not having internet connectivity.
+- **Accounts**: allow users to create accounts and save their progress across devices.
 
 ## References
 
