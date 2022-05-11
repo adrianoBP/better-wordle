@@ -1,6 +1,6 @@
 # better-wordle
 
-Coursework for Web Programming module (M30237) at University of Portsmouth
+Coursework for Web Programming module (M30237) at the University of Portsmouth
 
 ## Installation
 
@@ -33,14 +33,14 @@ Finally, the application offers statistics to thrive user engagement.
 
 Once the application is first configured, the first word is manually selected and will always be the same.  
 
-When the server receives a request for the validation of an user's guess, it will first check if the day word is stored in memory to minimise the database lookups.  
+When the server receives a request for the validation of a user's guess, it will first check if the day word is stored in memory to minimise the database lookups.  
 If the word is not stored in memory, a request will be done to the database to retrieve the word of the day.  
 The word is identified by having the value for the `last_picked` column set to today's date.
 
 In case the word is not found, the server will pick a random word from the pool of five-letter words and assign the `last_picked` value to the current date.  
 When picking the new word, the database service will not pick a word which has been picked in the past 365 days.
 
-This process ensures the word to changes at **12 am UTC**.
+This process ensures the word changes at **12 am UTC**.
 
 ### Non discoverable word
 
@@ -58,16 +58,16 @@ At the end of a game, users are provided with their progress on the game, indica
 
 - how many games have been played
 - what percentages of games have been won
-- how many words the user had to use to guess the word
+- how many words the user required to guess the word
 
-This stats are saved in the browser's `localStorage`.
+These stats are saved in the browser's `localStorage`.
 
 Stats are also available for the *multiplayer* game mode and, are also saved in the browser storage.
 
 ### Virtual keyboard
 
 A virtual keyboard is provided to the user to make the game more accessible.  
-More importantly it prevents the user on mobile devices from trying to insert unwanted characters.  
+More importantly, it prevents the user on mobile devices from trying to insert unwanted characters.  
 
 A regular expression (`/^[a-z]{1,1}$/`) is used to filter out characters that could cause the application to fail.  
 This has been put in place to prevent users with a physical keyboard from inserting unsupported characters.
@@ -81,14 +81,14 @@ Since the virtual keyboard is being accessed by multiple components across the s
 It was noticed during the investigation and development phases, that, after guessing the word of the day, users want to play the game again.  
 
 To facilitate this, users can play again with a random word, which is selected by the server.  
-When the server choses a word, it will provide the client with an `id` represents the index of the word in the database.  
+When the server chooses a word, it will provide the client with an `id` that represents the index of the word in the database.  
 When the user tries to guess a word, the ID will also be passed to the server which will be used to verify the word.
 
 Users can also edit the word length (between 4 and 8 letters) as well as specify the word difficulty:
 
-- Level 1, composed by ordinary British and American English words
-- Level 2, composed by less common American English words
-- Level 3, composed by uncommon British and American English, Names and Acronyms
+- Level 1, composed of ordinary British and American English words
+- Level 2, composed of less common American English words
+- Level 3, composed of uncommon British and American English, Names and Acronyms
 
 When a new random game is started, the settings are added as URL parameters, allowing the users to send the link to a friend or colleague.  
 Once the URL is opened, the application will recognize the parameters and start a new random game with the parameters in the URL.
@@ -96,15 +96,15 @@ Once the URL is opened, the application will recognize the parameters and start 
 ### Word meaning search
 
 It was also noticed during testing and play through that, on higher difficulties, the user does not always know the meaning of a word.  
-The default behavior is to open the browser, open Google and search the word meaning.
+The default behaviour is to open the browser, open Google and search for the word meaning.
 
-To speed this process up, a "word search" feature has been included to allow the user to search the meaning of a word.  
+To speed this process up, a "word search" feature has been included to allow the user to search for the meaning of a word.  
 This option is available right after the game ends by clicking on the bouncing button.  
 Once clicked, a new browser page will be opened redirecting the user to Google Search with the word and the "meaning" text attached to it.
 
 ### Share game result (emoji format)
 
-One of the reasons the original Wordle being so popular was the ease of sharing, where the user was able to copy its result in "emoji format".  
+One of the reasons the original Wordle was so popular was the ease of sharing, where the user was able to copy its result in "emoji format".  
 It was deemed appropriate to include this feature in a better Wordle, however, this feature is only available on the desktop version of the game due to the fact no suitable ways to implement it on mobile were found:
 
 - `Navigator.clipboard` is only available in secure contexts (localhost or HTTPS)
@@ -115,10 +115,10 @@ It was deemed appropriate to include this feature in a better Wordle, however, t
 
 To allow the user to configure the game settings and enable/disable its feature, a menu panel was added.
 
-The menu can be accessed by clicking on icon located at the top left corner of the screen.  
+The menu can be accessed by clicking the on icon located at the top left corner of the screen.  
 Alternatively, if a physical keyboard is attached to the device, by pressing the `Escape` key.
 
-The menu contains a quick guide on **how to play** as well as list of **settings** that the user can edit:
+The menu contains a quick guide on **how to play** as well as a list of **settings** that the user can edit:
 
 - **App theme**: Light/dark mode switch
 - **Tile selection**: enables/disables the highlight of the cell to be typed into
@@ -135,7 +135,7 @@ The menu contains a quick guide on **how to play** as well as list of **settings
 ### Multiplayer
 
 To add competitiveness to the game, a multiplayer feature has been created.  
-It allows 2 or more player to play together using the same word settings (length and difficulty)
+It allows 2 or more players to play together using the same word settings (length and difficulty)
 
 The game can be shared by copying and pasting the URL - it contains a `code` URL parameter indicating the game session.
 
@@ -146,8 +146,8 @@ At the completion of the game ended, multiplayer stats will be displayed.
 
 ### PWA
 
-The game can be installed to the device as it has been made available as a Progressive Web App.  
-This offers a quicker accessibility instead of having to open the browser every time and search for the game.
+The game can be installed on the device as it has been made available as a Progressive Web App.  
+This offers quicker accessibility instead of having to open the browser every time and search for the game.
 
 Additionally, thanks to the fact that PWA requires a `ServiceWorker`, load times of the app have been reduced as some files are served directly from the service worker cache.
 
@@ -196,9 +196,7 @@ Icons are referenced by an [index file](client/js/svg/index.js) that can be impo
 
 ### Overkill
 
-(i.e. components, split all files, validation, etc.)
-
-Many elements of the project could be considered excessive, however, this has been done on purpose as, we were advised that this project has to be a testament of our knowledge of Javascript, HTML and CSS. Some of the elements that can be considered excessive are:
+Many elements of the project could be considered excessive, however, this has been done on purpose as, we were advised that this project has to be a testament to our knowledge of Javascript, HTML and CSS. Some of the elements that can be considered excessive are:
 
 - Componentisation of the elements, for example, having a keyboard component that contains a key component
 - Controllers / Services separation: due to the simplicity of the project, it may have not been needed to separate the backend, however, this has been done to build a solid structure for any future developments.
@@ -208,12 +206,12 @@ Many elements of the project could be considered excessive, however, this has be
 During testing, the only way to cheat that was found was by **manually** calling the `/api/words/by-id` from an API debugging tool.  
 However, this would require the user to first acquire the `id` of the word, which can be done by setting breakpoints in the browser developer tools.
 
-For the purpose of this project, it is not considered a critical issue due the the fact that the base user is not expected to have the this knowledge.
+For this project, it is not considered a critical issue because the base user is not expected to have the knowledge.
 
 ## Future works
 
 - **Multiplayer**: thanks to how the application has been structured, should be simple to add a co-op mode where two or more players can work together to guess the same word.  
-Alternative, a "battle" mode can be implemented where many users can play on the same sessions and other's players boards are visible (hidden letters). This was not implemented in this version of the application due to the fact that the mobile layout limits this feature.
+Alternatively, a "battle" mode can be implemented where many users can play on the same sessions and other's players' boards are visible (hidden letters). This was not implemented in this version of the application because the mobile layout limits this feature.
 - **PWA (offline)**: having the application PWA-ready, allows a simple implementation of an offline version of the game. This mode could hold a subset of the words locally to allow the user to keep playing whilst not having internet connectivity.
 - **Accounts**: allow users to create accounts and save their progress across devices.
 
