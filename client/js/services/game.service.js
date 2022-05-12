@@ -84,13 +84,11 @@ const newRandomGame = async () => {
   isLoading = false;
 };
 
-const checkInput = async (input) => {
+const checkInput = async (input, isCtrlPressed = false) => {
   // If we are playing multiplayer and the game didn't start, don't allow input
   if (settings.code != null && !mainGame.isMultiplayer) {
     return;
   }
-
-  // TODO: CTRL + Backspace deletes the whole word
 
   // Don't accept any inputs if the word is already guessed or the number of guesses has been reached
   if (!mainGame.boardElem.canInsert() || isLoading) return;
@@ -118,12 +116,20 @@ const checkInput = async (input) => {
 
   // BACKSPACE
   if (input === 'backspace') {
-    const removedLetter = mainGame.boardElem.removeLetter();
-    const currentGuess = mainGame.boardElem.guess;
+    // if we press CTRL and backspace, we want to delete the whole word
+    if (isCtrlPressed) {
+      const currentGuess = mainGame.boardElem.guess;
+      currentGuess.forEach((letter) => {
+        unselectKey(letter);
+        mainGame.boardElem.removeLetter(letter);
+      });
+    } else {
+      const removedLetter = mainGame.boardElem.removeLetter();
+      const currentGuess = mainGame.boardElem.guess;
 
-    // Unselect only if it is the last occurrence in the guess
-    if (!currentGuess.includes(removedLetter)) { unselectKey(removedLetter); }
-
+      // Unselect only if it is the last occurrence in the guess
+      if (!currentGuess.includes(removedLetter)) { unselectKey(removedLetter); }
+    }
     return;
   }
 

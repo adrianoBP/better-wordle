@@ -5,7 +5,7 @@ import './components/keyboard/keyboard.component.js';
 
 function addEventListeners() {
   // Global input check
-  document.addEventListener('keydown', (e) => { checkInput(e.key); });
+  document.addEventListener('keydown', (e) => { checkInput(e.key, e.ctrlKey); });
 
   // Close menu on backdrop click
   document.querySelector('main').addEventListener('click', () => {

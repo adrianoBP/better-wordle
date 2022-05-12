@@ -109,18 +109,26 @@ class BoardDetails extends HTMLElement {
     this.toggleNextTile();
 
     // If we delete a letter, we know for sure that the word is not a complete word, hence remove the error class
-    this.words[this.wordIndex].forEach(tile => {
-      tile.type = '';
-    });
+    this.words[this.wordIndex].forEach(tile => tile.clearType());
 
     this.letterIndex--;
 
-    const letterToRemove = this.words[this.wordIndex][this.letterIndex].letter;
+    const removedLetter = this.words[this.wordIndex][this.letterIndex].letter;
     this.words[this.wordIndex][this.letterIndex].letter = '';
     this.toggleNextTile();
 
     // Return the removed letter
-    return letterToRemove;
+    return removedLetter;
+  }
+
+  removeAllLetters() {
+    if (this.letterIndex === 0) return;
+
+    this.words[this.wordIndex].forEach(tile => tile.clearType());
+
+    this.letterIndex = 0;
+
+    this.toggleNextTile();
   }
 
   async applyValidationResult(validationResult, incrementWordIndex, stepDuration = 350) {

@@ -44,7 +44,6 @@ class GameDetails extends HTMLElement {
 
       // Don't save the stats if it is a custom game
       if (!settings.id) {
-        // TODO: Check if can be done better - i.e. as soon as the animation is complete
         await sleep(350);
 
         settings.stats.daily.played++;
@@ -88,7 +87,6 @@ class GameDetails extends HTMLElement {
       this.boardElem.addWord(row.map((el) => el.letter), validationResult);
     }
 
-    // TODO: Check if can be done better - i.e. as soon as the animation is complete
     await sleep(300 * settings.wordLength);
 
     if (this.boardElem.wordGuessed || !this.boardElem.canInsert()) {
