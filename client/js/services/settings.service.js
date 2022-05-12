@@ -23,7 +23,7 @@ let settings = {
     },
   },
   hapticFeedback: true,
-  playAnimations: true,
+  playAnimations: window.matchMedia('(prefers-reduced-motion: no-preference)').matches,
 };
 
 const loadSettings = async () => {

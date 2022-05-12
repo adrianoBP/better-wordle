@@ -125,11 +125,11 @@ Alternatively, if a physical keyboard is attached to the device, by pressing the
 
 The menu contains a quick guide on **how to play** as well as a list of **settings** that the user can edit:
 
-- **App theme**: Light/dark mode switch
+- **App theme**: Light/dark mode switch (default option from device settings)
 - **Tile selection**: enables/disables the highlight of the cell to be typed into
 - **Word validation**: enables/disables the validation of the guess as soon as the all the tiles in a row are populated
 - **Haptic feedback**: enables/disables the haptic feedback (only available on mobile devices)
-- **Play animations**: enables/disables any major animations in the application
+- **Play animations**: enables/disables any major animations in the application (default option from device settings)
 - Custom game properties
   - **Word length**
   - **Word difficulty**
@@ -187,6 +187,8 @@ Words from a lower level are not included in the higher level (e.g. words from L
 ### Mobile
 
 Elements that had an `hover` effect have been wrapped with `@media (hover: hover) {}` media selector to prevent sticky statuses on mobile.
+
+Double tap to zoom has been disabled to prevent the page from zooming in and out when typing fast on the keyboard.
 
 ### SVG icons
 
