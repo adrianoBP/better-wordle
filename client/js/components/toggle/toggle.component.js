@@ -21,6 +21,10 @@ class FancyToggle extends HTMLElement {
   get checked() { return this.getAttribute('checked') === 'true'; }
   set checked(value) { this.setAttribute('checked', value); }
 
+  get description() {
+    return this.getAttribute('description') || '';
+  }
+
   toggle() {
     if (this.checked) {
       this.toggleElem.classList.add('checked');
@@ -36,6 +40,8 @@ class FancyToggle extends HTMLElement {
     this.toggleElem.addEventListener('mouseup', () => {
       this.checked = !this.checked;
     });
+
+    this.toggleElem.setAttribute('title', this.description);
 
     this.toggle();
   }
