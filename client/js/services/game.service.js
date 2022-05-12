@@ -1,6 +1,6 @@
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
-import { getItem, setItem, getDayFromMillisec, setUrlParams, deleteUrlParams } from '../utils.js';
+import { getItem, setItem, getDateFromMillisec, setUrlParams, deleteUrlParams } from '../utils.js';
 import { settings, saveSettings } from './settings.service.js';
 
 import '../components/game/game.component.js';
@@ -185,7 +185,7 @@ const loadGame = async () => {
 
   try {
     // If the game day changed, don't load
-    if (getDayFromMillisec(settings.gameTime) !== getDayFromMillisec()) {
+    if (getDateFromMillisec(settings.gameTime) !== getDateFromMillisec()) {
     // Save the game and specify that we want to reset ('true')
       saveGame(true);
       return;

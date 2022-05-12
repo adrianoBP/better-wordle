@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import gameService from '../services/game.service.js';
 import dbService from '../services/db.service.js';
-import { getDayFromMillisec } from '../utils.js';
+import { getDateFromMillisec } from '../utils.js';
 
 const router = new Router();
 
@@ -16,7 +16,7 @@ const validateGuess = async (req, res) => {
   }
 
   // If the client time is out of sync and it is not a custom game (missing id), reject the guess
-  if (!settings.id && getDayFromMillisec(settings?.gameTime) !== getDayFromMillisec()) {
+  if (!settings.id && getDateFromMillisec(settings?.gameTime) !== getDateFromMillisec()) {
     res.status(400).json({
       error: 'Invalid request. If you had the game open for too long, reload the page.',
     });

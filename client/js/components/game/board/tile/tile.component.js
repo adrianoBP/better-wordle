@@ -1,4 +1,5 @@
 import { settings } from '../../../../services/settings.service.js';
+
 class TileComponent extends HTMLElement {
   constructor() {
     super();
@@ -12,23 +13,26 @@ class TileComponent extends HTMLElement {
   `;
   }
 
+  get tileElem() {
+    return this.shadow.querySelector('div');
+  }
+
   get letter() {
     return this.hasAttribute('letter') ? this.getAttribute('letter') : '';
   }
 
   set letter(letter) { this.setAttribute('letter', letter); }
 
+  // 'type' indicates the kind of the tile: 'success', 'warn', 'fail'
   get type() { return this.getAttribute('type'); }
   set type(type) { this.setAttribute('type', type); }
 
   get isSelected() { return this.hasAttribute('selected'); }
   set isSelected(isSelected) { this.setAttribute('type', isSelected ? 'selected' : ''); }
 
+  // Clear tile type and additional
   clearType() {
-    const tile = this.shadow.querySelector('div');
-    ['success', 'warn', 'fail', 'error', 'selected'].forEach((className) => {
-      tile.classList.remove(className);
-    });
+    this.tileElem.classList.remove('success', 'warn', 'fail', 'selected', 'error');
   }
 
   toggleSelection() {
@@ -40,15 +44,14 @@ class TileComponent extends HTMLElement {
   }
 
   onLetterChange() {
-    this.shadow.querySelector('div').textContent = this.letter;
+    this.tileElem.textContent = this.letter;
   }
 
   onTypeChange() {
-    const tile = this.shadow.querySelector('div');
     this.clearType();
 
     // Add class ony if the type is not empty - It can be empty when resetting the tile
-    if (this.type) { tile.classList.add(this.type); }
+    if (this.type) { this.tileElem.classList.add(this.type); }
   }
 
   updateType(newType) {
@@ -67,13 +70,12 @@ class TileComponent extends HTMLElement {
       return;
     }
 
-    const tile = this.shadow.querySelector('div');
-    tile.classList.add('flip');
+    this.tileElem.classList.add('flip');
 
     // Remove the flip class to be able to re-flip it again
-    tile.addEventListener('animationend', () => {
-      tile.removeEventListener('animationend', () => {});
-      tile.classList.remove('flip');
+    this.tileElem.addEventListener('animationend', () => {
+      this.tileElem.removeEventListener('animationend', () => {});
+      this.tileElem.classList.remove('flip');
     });
 
     // Animations lasts .5s, half way through the animation, change the colour
@@ -83,8 +85,7 @@ class TileComponent extends HTMLElement {
   }
 
   shake() {
-    const tile = this.shadow.querySelector('div');
-    tile.animate([
+    this.tileElem.animate([
       { transform: 'translateX(-0.2em)' },
       { transform: 'translateX(0.2em)' },
       { transform: 'translateX(0)' },

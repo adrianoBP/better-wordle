@@ -16,7 +16,7 @@ button {
   color: var(--text-colour-opp);
   fill: var(--text-colour-opp);
   border: 1px solid var(--tile-border);
-  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow);
 
   cursor: pointer;
   user-select: none;
@@ -32,7 +32,7 @@ button.icon {
   button:hover {
     transform: translateY(-0.2em);
     /* Make it look like the object is getting closer to the light source; mainly noticeable in light mode */
-    box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
+    box-shadow: var(--shadow-active);
   }
 }
 

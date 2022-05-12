@@ -1,17 +1,21 @@
 div {
-  aspect-ratio: 1;
-  border: 3px solid var(--tile-border);
-  border-radius: 40%;
   background-color: var(--tile-bg);
   color: var(--text-colour);
+
+  border: var(--border-size) solid var(--tile-border);
+  border-radius: 40%;
+
   display: flex;
-  user-select: none;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 2rem;
+
+  aspect-ratio: 1;
   align-self: center;
 
+  font-weight: bold;
+  font-size: 2rem;
+
+  user-select: none;
   transition-duration: 0.2s;
   transition-property: color;
 }
@@ -33,7 +37,7 @@ div.error {
 }
 
 div.selected {
-  border-bottom: 3px solid var(--tile-border-selected);
+  border-bottom: var(--border-size) solid var(--tile-border-selected);
 }
 
 .flip {
@@ -41,7 +45,6 @@ div.selected {
 }
 
 @keyframes flip {
-
   0% {
     transform: rotateX(0deg);
   }

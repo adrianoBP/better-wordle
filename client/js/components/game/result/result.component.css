@@ -60,7 +60,7 @@ svg {
   align-items: center;
   justify-content: center;
   height: 3rem;
-  box-shadow: 0px 5px 5px 0px rgb(0 0 0 / 25%);
+  box-shadow: var(--shadow);
   transition-duration: 200ms;
 }
 
@@ -69,14 +69,14 @@ svg {
     cursor: pointer;
     opacity: 0.8;
     transform: translateY(-0.2em);
-    box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
+    box-shadow: var(--shadow-active);
   }
 }
 
 #share:active {
   opacity: 0.8;
   transform: translateY(-0.2em);
-  box-shadow: 0px 10px 10px 0px rgb(0 0 0 / 25%);
+  box-shadow: var(--shadow-active);
 }
 
 #stats {
@@ -142,7 +142,7 @@ svg {
 
   color: var(--text-colour-opp);
   background-color: var(--keyboard-bg);
-  box-shadow: 0px 5px 5px 0px rgb(0 0 0 / 25%);
+  box-shadow: var(--shadow);
 
   border-radius: 0.3em
 }

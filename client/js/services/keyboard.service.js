@@ -1,3 +1,5 @@
+// Wrapper service to expose the methods to the rest of the application
+
 const resetKeyboard = () => {
   document.querySelector('keyboard-component').reset();
 };

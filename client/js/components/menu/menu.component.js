@@ -21,17 +21,20 @@ const define = (template) => {
     get active() { return this.getAttribute('active') === 'true'; }
     set active(value) { this.setAttribute('active', value); }
 
+    get tileSelectionElem() { return this.shadow.querySelector('#tile-selection'); }
+    get validateWordElem() { return this.shadow.querySelector('#validate-word'); }
+    get hapticFeedbackElem() { return this.shadow.querySelector('#haptic-feedback'); }
+    get playAnimationsElem() { return this.shadow.querySelector('#play-animations'); }
+    get wordLengthElem() { return this.shadow.querySelector('#word-length'); }
+    get wordDifficultyElem() { return this.shadow.querySelector('#word-difficulty'); }
+
     initSettings() {
-      this.shadow.querySelector('#tile-selection')
-        .setAttribute('checked', settings.tileSelection);
-      this.shadow.querySelector('#validate-word')
-        .setAttribute('checked', settings.validateOnComplete);
-      this.shadow.querySelector('#haptic-feedback')
-        ?.setAttribute('checked', settings.hapticFeedback);
-      this.shadow.querySelector('#play-animations')
-        ?.setAttribute('checked', settings.playAnimations);
-      this.shadow.querySelector('#word-length').value = settings.wordLength;
-      this.shadow.querySelector('#difficulty').value = settings.difficulty;
+      this.tileSelectionElem.setAttribute('checked', settings.tileSelection);
+      this.validateWordElem.setAttribute('checked', settings.validateOnComplete);
+      this.hapticFeedbackElem?.setAttribute('checked', settings.hapticFeedback);
+      this.playAnimationsElem?.setAttribute('checked', settings.playAnimations);
+      this.wordLengthElem.value = settings.wordLength;
+      this.wordDifficultyElem.value = settings.difficulty;
     }
 
     switchMenu(event) {
@@ -140,13 +143,13 @@ const define = (template) => {
 
         // Save settings once the settings page closes
         const newSettings = {
-          tileSelection: this.shadow.querySelector('#tile-selection').checked,
-          validateOnComplete: this.shadow.querySelector('#validate-word').checked,
-          hapticFeedback: this.shadow.querySelector('#haptic-feedback')?.checked || false,
-          playAnimations: this.shadow.querySelector('#play-animations')?.checked || false,
+          tileSelection: this.tileSelectionElem.checked,
+          validateOnComplete: this.validateWordElem.checked,
+          hapticFeedback: this.hapticFeedbackElem?.checked || false,
+          playAnimations: this.playAnimationsElem?.checked || false,
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
-          wordLength: parseInt(this.shadow.querySelector('#word-length').value, 10),
-          difficulty: parseInt(this.shadow.querySelector('#difficulty').value, 10),
+          wordLength: parseInt(this.wordLengthElem.value, 10),
+          difficulty: parseInt(this.wordDifficultyElem.value, 10),
         };
         await applySettings(newSettings);
         saveSettings(newSettings);

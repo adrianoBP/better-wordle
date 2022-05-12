@@ -16,16 +16,16 @@ class FancyToggle extends HTMLElement {
     `;
   }
 
+  get toggleElem() { return this.shadow.querySelector('#toggle'); }
+
   get checked() { return this.getAttribute('checked') === 'true'; }
   set checked(value) { this.setAttribute('checked', value); }
 
   toggle() {
-    const toggle = this.shadow.querySelector('#toggle');
-
     if (this.checked) {
-      toggle.classList.add('checked');
+      this.toggleElem.classList.add('checked');
     } else {
-      toggle.classList.remove('checked');
+      this.toggleElem.classList.remove('checked');
     }
 
     // Dispatch callback event
@@ -33,8 +33,7 @@ class FancyToggle extends HTMLElement {
   }
 
   connectedCallback() {
-    const toggle = this.shadow.querySelector('#toggle');
-    toggle.addEventListener('mouseup', () => {
+    this.toggleElem.addEventListener('mouseup', () => {
       this.checked = !this.checked;
     });
 
