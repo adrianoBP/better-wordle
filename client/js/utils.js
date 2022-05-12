@@ -69,16 +69,12 @@ const hideElements = (elements) => {
 export {
   sleep,
   getDateFromMillisec,
-
   setItem,
   getItem,
-
   setTheme,
   isMobile,
-
   setUrlParams,
   deleteUrlParams,
-
   showElement,
   hideElement,
   hideElements,

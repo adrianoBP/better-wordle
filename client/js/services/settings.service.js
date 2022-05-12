@@ -2,7 +2,7 @@ import { getItem, setItem, setTheme, deleteUrlParams } from '../utils.js';
 import { verifyWordData } from './api.service.js';
 
 let settings = {
-  theme: 'dark',
+  theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
   difficulty: 1,
   wordLength: 5,
   allowedGuessesCount: 6,
@@ -83,7 +83,6 @@ const saveSettings = (newSettings) => {
 
 export {
   settings,
-
   loadSettings,
   saveSettings,
 };

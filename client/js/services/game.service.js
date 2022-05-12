@@ -232,13 +232,10 @@ const newRandomGame = async () => {
 export {
   isLoading,
   socket,
-
   startGame,
   newMultiplayerGame,
   newRandomGame,
-
   saveGame,
   applySettings,
-
   checkInput,
 };

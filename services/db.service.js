@@ -52,7 +52,6 @@ const setTodayWord = async (id) => {
 
 export default {
   init,
-
   getTodaysWord,
   getNewWordId,
   getWordById,
