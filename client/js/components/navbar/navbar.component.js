@@ -16,13 +16,14 @@ const define = (template) => {
       this.shadow.innerHTML = template;
     }
 
+    get slidingMenuElem() { return this.shadow.querySelector('sliding-menu'); }
+
     hideMenu() {
-      this.shadow.querySelector('sliding-menu').setAttribute('active', false);
+      this.slidingMenuElem.setAttribute('active', false);
     }
 
     connectedCallback() {
-      const menu = this.shadow.querySelector('sliding-menu');
-      menu.setAttribute('active', false);
+      this.slidingMenuElem.setAttribute('active', false);
 
       this.shadow.querySelector('#random-game').addEventListener('click', async () => {
         if (isLoading) return;

@@ -1,5 +1,6 @@
-import { showElement } from '../../../utils.js';
+import { hideElement, showElement } from '../../../utils.js';
 
+// Lobby for multiplayer games
 class LobbyDetails extends HTMLElement {
   constructor() {
     super();
@@ -19,6 +20,7 @@ class LobbyDetails extends HTMLElement {
   }
 
   get infoElem() { return this.shadow.querySelector('#additional-info'); }
+  get startGameElem() { return this.shadow.querySelector('#start-game'); }
 
   updateCountdown(newValue) {
     if (newValue) {
@@ -36,16 +38,16 @@ class LobbyDetails extends HTMLElement {
     this.shadow.querySelector('#players').textContent = `${value} player(s) connected`;
 
     if (value >= 2 && this.startGame) {
-      this.shadow.querySelector('#start-game').disabled = false;
+      this.startGameElem.disabled = false;
     }
   }
 
   connectedCallback() {
     // If the user is allowed to start the game, show the start button
     if (this.startGame) {
-      const startGameElem = this.shadow.querySelector('#start-game');
-      showElement(startGameElem);
-      startGameElem.addEventListener('click', () => {
+      showElement(this.startGameElem);
+      this.startGameElem.addEventListener('click', () => {
+        hideElement(this.startGameElem);
         this.startGame();
       });
     } else {

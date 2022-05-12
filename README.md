@@ -213,6 +213,8 @@ Many elements of the project could be considered excessive, however, this has be
 During testing, the only way to cheat that was found was by **manually** calling the `/api/words/by-id` from an API debugging tool.  
 However, this would require the user to first acquire the `id` of the word, which can be done by setting breakpoints in the browser developer tools.
 
+This could be prevented by using CORS and allowing only a specific domain address (game domain address) to make the API call in question.
+
 For this project, it is not considered a critical issue because the base user is not expected to have the knowledge.
 
 ## Future works

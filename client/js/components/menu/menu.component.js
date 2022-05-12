@@ -21,6 +21,10 @@ const define = (template) => {
     get active() { return this.getAttribute('active') === 'true'; }
     set active(value) { this.setAttribute('active', value); }
 
+    get menuToggleElem() { return this.shadow.querySelector('#menu-toggle'); }
+    get menuElem() { return this.shadow.querySelector('main'); }
+
+    get themeSwitchElem() { return this.shadow.querySelector('#theme-switch'); }
     get tileSelectionElem() { return this.shadow.querySelector('#tile-selection'); }
     get validateWordElem() { return this.shadow.querySelector('#validate-word'); }
     get hapticFeedbackElem() { return this.shadow.querySelector('#haptic-feedback'); }
@@ -61,21 +65,19 @@ const define = (template) => {
     connectedCallback() {
       this.initSettings();
 
-      setTheme(
-        settings.theme,
-        this.shadow.querySelector('#theme-switch'));
+      setTheme(settings.theme, this.themeSwitchElem);
       this.onPlayAnimationChange(
         this.shadow.querySelector('main'),
         this.shadow.querySelector('#play-animations'));
 
       // Update theme as soon as the icon is clicked instead of waiting for the menu to close
-      this.shadow.querySelector('#theme-switch').addEventListener('click', (event) => {
+      this.themeSwitchElem.addEventListener('click', (event) => {
         const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
         setTheme(newTheme, event.target);
       });
 
       // Menu toggle
-      this.shadow.querySelector('#menu-toggle').addEventListener('click', () => {
+      this.menuToggleElem.addEventListener('click', () => {
         this.active = !this.active;
       });
 
@@ -87,17 +89,17 @@ const define = (template) => {
       });
 
       // Register screen switch
-      this.shadow.querySelector('#switch')
+      this.shadow.querySelector('#section-switch')
         .addEventListener('click', this.switchMenu.bind(this));
 
       // Show haptic feedback option only if the user is on mobile
       if (!isMobile()) {
-        this.shadow.querySelectorAll('#settings .item')[3]?.remove();
+        this.shadow.querySelector('#haptic-feedback-item')?.remove();
       }
 
       // Register animations style change
-      this.shadow.querySelector('#play-animations').toggleCallback = () => {
-        this.onPlayAnimationChange(this.shadow.querySelector('main'), this.shadow.querySelector('#play-animations'));
+      this.playAnimationsElem.toggleCallback = () => {
+        this.onPlayAnimationChange(this.menuElem, this.playAnimationsElem);
       };
 
       // Register game modes
@@ -131,15 +133,12 @@ const define = (template) => {
     }
 
     async onActiveChange() {
-      const menuToggle = this.shadow.querySelector('#menu-toggle');
-      const menuElem = this.shadow.querySelector('main');
-
       if (this.active) {
-        menuToggle.classList.add('active');
-        menuElem.classList.add('active');
+        this.menuToggleElem.classList.add('active');
+        this.menuElem.classList.add('active');
       } else {
-        menuToggle.classList.remove('active');
-        menuElem.classList.remove('active');
+        this.menuToggleElem.classList.remove('active');
+        this.menuElem.classList.remove('active');
 
         // Save settings once the settings page closes
         const newSettings = {

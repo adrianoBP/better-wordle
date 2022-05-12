@@ -13,9 +13,7 @@ class TileComponent extends HTMLElement {
   `;
   }
 
-  get tileElem() {
-    return this.shadow.querySelector('div');
-  }
+  get tileElem() { return this.shadow.querySelector('div'); }
 
   get letter() {
     return this.hasAttribute('letter') ? this.getAttribute('letter') : '';

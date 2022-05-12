@@ -177,7 +177,7 @@ board-tile {
   margin: 0.2rem;
 }
 
-#switch {
+#section-switch {
   position: absolute;
   bottom: 20%;
   cursor: pointer;
@@ -185,7 +185,7 @@ board-tile {
 }
 
 @media (hover: hover) {
-  #switch:hover {
+  #section-switch:hover {
     transform: scale(1.1);
   }
 }
