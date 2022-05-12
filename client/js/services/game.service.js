@@ -1,4 +1,3 @@
-'use strict';
 import { resetKeyboard, selectKey, unselectKey } from './keyboard.service.js';
 import { validateGuess, isWordValid, getNewGameCode } from './api.service.js';
 import { getItem, setItem, getDayFromMillisec, setUrlParams, deleteUrlParams } from '../utils.js';

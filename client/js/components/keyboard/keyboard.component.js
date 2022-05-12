@@ -1,4 +1,3 @@
-'use strict';
 import { hideElement, showElement } from '../../utils.js';
 import './key/key.component.js';
 

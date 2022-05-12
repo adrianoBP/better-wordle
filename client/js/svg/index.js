@@ -1,4 +1,3 @@
-'use strict';
 import { svg as backspace } from './backspace.js';
 import { svg as enter } from './enter.js';
 import { svg as share } from './share.js';

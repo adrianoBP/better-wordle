@@ -1,4 +1,3 @@
-'use strict';
 import { settings, saveSettings } from '../../services/settings.service.js';
 import { getWord } from '../../services/api.service.js';
 import { sleep } from '../../utils.js';

@@ -1,4 +1,3 @@
-'use strict';
 import { settings } from '../../../services/settings.service.js';
 import { getItem, isMobile, showElement, hideElement, hideElements } from '../../../utils.js';
 import { shareSVG, tickSVG } from '../../../svg/index.js';

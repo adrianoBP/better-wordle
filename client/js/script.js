@@ -1,4 +1,3 @@
-'use strict';
 import { checkInput, startGame } from './services/game.service.js';
 import { loadSettings } from './services/settings.service.js';
 import './components/navbar/navbar.component.js';

@@ -1,4 +1,3 @@
-'use strict';
 import { getItem, setItem, setTheme, deleteUrlParams } from '../utils.js';
 import { verifyWordData } from './api.service.js';
 

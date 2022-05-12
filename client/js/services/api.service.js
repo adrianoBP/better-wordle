@@ -1,4 +1,3 @@
-'use strict';
 import { settings } from './settings.service.js';
 
 // Since we are serving the client, we don't need to specify the full path (and will prevent issues with CORS)

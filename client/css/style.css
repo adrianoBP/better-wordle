@@ -46,6 +46,7 @@ body {
   width: 100vw;
   display: flex;
   flex-flow: column;
+  touch-action: manipulation;
 }
 
 main {

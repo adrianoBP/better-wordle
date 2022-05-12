@@ -1,4 +1,3 @@
-'use strict';
 import { newRandomGame, isLoading } from '../../services/game.service.js';
 import { settings } from '../../services/settings.service.js';
 import { getNewGameCode } from '../../services/api.service.js';

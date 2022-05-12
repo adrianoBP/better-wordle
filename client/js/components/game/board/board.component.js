@@ -1,4 +1,3 @@
-'use strict';
 import { settings } from '../../../services/settings.service.js';
 import { updateKeyboard } from '../../../services/keyboard.service.js';
 import { hideElement, showElement, sleep } from '../../../utils.js';

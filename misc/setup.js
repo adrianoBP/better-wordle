@@ -1,4 +1,3 @@
-'use strict';
 import dbService from '../services/db.service.js';
 
 const run = async () => {

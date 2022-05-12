@@ -1,4 +1,3 @@
-'use strict';
 const resetKeyboard = () => {
   document.querySelector('keyboard-component').reset();
 };

@@ -1,4 +1,3 @@
-'use strict';
 import { setTheme, sleep, isMobile } from '../../utils.js';
 import { applySettings, newRandomGame, newMultiplayerGame, isLoading } from '../../services/game.service.js';
 import { settings, saveSettings } from '../../services/settings.service.js';

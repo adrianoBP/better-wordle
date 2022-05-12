@@ -52,6 +52,9 @@ Each element in the array contains the correctness of the letter in the word at 
 - '**0**' that the letter is in the wrong position
 - '**1**' indicates that the letter is in the correct position
 
+Before the guess is sent to the server for validation, it is first checked to make sure it is a valid English word.
+Words that have been checked are saved in memory to minimise the number of API requests.
+
 ### Stats
 
 At the end of a game, users are provided with their progress on the game, indicating:
@@ -89,6 +92,8 @@ Users can also edit the word length (between 4 and 8 letters) as well as specify
 - Level 1, composed of ordinary British and American English words
 - Level 2, composed of less common American English words
 - Level 3, composed of uncommon British and American English, Names and Acronyms
+
+All words from all levels have been validated against the dictionary of valid English words.
 
 When a new random game is started, the settings are added as URL parameters, allowing the users to send the link to a friend or colleague.  
 Once the URL is opened, the application will recognize the parameters and start a new random game with the parameters in the URL.
@@ -201,7 +206,7 @@ Many elements of the project could be considered excessive, however, this has be
 - Componentisation of the elements, for example, having a keyboard component that contains a key component
 - Controllers / Services separation: due to the simplicity of the project, it may have not been needed to separate the backend, however, this has been done to build a solid structure for any future developments.
 
-### Cheating
+### Cheating (in game)
 
 During testing, the only way to cheat that was found was by **manually** calling the `/api/words/by-id` from an API debugging tool.  
 However, this would require the user to first acquire the `id` of the word, which can be done by setting breakpoints in the browser developer tools.

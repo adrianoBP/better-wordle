@@ -1,4 +1,3 @@
-'use strict';
 import { settings } from '../../../../services/settings.service.js';
 class TileComponent extends HTMLElement {
   constructor() {

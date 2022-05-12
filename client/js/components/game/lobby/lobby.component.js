@@ -1,4 +1,3 @@
-'use strict';
 import { showElement } from '../../../utils.js';
 
 class LobbyDetails extends HTMLElement {
