@@ -7,6 +7,9 @@ import './board/board.component.js';
 import './result/result.component.js';
 import './lobby/lobby.component.js';
 
+// Component: Game
+// Description: Holds all the game data and manages the game flow by hiding and displaying the board, result and lobby components
+
 class GameDetails extends HTMLElement {
   constructor() {
     super();
@@ -18,19 +21,34 @@ class GameDetails extends HTMLElement {
         <result-details is-showing="false"></result-details>
       </section>
       `;
+
+    this._isGuessValid = true;
   }
 
   get boardElem() { return this.shadow.querySelector('board-details'); }
   get resultElem() { return this.shadow.querySelector('result-details'); }
   get lobbyElem() { return this.shadow.querySelector('game-lobby'); }
 
-  get isGuessValid() { return this.getAttribute('is-guess-valid') === 'true'; }
-  set isGuessValid(value) { this.setAttribute('is-guess-valid', value ? 'true' : 'false'); }
+  get isGuessValid() { return this._isGuessValid; }
+  set isGuessValid(value) {
+    this._isGuessValid = value;
+
+    if (!this.isGuessValid) {
+      this.boardElem.markCurrentWordInvalid();
+      if (settings.hapticFeedback && window.navigator) { window.navigator.vibrate(200); }
+    }
+  }
 
   get isMultiplayer() { return this.getAttribute('is-multiplayer') === 'true'; }
   set isMultiplayer(value) { this.setAttribute('is-multiplayer', value ? 'true' : 'false'); }
 
 
+  /**
+   * Validates the guess and shows the result if the word is guessed or if the game is over
+   * @param {string} guess The guess to validate
+   * @param {Object} validationResult - The validation result to apply
+   * @param {Boolean} incrementWordIndex - Whether to increment the word index after applying the result
+   */
   async applyValidationResult(guess, validationResult, incrementWordIndex) {
     this.applyingValidation = true;
 
@@ -76,6 +94,7 @@ class GameDetails extends HTMLElement {
     this.applyingValidation = false;
   }
 
+  /** Loads the provided game into the board */
   async load(savedGame) {
     for (const row of savedGame) {
       // Convert the element type to a validation type (-1: not present, 0: wrong position, 1: correct position)
@@ -107,6 +126,11 @@ class GameDetails extends HTMLElement {
     this.resultElem.show(guess, this.boardElem.wordGuessed, showStats, isMultiplayer);
   }
 
+  /**
+   * Creates the game lobby if the game is multiplayer and manages the connection with the other players
+   * @param {Number} playerCount Number of players in the game
+   * @param {Boolean} isAdmin Defines if the user can start the game
+   */
   newLobby(playerCount, isAdmin) {
     // If we played a game already, reset it
     if (this.lobbyElem) {
@@ -161,21 +185,6 @@ class GameDetails extends HTMLElement {
           break;
       }
     };
-  }
-
-  onIsGuessValidChange() {
-    if (!this.isGuessValid) {
-      this.boardElem.markCurrentWordInvalid();
-      if (settings.hapticFeedback && window.navigator) { window.navigator.vibrate(200); }
-    }
-  }
-
-  static get observedAttributes() {
-    return ['is-guess-valid'];
-  }
-
-  attributeChangedCallback(name) {
-    if (name === 'is-guess-valid') { this.onIsGuessValidChange(); }
   }
 }
 

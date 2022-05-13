@@ -1,3 +1,8 @@
+// Component: toggle element
+// Description: Custom toggle element to be used throughout the application
+// Attributes:
+// - checked (Boolean): defines if the toggle is checked or not
+
 class FancyToggle extends HTMLElement {
   constructor() {
     super();

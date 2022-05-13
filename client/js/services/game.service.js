@@ -19,7 +19,6 @@ const startGame = async () => {
   isLoading = true;
 
   gameElem = document.createElement('game-component');
-  gameElem.setAttribute('is-guess-valid', true);
 
   // Append the new game at the top of the main element
   document.querySelector('main').prepend(gameElem);
@@ -85,7 +84,7 @@ const checkInput = async (input, isCtrlPressed = false) => {
     try {
       if (!await isGuessValid(gameElem)) {
         // Wiggle the word so that the user is aware that the word is invalid
-        gameElem.boardElem.wiggleWord();
+        gameElem.boardElem.shakeWord();
         console.error('Word is not valid');
         return;
       }

@@ -1,6 +1,8 @@
 import { hideElement, showElement } from '../../../utils.js';
 
-// Lobby for multiplayer games
+// Component: Lobby
+// Description: Holds the information about the multiplayer lobby and renders the data
+
 class LobbyDetails extends HTMLElement {
   constructor() {
     super();
@@ -22,6 +24,10 @@ class LobbyDetails extends HTMLElement {
   get infoElem() { return this.shadow.querySelector('#additional-info'); }
   get startGameElem() { return this.shadow.querySelector('#start-game'); }
 
+  /**
+   * Set the current value in the countdown and animates it by shrinking the text content
+   * @param {String} newValue The new value to be displayed
+   */
   updateCountdown(newValue) {
     if (newValue) {
       this.infoElem.textContent = newValue;

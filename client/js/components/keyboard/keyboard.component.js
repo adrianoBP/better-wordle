@@ -1,6 +1,9 @@
 import { hideElement, showElement } from '../../utils.js';
 import './key/key.component.js';
 
+// Component: Keyboard
+// Description: Contains all the details of the keyboard and handles all the keys, including their type
+
 class Keyboard extends HTMLElement {
   constructor() {
     super();
@@ -45,6 +48,7 @@ class Keyboard extends HTMLElement {
   }
 
   connectedCallback() {
+    // Create the keyboard on connect
     const keyRows = [
       ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
       ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],

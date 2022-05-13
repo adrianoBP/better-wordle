@@ -1,5 +1,11 @@
 import { settings } from '../../../../services/settings.service.js';
 
+// Component: Tile
+// Description: Holds the tile data and renders the tile
+// Attributes:
+// - letter (String): Defines the current letter inserted in the tile
+// - type (String): defines the tile type ('success', 'warn', 'fail')
+
 class TileComponent extends HTMLElement {
   constructor() {
     super();
@@ -28,7 +34,7 @@ class TileComponent extends HTMLElement {
   get isSelected() { return this.hasAttribute('selected'); }
   set isSelected(isSelected) { this.setAttribute('type', isSelected ? 'selected' : ''); }
 
-  // Clear tile type and additional
+  /** Clears all non-animation classes */
   clearType() {
     this.tileElem.classList.remove('success', 'warn', 'fail', 'selected', 'error');
   }
@@ -62,6 +68,10 @@ class TileComponent extends HTMLElement {
     }
   }
 
+  /**
+   * Flip tile animation
+   * @param {string} newType - The new type of the tile
+   */
   flip(newType) {
     if (!settings.playAnimations) {
       this.updateType(newType);
@@ -82,6 +92,7 @@ class TileComponent extends HTMLElement {
     }, 250);
   }
 
+  /** Shake tile animation */
   shake() {
     this.tileElem.animate([
       { transform: 'translateX(-0.2em)' },
@@ -94,7 +105,6 @@ class TileComponent extends HTMLElement {
     });
   }
 
-  // No need to get old and new values as we are storing the data against the attribute
   attributeChangedCallback(name, oldValue, newValue) {
     if (!oldValue && !newValue) { return; }
 

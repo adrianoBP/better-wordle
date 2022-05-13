@@ -3,6 +3,11 @@ import { updateKeyboard } from '../../../services/keyboard.service.js';
 import { hideElement, showElement, sleep } from '../../../utils.js';
 import '../board/tile/tile.component.js';
 
+// Component: Gameboard
+// Description: Holds the board data and renders the board. Contains all methods to interact with tiles on the board
+// Attributes:
+// - tile-selection (String): Defines if the tile selection is enabled or not ('enabled', 'disabled')
+
 class BoardDetails extends HTMLElement {
   constructor() {
     super();
@@ -131,6 +136,12 @@ class BoardDetails extends HTMLElement {
     this.toggleNextTile();
   }
 
+  /**
+   * Provided a validation result, apply the result to the board
+   * @param {Object} validationResult - The validation result to apply
+   * @param {Boolean} incrementWordIndex - Whether to increment the word index after applying the result
+   * @param {Number} stepDuration - Indicates how long to wait before flipping the next tile (in ms)
+   */
   async applyValidationResult(validationResult, incrementWordIndex, stepDuration = 350) {
     // List of keyboard keys that need to be updated according to the validation result
     const keysToReload = [];
@@ -172,6 +183,7 @@ class BoardDetails extends HTMLElement {
     }
   }
 
+  /** Toggles the tile selection state for the next available tile */
   toggleNextTile() {
     if (this.tileSelection && this.wordIndex < settings.allowedGuessesCount &&
       this.letterIndex < settings.wordLength) {
@@ -179,6 +191,7 @@ class BoardDetails extends HTMLElement {
     }
   }
 
+  /** Marks all the letters in the current word as invalid */
   markCurrentWordInvalid() {
     this.words[this.wordIndex].forEach(tile => {
       tile.type = 'error';
@@ -211,12 +224,13 @@ class BoardDetails extends HTMLElement {
   show() { showElement(this.boardElem); }
   hide() { hideElement(this.boardElem); }
 
-  wiggleWord() {
+  shakeWord() {
     this.words[this.wordIndex].forEach((tile) => {
       tile.shake();
     });
   }
 
+  /** Removes all the tiles in the board and creates new ones according to the game parameters */
   init() {
     // Make sure that the correct word length is set
     document.querySelector(':root')

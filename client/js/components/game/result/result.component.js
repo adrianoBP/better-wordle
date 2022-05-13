@@ -3,6 +3,16 @@ import { getItem, isMobile, showElement, hideElement, hideElements } from '../..
 import { shareSVG, tickSVG } from '../../../svg/index.js';
 import { hideKeyboard, showKeyboard } from '../../../services/keyboard.service.js';
 
+// Component: Result component
+// Description: Shows all the information after a game has ended - Displays:
+// - If the user won or lost
+// - The correct word and allows the user to search for it
+// - The stats of the game
+// Attributes:
+// - is-showing (Boolean): Defines if the component should be displayed or not
+// - word (String): Defines the correct word for the game
+// - win (Boolean): Defines if the game was won or lost
+
 fetch('js/components/game/result/result.component.html')
   .then(stream => stream.text())
   .then(text => define(text));
@@ -116,33 +126,36 @@ const define = (template) => {
 
       // Share button
       this.updateIcon(this.shareElem, shareSVG);
-      this.shareElem.addEventListener('click', () => {
-        const savedGame = getItem('game-save');
+      this.shareElem.addEventListener('click', () => { this.createSharableContent(); });
+    }
 
-        const emojiGame = savedGame.map(word => {
-          return word.map((letter) => {
-            return letter.type === 'success' ? '🟩' : letter.type === 'warn' ? '🟨' : '🟪';
-          }).join('');
-        }).join('\n');
+    /** Creates and copy into clipboard the game result in emoji format */
+    createSharableContent() {
+      const savedGame = getItem('game-save');
 
-        const date = new Date(settings.gameTime);
+      const emojiGame = savedGame.map(word => {
+        return word.map((letter) => {
+          return letter.type === 'success' ? '🟩' : letter.type === 'warn' ? '🟨' : '⬛';
+        }).join('');
+      }).join('\n');
 
-        const copyText = `
+      const date = new Date(settings.gameTime);
+
+      const copyText = `
 better-wordle
 
 date: ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}
 
 ${emojiGame}`;
 
-        // Navigator.clipboard is not available in mobile devices.
-        // Document.execCommand is deprecated
-        // Navigator.share only available through HTTPS (out of scope for this project)
-        navigator.clipboard.writeText(copyText).then(() => {
-          this.updateIcon(this.shareElem, tickSVG);
-          setTimeout(() => {
-            this.updateIcon(this.shareElem, shareSVG);
-          }, 2000);
-        });
+      // Navigator.clipboard is not available in mobile devices.
+      // Document.execCommand is deprecated
+      // Navigator.share only available through HTTPS (out of scope for this project)
+      navigator.clipboard.writeText(copyText).then(() => {
+        this.updateIcon(this.shareElem, tickSVG);
+        setTimeout(() => {
+          this.updateIcon(this.shareElem, shareSVG);
+        }, 2000);
       });
     }
 

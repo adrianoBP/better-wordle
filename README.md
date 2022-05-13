@@ -63,7 +63,8 @@ At the end of a game, users are provided with some stats, indicating:
 - what percentages of games have been won
 - how many words were required to guess the word of the day
 
-These stats are saved in the browser's `localStorage`.
+These stats are saved in the browser's `localStorage` alongside the game settings.
+The current day game is stored in a different Local Storage object under the `game-save` key.
 
 Stats are also available for the *multiplayer* game mode and, are also saved in the browser's storage.
 
@@ -135,6 +136,8 @@ The menu contains a quick guide on **how to play** as well as a list of **settin
 - Game modes
   - **Random word game** (dice icon)
   - **Multiplayer** (controller icon)
+
+Settings are saved in the browser Local Storage.
 
 ### Multiplayer
 

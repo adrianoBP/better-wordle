@@ -3,6 +3,9 @@ import { settings } from '../../services/settings.service.js';
 import { getNewGameCode } from '../../services/api.service.js';
 import '../menu/menu.component.js';
 
+// Component: Navigation bar
+// Description: Holds the navigation bar for the game and its components
+
 fetch('js/components/navbar/navbar.component.html')
   .then(stream => stream.text())
   .then(text => define(text));

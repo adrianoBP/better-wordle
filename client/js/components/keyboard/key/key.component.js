@@ -1,6 +1,11 @@
 import { backspaceSVG, enterSVG } from '../../../svg/index.js';
 import { checkInput } from '../../../services/game.service.js';
 
+// Component: Keyboard Key
+// Description: Defines the key in the keyboard and renders its details. It also handles the key selection and type change.
+// - letter (String): Defines the key letter
+// - type (String): defines the key type ('success', 'warn', 'fail', 'selected')
+
 class Key extends HTMLElement {
   constructor() {
     super();

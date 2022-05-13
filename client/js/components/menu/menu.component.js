@@ -5,6 +5,11 @@ import { getNewGameCode } from '../../services/api.service.js';
 import '../toggle/toggle.component.js';
 import '../game/board/tile/tile.component.js';
 
+// Component: Menu
+// Description: Holds all the settings available for the game and allows the user to edit them.
+// Attributes:
+// - active (Boolean): Defines if the menu is open or not
+
 fetch('js/components/menu/menu.component.html')
   .then(stream => stream.text())
   .then(text => define(text));
@@ -41,7 +46,7 @@ const define = (template) => {
       this.wordDifficultyElem.value = settings.difficulty;
     }
 
-    switchMenu(event) {
+    toggleMenu(event) {
       const settingsElem = this.shadow.querySelector('#settings');
       const tutorialElem = this.shadow.querySelector('#tutorial');
 
@@ -90,7 +95,7 @@ const define = (template) => {
 
       // Register screen switch
       this.shadow.querySelector('#section-switch')
-        .addEventListener('click', this.switchMenu.bind(this));
+        .addEventListener('click', this.toggleMenu.bind(this));
 
       // Show haptic feedback option only if the user is on mobile
       if (!isMobile()) {
@@ -132,7 +137,7 @@ const define = (template) => {
       return ['active'];
     }
 
-    async onActiveChange() {
+    async onActiveStatusChange() {
       if (this.active) {
         this.menuToggleElem.classList.add('active');
         this.menuElem.classList.add('active');
@@ -158,7 +163,7 @@ const define = (template) => {
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'active' &&
         oldValue != null &&
-        oldValue !== newValue) { this.onActiveChange(); }
+        oldValue !== newValue) { this.onActiveStatusChange(); }
     }
   }
 
