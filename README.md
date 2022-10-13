@@ -2,6 +2,8 @@
 
 Coursework for Web Programming module (M30237) at the University of Portsmouth
 
+`Warning: service to validate words is currently not working!`
+
 ## Installation
 
 ```sh
